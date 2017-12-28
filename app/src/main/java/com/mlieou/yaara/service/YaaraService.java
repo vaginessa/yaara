@@ -10,9 +10,12 @@ import android.support.annotation.Nullable;
  */
 
 public class YaaraService extends Service {
+
+    private final IBinder mBinder = new YaaraServiceBinder();
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
     }
 }

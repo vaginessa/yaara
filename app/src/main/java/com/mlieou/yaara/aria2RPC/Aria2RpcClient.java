@@ -1,18 +1,30 @@
 package com.mlieou.yaara.aria2RPC;
 
+import android.util.Log;
+
 import com.mlieou.yaara.aria2RPC.model.ActiveTask;
 import com.mlieou.yaara.aria2RPC.model.StoppedTask;
 import com.mlieou.yaara.aria2RPC.model.WaitingTask;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by mengdi on 12/26/17.
  */
 
 public class Aria2RpcClient {
+    private static final String TAG = "Aria2RpcClient";
 
     private OkHttpClient mClient;
 
@@ -20,8 +32,31 @@ public class Aria2RpcClient {
     private List<WaitingTask> mWaitingTaskList;
     private List<StoppedTask> mStoppedTaskList;
 
-    public Aria2RpcClient(OkHttpClient mClient) {
-        this.mClient = mClient;
+    private Request request = new Request.Builder()
+            .url("http://10.24.233.100:6800/jsonrpc")
+            .post(RequestBody.create(
+                    MediaType.parse("application/json"),
+                    "{\"jsonrpc\": \"2.0\",\"id\":1, \"method\": \"aria2.tellActive\", \"params\":[]}"
+            )).build();
+
+    public Aria2RpcClient() {
+        this.mClient = new OkHttpClient();
+    }
+
+    public void getRawJson() {
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                Log.i(TAG, "onFailure: ");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String msg = response.body().string();
+                Log.i(TAG, "onResponse: " + msg);
+            }
+        });
     }
 
     public List<ActiveTask> getActiveTaskList() {
