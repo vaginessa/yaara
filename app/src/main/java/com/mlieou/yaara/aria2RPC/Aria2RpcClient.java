@@ -27,6 +27,8 @@ public class Aria2RpcClient {
     private static final String TAG = "Aria2RpcClient";
 
     private OkHttpClient mClient;
+    private String mSecret;
+    private String mUrl;
 
     private List<ActiveTask> mActiveTaskList;
     private List<WaitingTask> mWaitingTaskList;
@@ -36,11 +38,21 @@ public class Aria2RpcClient {
             .url("http://10.24.233.100:6800/jsonrpc")
             .post(RequestBody.create(
                     MediaType.parse("application/json"),
-                    "{\"jsonrpc\": \"2.0\",\"id\":1, \"method\": \"aria2.tellActive\", \"params\":[]}"
+                    "{\"id\":1, \"method\": \"aria2.tellActive\"}"
             )).build();
 
+    public Aria2RpcClient(String hostname, int port, String requestPath, String secret) {
+        mClient = new OkHttpClient();
+        mUrl = "http://" + hostname + ":" + port + "/" + requestPath;
+        mSecret = secret;
+    }
+
+    public Aria2RpcClient(String hostname, int port, String requestPath) {
+        this(hostname, port, requestPath, null);
+    }
+
     public Aria2RpcClient() {
-        this.mClient = new OkHttpClient();
+        this("10.24.233.100", 6800, "jsonrpc");
     }
 
     public void getRawJson() {
