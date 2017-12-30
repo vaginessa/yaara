@@ -39,7 +39,8 @@ public interface Aria2RpcMethod {
     String shutdown = "aria2.shutdown";
     String forceShutdown = "aria2.forceShutdown";
     String saveSession = "aria2.saveSession";
-    String multicall = "aria2.multicall";
-    String listMethods = "aria2.listMethods";
-    String listNotifications = "aria2.listNotifications";
+
+    String multicall = "system.multicall";
+    String listMethods = "system.listMethods";
+    String listNotifications = "system.listNotifications";
 }
