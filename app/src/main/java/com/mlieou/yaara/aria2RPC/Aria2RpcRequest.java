@@ -118,8 +118,16 @@ public class Aria2RpcRequest {
         return buildRequest(id, url, secret, "", Aria2RpcMethod.unpauseAll);
     }
 
-    public static Request tellStatus(String id, String url, String secret, List<String> keys) {
-        return buildRequest(id, url, secret, keys, Aria2RpcMethod.tellStatus);
+    public static Request tellStatus(String id,
+                                     String url,
+                                     String secret,
+                                     String gid,
+                                     List<String> keys) {
+        JSONArray params = new JSONArray();
+        JSONArrayHelper.addSecret(params, secret);
+        params.put(gid);
+        JSONArrayHelper.addList(params, keys);
+        return buildRequest(id, url, params, Aria2RpcMethod.tellStatus);
     }
 
     public static Request getUris(String id, String url, String secret, String gid) {

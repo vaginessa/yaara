@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,5 +46,13 @@ public class JSONArrayHelper {
             object = null;
         }
         return object;
+    }
+
+    public static List<String> convertToList(JSONArray array) throws JSONException {
+        List<String> stringList = new ArrayList<>(array.length());
+        for (int i = 0; i < array.length(); i++) {
+            stringList.add(array.getString(i));
+        }
+        return stringList;
     }
 }

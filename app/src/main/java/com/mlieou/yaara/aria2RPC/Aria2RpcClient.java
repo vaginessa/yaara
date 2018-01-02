@@ -4,11 +4,16 @@ import android.util.Log;
 
 import com.mlieou.yaara.aria2RPC.model.ActiveTask;
 import com.mlieou.yaara.aria2RPC.model.StoppedTask;
+import com.mlieou.yaara.aria2RPC.model.UriStatus;
 import com.mlieou.yaara.aria2RPC.model.WaitingTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,13 +46,205 @@ public class Aria2RpcClient {
         this(hostname, port, requestPath, null);
     }
 
-    public void addUri(List<String> uri, HashMap<String, String> options, int position) throws IOException {
+    public String addUri(List<String> uris, HashMap<String, String> options, int position)
+            throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.addUri(
                 "",
                 mUrl,
                 mSecret,
-                uri,
+                uris,
                 options,
-                position)).execute();
+                position
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+        } else {
+            return "";
+        }
     }
+
+    public String addTorrent(File torrent,
+                             List<String> uris,
+                             HashMap<String, String> options,
+                             int position)
+            throws IOException, JSONException {
+        Response response = mClient.newCall(Aria2RpcRequest.addTorrent(
+                "",
+                mUrl,
+                mSecret,
+                torrent,
+                uris,
+                options,
+                position
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+        } else
+            return "";
+    }
+
+    public List<String> addMetalink(String metalink,
+                                    HashMap<String, String> options,
+                                    int position)
+            throws IOException, JSONException {
+        Response response = mClient.newCall(Aria2RpcRequest.addMetalink(
+                "",
+                mUrl,
+                mSecret,
+                metalink,
+                options,
+                position
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            JSONArray resultArray = jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT);
+            return JSONArrayHelper.convertToList(resultArray);
+        } else
+            return new ArrayList<>();
+    }
+
+    public String remove(String gid) throws IOException, JSONException {
+        Response response = mClient.newCall(Aria2RpcRequest.remove(
+                "",
+                mUrl,
+                mSecret,
+                gid
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+        } else
+            return "";
+    }
+
+    public String forceRemove(String gid) throws IOException, JSONException {
+        Response response = mClient.newCall(Aria2RpcRequest.forceRemove(
+                "",
+                mUrl,
+                mSecret,
+                gid
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+        } else
+            return "";
+    }
+
+    public String pause(String gid) throws IOException, JSONException {
+        Response response = mClient.newCall(Aria2RpcRequest.pause(
+                "",
+                mUrl,
+                mSecret,
+                gid
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+        } else
+            return "";
+    }
+
+    public boolean pauseAll() throws IOException, JSONException {
+        Response response = mClient.newCall(Aria2RpcRequest.pauseAll(
+                "",
+                mUrl,
+                mSecret
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+        } else
+            return false;
+    }
+
+    public String forcePause(String gid) throws IOException, JSONException {
+        Response response = mClient.newCall(Aria2RpcRequest.forcePause(
+                "",
+                mUrl,
+                mSecret,
+                gid
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+        } else
+            return "";
+    }
+
+    public boolean forcePauseAll() throws IOException, JSONException {
+        Response response = mClient.newCall(Aria2RpcRequest.forcePauseAll(
+                "",
+                mUrl,
+                mSecret
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+        } else
+            return false;
+    }
+
+    public String unpause(String gid) throws IOException, JSONException {
+        Response response = mClient.newCall(Aria2RpcRequest.unpause(
+                "",
+                mUrl,
+                mSecret,
+                gid
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+        } else
+            return "";
+    }
+
+    public boolean unpauseAll() throws IOException, JSONException {
+        Response response = mClient.newCall(Aria2RpcRequest.unpauseAll(
+                "",
+                mUrl,
+                mSecret
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+        } else
+            return false;
+    }
+
+    public HashMap<String, String> tellStatus(String gid, List<String> keys)
+            throws IOException, JSONException{
+        Response response = mClient.newCall(Aria2RpcRequest.tellStatus(
+                "",
+                mUrl,
+                mSecret,
+                gid,
+                keys
+        )).execute();
+        if (response.isSuccessful()) {
+            // TODO
+            return new HashMap<>();
+        } else
+            return new HashMap<>();
+    }
+
+    public List<UriStatus> getUris(String gid) throws IOException, JSONException {
+        Response response = mClient.newCall(Aria2RpcRequest.getUris(
+                "",
+                mUrl,
+                mSecret,
+                gid
+        )).execute();
+        if (response.isSuccessful()) {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            if (jsonObject.has(Aria2RpcJsonLabel.ERROR))
+                return new ArrayList<>();
+            JSONArray jsonArray = jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT);
+            return UriStatus.convertToList(jsonArray);
+        }
+        return new ArrayList<>();
+    }
+
 }

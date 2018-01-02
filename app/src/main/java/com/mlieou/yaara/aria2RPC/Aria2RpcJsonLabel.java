@@ -10,6 +10,11 @@ public interface Aria2RpcJsonLabel {
     String METHOD = "method";
     String PARAMS = "params";
     String METHOD_NAME = "methodName";
+    String RESULT = "result";
+    String ERROR = "error";
+
+    String URI = "uri";
+    String STATUS = "status";
 
     String TOKEN = "token";
 }
