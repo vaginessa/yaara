@@ -13,6 +13,8 @@ import java.util.List;
  * Created by mengdi on 1/2/18.
  */
 
+
+// TODO: refactor name
 public class UriStatus {
     private String uri;
     private String status;

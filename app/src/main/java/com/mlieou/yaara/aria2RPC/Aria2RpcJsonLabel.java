@@ -16,5 +16,12 @@ public interface Aria2RpcJsonLabel {
     String URI = "uri";
     String STATUS = "status";
 
+    String COMPLETED_LENGTH = "completedLength";
+    String INDEX = "index";
+    String LENGTH = "length";
+    String PATH = "path";
+    String SELECTED = "selected";
+    String URIS = "uris";
+
     String TOKEN = "token";
 }
