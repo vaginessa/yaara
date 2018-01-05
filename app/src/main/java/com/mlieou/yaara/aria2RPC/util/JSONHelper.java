@@ -1,4 +1,4 @@
-package com.mlieou.yaara.aria2RPC;
+package com.mlieou.yaara.aria2RPC.util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * Created by mengdi on 12/28/17.
  */
 
-public class JSONArrayHelper {
+public class JSONHelper {
 
     private static final String TOKEN = "token:";
 
@@ -46,6 +47,17 @@ public class JSONArrayHelper {
             object = null;
         }
         return object;
+    }
+
+    public static HashMap<String, String> toHashMap(JSONObject jsonObject) throws JSONException {
+        HashMap<String, String> map = new HashMap<>();
+        Iterator<String> iterator = jsonObject.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            String val = jsonObject.getString(key);
+            map.put(key, val);
+        }
+        return map;
     }
 
     public static List<String> convertToList(JSONArray array) throws JSONException {

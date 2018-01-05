@@ -9,9 +9,9 @@ import java.util.List;
  * Created by mengdi on 1/3/18.
  */
 
-public class PeerInfo {
+public class Aria2Peer {
     private boolean amChoking;
-    // TODO bitfield
+    private byte[] bitfield;
     private long downloadSpeed;
     private String ip;
     private boolean peerChoking;
@@ -20,15 +20,17 @@ public class PeerInfo {
     private boolean seeder;
     private long uploadSpeed;
 
-    public PeerInfo(boolean amChoking,
-                    long downloadSpeed,
-                    String ip,
-                    boolean peerChoking,
-                    String peerId,
-                    int port,
-                    boolean seeder,
-                    long uploadSpeed) {
+    public Aria2Peer(boolean amChoking,
+                     byte[] bitfield,
+                     long downloadSpeed,
+                     String ip,
+                     boolean peerChoking,
+                     String peerId,
+                     int port,
+                     boolean seeder,
+                     long uploadSpeed) {
         this.amChoking = amChoking;
+        this.bitfield = bitfield;
         this.downloadSpeed = downloadSpeed;
         this.ip = ip;
         this.peerChoking = peerChoking;
@@ -40,6 +42,10 @@ public class PeerInfo {
 
     public boolean isAmChoking() {
         return amChoking;
+    }
+
+    public byte[] getBitfield() {
+        return bitfield;
     }
 
     public long getDownloadSpeed() {
@@ -70,7 +76,7 @@ public class PeerInfo {
         return uploadSpeed;
     }
 
-    public static List<PeerInfo> convertToList(JSONArray array) {
+    public static List<Aria2Peer> convertToList(JSONArray array) {
         // TODO
         return new ArrayList<>();
     }

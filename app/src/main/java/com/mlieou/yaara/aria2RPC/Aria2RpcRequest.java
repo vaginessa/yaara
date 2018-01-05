@@ -3,6 +3,9 @@ package com.mlieou.yaara.aria2RPC;
 import android.util.Base64;
 import android.util.Log;
 
+import com.mlieou.yaara.aria2RPC.model.Aria2How;
+import com.mlieou.yaara.aria2RPC.util.JSONHelper;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,12 +29,6 @@ public class Aria2RpcRequest {
 
     private static final MediaType TYPE_JSON = MediaType.parse("application/json");
 
-    public enum How {
-        POS_SET,
-        POS_CUR,
-        POS_END;
-    }
-
     // TODO omits position for now
 
     public static Request addUri(String id,
@@ -42,9 +39,9 @@ public class Aria2RpcRequest {
                                  int position) {
 
         JSONArray params = new JSONArray();
-        JSONArrayHelper.addSecret(params, secret);
-        JSONArrayHelper.addList(params, uris);
-        JSONArrayHelper.addJsonObject(params, JSONArrayHelper.convertHashMapToJsonObject(options));
+        JSONHelper.addSecret(params, secret);
+        JSONHelper.addList(params, uris);
+        JSONHelper.addJsonObject(params, JSONHelper.convertHashMapToJsonObject(options));
         return buildRequest(id, url, params, Aria2RpcMethod.addUri);
     }
 
@@ -56,7 +53,7 @@ public class Aria2RpcRequest {
                                      HashMap<String, String> options,
                                      int position) {
         JSONArray params = new JSONArray();
-        JSONArrayHelper.addSecret(params, secret);
+        JSONHelper.addSecret(params, secret);
 
         // encode file as base64
         try (FileInputStream inputStream = new FileInputStream(torrent)) {
@@ -68,8 +65,8 @@ public class Aria2RpcRequest {
             Log.i(TAG, "addTorrent: failed to read file");
         }
 
-        JSONArrayHelper.addList(params, uris);
-        JSONArrayHelper.addJsonObject(params, JSONArrayHelper.convertHashMapToJsonObject(options));
+        JSONHelper.addList(params, uris);
+        JSONHelper.addJsonObject(params, JSONHelper.convertHashMapToJsonObject(options));
         return buildRequest(id, url, params, Aria2RpcMethod.addTorrent);
     }
 
@@ -80,9 +77,9 @@ public class Aria2RpcRequest {
                                       HashMap<String, String> options,
                                       int position) {
         JSONArray params = new JSONArray();
-        JSONArrayHelper.addSecret(params, secret);
+        JSONHelper.addSecret(params, secret);
         params.put(metalink);
-        JSONArrayHelper.addJsonObject(params, JSONArrayHelper.convertHashMapToJsonObject(options));
+        JSONHelper.addJsonObject(params, JSONHelper.convertHashMapToJsonObject(options));
         return buildRequest(id, url, params, Aria2RpcMethod.addMetalink);
     }
 
@@ -124,9 +121,9 @@ public class Aria2RpcRequest {
                                      String gid,
                                      List<String> keys) {
         JSONArray params = new JSONArray();
-        JSONArrayHelper.addSecret(params, secret);
+        JSONHelper.addSecret(params, secret);
         params.put(gid);
-        JSONArrayHelper.addList(params, keys);
+        JSONHelper.addList(params, keys);
         return buildRequest(id, url, params, Aria2RpcMethod.tellStatus);
     }
 
@@ -173,9 +170,9 @@ public class Aria2RpcRequest {
                                          String secret,
                                          String gid,
                                          int pos,
-                                         How how) {
+                                         Aria2How how) {
         JSONArray params = new JSONArray();
-        JSONArrayHelper.addSecret(params, secret);
+        JSONHelper.addSecret(params, secret);
         params.put(gid);
         params.put(pos);
         params.put(how);
@@ -191,11 +188,11 @@ public class Aria2RpcRequest {
                                     List<String> addUris,
                                     int position) {
         JSONArray params = new JSONArray();
-        JSONArrayHelper.addSecret(params, secret);
+        JSONHelper.addSecret(params, secret);
         params.put(gid);
         params.put(fileIndex);
-        JSONArrayHelper.addList(params, delUris);
-        JSONArrayHelper.addList(params, addUris);
+        JSONHelper.addList(params, delUris);
+        JSONHelper.addList(params, addUris);
         return buildRequest(id, url, params,Aria2RpcMethod.changeUri);
     }
 
@@ -209,9 +206,9 @@ public class Aria2RpcRequest {
                                     String gid,
                                     HashMap<String, String> options) {
         JSONArray params = new JSONArray();
-        JSONArrayHelper.addSecret(params, secret);
+        JSONHelper.addSecret(params, secret);
         params.put(gid);
-        JSONArrayHelper.addJsonObject(params, JSONArrayHelper.convertHashMapToJsonObject(options));
+        JSONHelper.addJsonObject(params, JSONHelper.convertHashMapToJsonObject(options));
         return buildRequest(id, url, params, Aria2RpcMethod.changeOption);
     }
 
@@ -224,8 +221,8 @@ public class Aria2RpcRequest {
                                              String secret,
                                              HashMap<String, String> options) {
         JSONArray params = new JSONArray();
-        JSONArrayHelper.addSecret(params, secret);
-        JSONArrayHelper.addJsonObject(params, JSONArrayHelper.convertHashMapToJsonObject(options));
+        JSONHelper.addSecret(params, secret);
+        JSONHelper.addJsonObject(params, JSONHelper.convertHashMapToJsonObject(options));
         return buildRequest(id, url, params, Aria2RpcMethod.changeGlobalOption);
     }
 
@@ -237,8 +234,8 @@ public class Aria2RpcRequest {
         return buildRequest(id, url, secret, "", Aria2RpcMethod.purgeDownloadResult);
     }
 
-    public static Request removeDownloadResult(String id, String url, String secret) {
-        return buildRequest(id, url, secret, "", Aria2RpcMethod.removeDownloadResult);
+    public static Request removeDownloadResult(String id, String url, String secret, String gid) {
+        return buildRequest(id, url, secret, gid, Aria2RpcMethod.removeDownloadResult);
     }
 
     public static Request getVersion(String id, String url, String secret) {
@@ -282,10 +279,10 @@ public class Aria2RpcRequest {
                                         List<String> keys,
                                         String method) {
         JSONArray params = new JSONArray();
-        JSONArrayHelper.addSecret(params, secret);
+        JSONHelper.addSecret(params, secret);
         params.put(offset);
         params.put(num);
-        JSONArrayHelper.addList(params, keys);
+        JSONHelper.addList(params, keys);
         return buildRequest(id, url, params, method);
     }
 
@@ -295,8 +292,8 @@ public class Aria2RpcRequest {
                                         List<String> keys,
                                         String method) {
         JSONArray params = new JSONArray();
-        JSONArrayHelper.addSecret(params, secret);
-        JSONArrayHelper.addList(params, keys);
+        JSONHelper.addSecret(params, secret);
+        JSONHelper.addList(params, keys);
         return buildRequest(id, url, params, method);
     }
 
@@ -306,7 +303,7 @@ public class Aria2RpcRequest {
                                         String gid,
                                         String method) {
         JSONArray params = new JSONArray();
-        JSONArrayHelper.addSecret(params, secret);
+        JSONHelper.addSecret(params, secret);
         if (gid != null && gid.length() > 0) params.put(gid);
         return buildRequest(id, url, params, method);
     }

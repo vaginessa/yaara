@@ -9,10 +9,10 @@ import java.util.List;
  * Created by mengdi on 1/3/18.
  */
 
-public class ServerInfo {
+public class Aria2Server {
     // TODO
 
-    public static List<ServerInfo> convertToList(JSONArray array) {
+    public static List<Aria2Server> convertToList(JSONArray array) {
         // TODO
         return new ArrayList<>();
     }

@@ -14,12 +14,11 @@ import java.util.List;
  */
 
 
-// TODO: refactor name
-public class UriStatus {
+public class Aria2Uri {
     private String uri;
     private String status;
 
-    public UriStatus(String uri, String status) {
+    public Aria2Uri(String uri, String status) {
         this.uri = uri;
         this.status = status;
     }
@@ -32,11 +31,11 @@ public class UriStatus {
         return status;
     }
 
-    public static List<UriStatus> convertToList(JSONArray array) throws JSONException {
-        List<UriStatus> list = new ArrayList<>(array.length());
+    public static List<Aria2Uri> convertToList(JSONArray array) throws JSONException {
+        List<Aria2Uri> list = new ArrayList<>(array.length());
         for (int i = 0; i < array.length(); i++) {
             JSONObject object = array.getJSONObject(i);
-            list.add(new UriStatus(object.getString(Aria2RpcJsonLabel.URI),
+            list.add(new Aria2Uri(object.getString(Aria2RpcJsonLabel.URI),
                     object.getString(Aria2RpcJsonLabel.STATUS)));
         }
         return list;

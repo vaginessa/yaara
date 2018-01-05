@@ -1,7 +1,7 @@
 package com.mlieou.yaara.aria2RPC.model;
 
 import com.mlieou.yaara.aria2RPC.Aria2RpcJsonLabel;
-import com.mlieou.yaara.aria2RPC.JSONArrayHelper;
+import com.mlieou.yaara.aria2RPC.util.JSONHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,7 +14,7 @@ import java.util.List;
  * Created by mengdi on 1/3/18.
  */
 
-public class FileInfo {
+public class Aria2File {
     private long completedLength;
     private int index;
     private long length;
@@ -22,7 +22,7 @@ public class FileInfo {
     private boolean selected;
     private List<String> uris;
 
-    public FileInfo(long completedLength, int index, long length, String path, boolean selected, List<String> uris) {
+    public Aria2File(long completedLength, int index, long length, String path, boolean selected, List<String> uris) {
         this.completedLength = completedLength;
         this.index = index;
         this.length = length;
@@ -31,7 +31,7 @@ public class FileInfo {
         this.uris = uris;
     }
 
-    public FileInfo(long completedLength, int index, long length, String path, boolean selected) {
+    public Aria2File(long completedLength, int index, long length, String path, boolean selected) {
         this.completedLength = completedLength;
         this.index = index;
         this.length = length;
@@ -64,8 +64,8 @@ public class FileInfo {
         return uris;
     }
 
-    public static List<FileInfo> convertToList(JSONArray array) throws JSONException {
-        List<FileInfo> fileInfoList = new ArrayList<>(array.length());
+    public static List<Aria2File> convertToList(JSONArray array) throws JSONException {
+        List<Aria2File> aria2FileList = new ArrayList<>(array.length());
         for (int i = 0; i < array.length(); i++) {
             JSONObject object = array.getJSONObject(i);
             long completedLength = object.getLong(Aria2RpcJsonLabel.COMPLETED_LENGTH);
@@ -75,12 +75,12 @@ public class FileInfo {
             boolean isSelected = object.getBoolean(Aria2RpcJsonLabel.SELECTED);
 
             JSONArray urisArray = object.getJSONArray(Aria2RpcJsonLabel.URIS);
-            List<String> uris = JSONArrayHelper.convertToList(urisArray);
+            List<String> uris = JSONHelper.convertToList(urisArray);
 
-            fileInfoList.add(new FileInfo(completedLength,
+            aria2FileList.add(new Aria2File(completedLength,
                     index, length, path, isSelected, uris));
         }
 
-        return fileInfoList;
+        return aria2FileList;
     }
 }
