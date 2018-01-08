@@ -1,6 +1,8 @@
 package com.mlieou.yaara.aria2RPC.model;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,13 +98,21 @@ public class Aria2TaskStatus {
         return uploadSpeed;
     }
 
-    public static Aria2TaskStatus deserialize(String jsonStr) {
-        // TODO
-        return new Aria2TaskStatus();
+    public static Aria2TaskStatus deserialize(JSONObject object) throws JSONException {
+        Aria2TaskStatus status = new Aria2TaskStatus();
+        status.gid = object.getString("gid");
+        status.completedLength = object.getLong("completedLength");
+        status.totalLength = object.getLong("totalLength");
+        status.downloadSpeed = object.getLong("downloadSpeed");
+        return status;
     }
 
-    public static List<Aria2TaskStatus> deserializeList(JSONArray array) {
-        // TODO
-        return new ArrayList<>();
+    public static List<Aria2TaskStatus> deserializeList(JSONArray array) throws JSONException {
+        List<Aria2TaskStatus> statusList = new ArrayList<>(array.length());
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject object = array.getJSONObject(i);
+            statusList.add(Aria2TaskStatus.deserialize(object));
+        }
+        return statusList;
     }
 }

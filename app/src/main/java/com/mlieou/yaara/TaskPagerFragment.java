@@ -69,7 +69,6 @@ public class TaskPagerFragment extends Fragment {
         protected List<Aria2TaskStatus> doInBackground(Void... voids) {
             Aria2RpcClient client = new Aria2RpcClient("10.24.233.100", 6800, "jsonrpc");
             try {
-                Log.i(TAG, "doInBackground: " + client.getSessionInfo());
                 return client.tellStopped(0, 10, null);
             } catch (Exception e) {
                 e.printStackTrace();

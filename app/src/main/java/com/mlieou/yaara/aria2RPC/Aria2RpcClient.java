@@ -227,7 +227,7 @@ public class Aria2RpcClient {
             JSONObject jsonObject = new JSONObject(response.body().string());
             // TODO consider keys
             return Aria2TaskStatus.deserialize(
-                    jsonObject.getJSONObject(Aria2RpcJsonLabel.RESULT).toString());
+                    jsonObject.getJSONObject(Aria2RpcJsonLabel.RESULT));
         } else
             return new Aria2TaskStatus();
     }

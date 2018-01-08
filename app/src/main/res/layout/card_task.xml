@@ -33,8 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
-            android:progress="25"
-            app:layout_constraintBottom_toTopOf="@+id/tv_task_time_remain"
+            tools:progress="25"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,24 +43,25 @@
             android:id="@+id/tv_task_download_speed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="4dp"
+            tools:text="Download: 523.15 KB Upload: 100.01 KB"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_task_time_remain"
-
-            tools:layout_editor_absoluteY="48dp"
-            tools:text="Download: 523.15 KB Upload: 100.01 KB" />
+            app:layout_constraintTop_toTopOf="@+id/tv_task_time_remain" />
 
         <TextView
             android:id="@+id/tv_task_time_remain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintEnd_toStartOf="@+id/tv_task_download_speed"
+            android:layout_marginTop="8dp"
+            tools:text="05:06:07"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pb_task_progress"
-            tools:text="05:06:07" />
+            app:layout_constraintTop_toBottomOf="@+id/pb_task_progress" />
 
     </android.support.constraint.ConstraintLayout>
 

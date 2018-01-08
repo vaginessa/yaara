@@ -1,5 +1,6 @@
 package com.mlieou.yaara;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -35,5 +37,10 @@ public class MainActivity extends AppCompatActivity {
         ViewPager pager = findViewById(R.id.view_pager_container);
         pager.setAdapter(adapter);
         tab.setupWithViewPager(pager);
+    }
+
+    public void newTask(View view) {
+        Intent intent = new Intent(this, NewTaskActivity.class);
+        startActivity(intent);
     }
 }

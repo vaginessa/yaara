@@ -1,6 +1,7 @@
 package com.mlieou.yaara;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
     public void onBindViewHolder(TaskAdapterViewHolder holder, int position) {
         Aria2TaskStatus status = mTaskList.get(position);
         holder.taskTitle.setText(status.getGid());
-        holder.taskProgress.setProgress((int)(status.getCompletedLength() / status.getTotalLength()));
+        holder.taskProgress.setProgress((int)(status.getCompletedLength() * 100 / status.getTotalLength()));
         holder.taskDownloadSpeed.setText("" + status.getDownloadSpeed());
         holder.taskRemainTime.setText("N/A");
     }
@@ -52,7 +53,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
 
     public void swapData(List<Aria2TaskStatus> list) {
         mTaskList = list;
-        Log.i(TAG, "swapData: " + list.size());
         notifyDataSetChanged();
     }
 
