@@ -3,6 +3,7 @@ package com.mlieou.yaara.service;
 import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
@@ -12,8 +13,11 @@ import android.support.annotation.Nullable;
 
 public class YaaraService extends IntentService {
 
+    Handler mUpdateHandler;
+
     public YaaraService(String name) {
         super(name);
+        mUpdateHandler = new Handler();
     }
 
     @Override

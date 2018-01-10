@@ -1,13 +1,15 @@
-package com.mlieou.yaara;
+package com.mlieou.yaara.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class TaskDetailActivity extends AppCompatActivity {
+import com.mlieou.yaara.R;
+
+public class NewTaskActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_detail);
+        setContentView(R.layout.activity_new_task);
     }
 }

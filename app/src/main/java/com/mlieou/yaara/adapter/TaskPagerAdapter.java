@@ -1,9 +1,11 @@
-package com.mlieou.yaara;
+package com.mlieou.yaara.adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.mlieou.yaara.fragment.TaskPagerFragment;
 
 /**
  * Created by mengdi on 1/6/18.

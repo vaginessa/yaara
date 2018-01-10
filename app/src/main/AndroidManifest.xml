@@ -11,21 +11,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".TaskDetailActivity" />
-        <activity android:name=".NewTaskActivity" />
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.TaskDetailActivity" />
+        <activity android:name=".activity.NewTaskActivity" />
 
         <service
             android:name=".service.YaaraService"
             android:exported="false" />
 
+        <activity android:name=".activity.ServerListActivity" />
+        <activity android:name=".activity.NewServerActivity"></activity>
     </application>
 
 </manifest>
