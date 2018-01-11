@@ -16,9 +16,30 @@ buildscript {
 }
 
 allprojects {
+
+    ext {
+        projectGroupId = 'com.mlieou.yaara'
+        projectVersionCode = 1
+        projectVersionName = '0.0.1'
+    }
+
     repositories {
         google()
         jcenter()
+    }
+}
+
+subprojects {
+    buildscript {
+        ext {
+            libVersions = [
+                    SupportLib          : '27.0.2',
+                    SupportTest         : '1.0.1',
+                    ConstraintLayout    : '1.0.2',
+                    OkHttp              : '3.9.1',
+                    Espresso            : '3.0.1'
+            ]
+        }
     }
 }
 
