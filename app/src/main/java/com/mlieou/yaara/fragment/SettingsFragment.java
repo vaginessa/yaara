@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.mlieou.yaara.R;
+import com.mlieou.yaara.widget.NumberPickerPreference;
 
 import java.util.Map;
 
@@ -44,13 +45,16 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         Preference preference = findPreference(key);
         if (preference instanceof EditTextPreference) {
             setSummary((EditTextPreference) preference);
+        } else if (preference instanceof NumberPickerPreference) {
+            String summary = String.valueOf(((NumberPickerPreference) preference).getValue());
+            preference.setSummary(summary);
         }
     }
 
     private void setSummary(EditTextPreference preference) {
         String summary = preference.getText();
         if (summary.length() == 0)
-            summary = "Not set";
+            summary = getString(R.string.preference_not_set);
         preference.setSummary(summary);
     }
 
@@ -58,8 +62,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         Map<String, ?> preferenceEntries = preferenceScreen.getSharedPreferences().getAll();
         for (Map.Entry<String, ?> entry : preferenceEntries.entrySet()) {
             Preference preference = findPreference(entry.getKey());
-            if (preference instanceof EditTextPreference)
+            if (preference instanceof EditTextPreference) {
                 setSummary((EditTextPreference) preference);
+            } else if (preference instanceof NumberPickerPreference) {
+                String summary = String.valueOf(((NumberPickerPreference) preference).getValue());
+                preference.setSummary(summary);
+            }
         }
     }
 }

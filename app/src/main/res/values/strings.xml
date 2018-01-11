@@ -35,4 +35,6 @@
     <string name="preference_aria2_protocol_default_val">@string/preference_list_protocol_http_val</string>
     <string name="preference_aria2_request_method_default_val">@string/preference_list_request_method_post_val</string>
 
+    <string name="preference_not_set">Not set</string>
+
 </resources>

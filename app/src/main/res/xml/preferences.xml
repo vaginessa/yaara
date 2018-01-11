@@ -15,10 +15,9 @@
             android:key="pref_aria2_host"
             android:inputType="textUri"/>
 
-        <EditTextPreference
+        <com.mlieou.yaara.widget.NumberPickerPreference
             android:title="@string/preference_aria2_port"
             android:key="pref_aria2_port"
-            android:inputType="number"
             android:defaultValue="@string/preference_aria2_port_default_val"/>
 
         <EditTextPreference
