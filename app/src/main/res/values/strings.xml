@@ -14,29 +14,25 @@
     <string name="preference_aria2_request_method">Request Method</string>
     <string name="preference_aria2_secret_token">Secret Token</string>
 
+    <string name="preference_list_protocol_http">HTTP</string>
+    <string name="preference_list_protocol_http_val">@string/preference_list_protocol_http</string>
+    <string name="preference_list_protocol_https">HTTPS</string>
+    <string name="preference_list_protocol_https_val">@string/preference_list_protocol_https</string>
+    <string name="preference_list_protocol_web_socket">WebSocket</string>
+    <string name="preference_list_protocol_web_socket_val">@string/preference_list_protocol_web_socket</string>
+    <string name="preference_list_protocol_web_socket_security">WebSocket (Security)</string>
+    <string name="preference_list_protocol_web_socket_security_val">@string/preference_list_protocol_web_socket</string>
+
+    <string name="preference_list_request_method_get">GET</string>
+    <string name="preference_list_request_method_get_val">@string/preference_list_request_method_get</string>
+    <string name="preference_list_request_method_post">POST</string>
+    <string name="preference_list_request_method_post_val">@string/preference_list_request_method_post</string>
+
+
     <!-- Preference default value -->
     <string name="preference_aria2_request_path_default_val">jsonrpc</string>
     <string name="preference_aria2_port_default_val">6800</string>
+    <string name="preference_aria2_protocol_default_val">@string/preference_list_protocol_http_val</string>
+    <string name="preference_aria2_request_method_default_val">@string/preference_list_request_method_post_val</string>
 
-    <!-- ListPreference -->
-    <string-array name="preference_list_protocol_entries">
-        <item>HTTP</item>
-        <item>HTTPS</item>
-        <item>WebSocket</item>
-        <item>WebSocket(Security)</item>
-    </string-array>
-    <string-array name="preference_list_protocol_entry_values">
-        <item>HTTP</item>
-        <item>HTTPS</item>
-        <item>WebSocket</item>
-        <item>WebSocket(Security)</item>
-    </string-array>
-    <string-array name="preference_list_request_method_entries">
-        <item>GET</item>
-        <item>POST</item>
-    </string-array>
-    <string-array name="preference_list_request_method_entry_values">
-        <item>get</item>
-        <item>post</item>
-    </string-array>
 </resources>
