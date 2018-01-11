@@ -1,4 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory
+        android:title="@string/preference_category_aria2_settings_title"
+        android:key="pref_cat_aria2_settings">
+
+        <EditTextPreference
+            android:title="@string/preference_aria2_alias"
+            android:key="pref_aria2_alias" />
+
+        <EditTextPreference
+            android:title="@string/preference_aria2_host"
+            android:key="pref_aria2_host"
+            android:inputType="textUri"/>
+
+        <EditTextPreference
+            android:title="@string/preference_aria2_port"
+            android:key="pref_aria2_port"
+            android:inputType="number"
+            android:defaultValue="@string/preference_aria2_port_default_val"/>
+
+        <EditTextPreference
+            android:title="@string/preference_aria2_request_path"
+            android:key="pref_aria2_request_path"
+            android:defaultValue="@string/preference_aria2_request_path_default_val"
+            android:inputType="textNoSuggestions"/>
+
+        <ListPreference
+            android:title="@string/preference_aria2_protocol"
+            android:key="pref_aria2_protocol"
+            android:entries="@array/preference_list_protocol_entries"
+            android:entryValues="@array/preference_list_protocol_entry_values"/>
+
+        <ListPreference
+            android:title="@string/preference_aria2_request_method"
+            android:key="pref_aria2_request_method"
+            android:entries="@array/preference_list_request_method_entries"
+            android:entryValues="@array/preference_list_request_method_entry_values"/>
+
+        <EditTextPreference
+            android:title="@string/preference_aria2_secret_token"
+            android:key="pref_aria2_secret_token"
+            android:inputType="textNoSuggestions"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

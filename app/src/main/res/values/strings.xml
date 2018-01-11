@@ -3,4 +3,40 @@
 
     <!-- Menu title -->
     <string name="menu_action_add_server">Add Server</string>
+
+    <!-- Preference -->
+    <string name="preference_category_aria2_settings_title">Aria2 Settings</string>
+    <string name="preference_aria2_alias">Name</string>
+    <string name="preference_aria2_host">Host</string>
+    <string name="preference_aria2_port">Port</string>
+    <string name="preference_aria2_request_path">Request Path</string>
+    <string name="preference_aria2_protocol">Protocol</string>
+    <string name="preference_aria2_request_method">Request Method</string>
+    <string name="preference_aria2_secret_token">Secret Token</string>
+
+    <!-- Preference default value -->
+    <string name="preference_aria2_request_path_default_val">jsonrpc</string>
+    <string name="preference_aria2_port_default_val">6800</string>
+
+    <!-- ListPreference -->
+    <string-array name="preference_list_protocol_entries">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+        <item>WebSocket</item>
+        <item>WebSocket(Security)</item>
+    </string-array>
+    <string-array name="preference_list_protocol_entry_values">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+        <item>WebSocket</item>
+        <item>WebSocket(Security)</item>
+    </string-array>
+    <string-array name="preference_list_request_method_entries">
+        <item>GET</item>
+        <item>POST</item>
+    </string-array>
+    <string-array name="preference_list_request_method_entry_values">
+        <item>get</item>
+        <item>post</item>
+    </string-array>
 </resources>
