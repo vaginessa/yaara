@@ -1,7 +1,11 @@
 package com.mlieou.yaara.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,11 +16,21 @@ import android.view.View;
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.adapter.TaskPagerAdapter;
 import com.mlieou.yaara.fragment.SimpleNewTaskFragment;
+import com.mlieou.yaara.service.YaaraService;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     public static final String NEW_TASK_DIALOG = "new_task_dialog";
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            long download = intent.getLongExtra(YaaraService.GLOBAL_STATUS_DOWNLOAD, 0);
+            long upload = intent.getLongExtra(YaaraService.GLOBAL_STATUS_UPLOAD, 0);
+            getSupportActionBar().setSubtitle("D: " + download + " U: " + upload);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +41,21 @@ public class MainActivity extends AppCompatActivity {
         ViewPager pager = findViewById(R.id.view_pager_container);
         pager.setAdapter(adapter);
         tab.setupWithViewPager(pager);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(YaaraService.GLOBAL_STATUS));
+        Intent intent = new Intent(this, YaaraService.class);
+        intent.setAction(YaaraService.GLOBAL_STATUS);
+        startService(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 
     @Override

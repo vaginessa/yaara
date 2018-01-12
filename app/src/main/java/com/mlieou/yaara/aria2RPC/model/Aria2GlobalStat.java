@@ -1,5 +1,10 @@
 package com.mlieou.yaara.aria2RPC.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.Gson;
+
 import org.json.JSONObject;
 
 /**
@@ -39,7 +44,7 @@ public class Aria2GlobalStat {
     }
 
     public static Aria2GlobalStat deserialize(JSONObject jsonObject) {
-        // TODO
-        return new Aria2GlobalStat();
+        Gson gson = new Gson();
+        return gson.fromJson(jsonObject.toString(), Aria2GlobalStat.class);
     }
 }

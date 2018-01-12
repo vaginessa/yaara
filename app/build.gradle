@@ -32,6 +32,7 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:${libVersions['ConstraintLayout']}"
 
     implementation "com.squareup.okhttp3:okhttp:${libVersions['OkHttp']}"
+    implementation "com.google.code.gson:gson:${libVersions['Gson']}"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation "com.android.support.test:runner:${libVersions['SupportTest']}"
