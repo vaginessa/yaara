@@ -8,12 +8,14 @@
         <EditTextPreference
             android:title="@string/preference_aria2_alias"
             android:key="pref_aria2_alias"
-            android:inputType="textNoSuggestions"/>
+            android:inputType="textNoSuggestions"
+            android:summary="@string/preference_not_set"/>
 
         <EditTextPreference
             android:title="@string/preference_aria2_host"
             android:key="pref_aria2_host"
-            android:inputType="textUri"/>
+            android:inputType="textUri"
+            android:summary="@string/preference_not_set"/>
 
         <com.mlieou.yaara.widget.NumberPickerPreference
             android:title="@string/preference_aria2_port"
@@ -45,7 +47,8 @@
         <EditTextPreference
             android:title="@string/preference_aria2_secret_token"
             android:key="pref_aria2_secret_token"
-            android:inputType="textNoSuggestions"/>
+            android:inputType="textNoSuggestions"
+            android:summary="@string/preference_not_set"/>
 
     </PreferenceCategory>
 

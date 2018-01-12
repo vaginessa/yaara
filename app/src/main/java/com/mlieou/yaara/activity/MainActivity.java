@@ -11,9 +11,12 @@ import android.view.View;
 
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.adapter.TaskPagerAdapter;
+import com.mlieou.yaara.fragment.SimpleNewTaskFragment;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+
+    public static final String NEW_TASK_DIALOG = "new_task_dialog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void newTask(View view) {
-        Intent intent = new Intent(this, NewTaskActivity.class);
-        startActivity(intent);
+        SimpleNewTaskFragment fragment = new SimpleNewTaskFragment();
+        fragment.show(getFragmentManager(), NEW_TASK_DIALOG);
     }
 }
