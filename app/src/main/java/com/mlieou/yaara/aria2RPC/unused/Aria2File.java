@@ -1,6 +1,6 @@
-package com.mlieou.yaara.aria2RPC.model;
+package com.mlieou.yaara.aria2RPC.unused;
 
-import com.mlieou.yaara.aria2RPC.Aria2RpcJsonLabel;
+import com.mlieou.yaara.aria2RPC.constant.Aria2RpcJsonConstant;
 import com.mlieou.yaara.aria2RPC.util.JSONHelper;
 
 import org.json.JSONArray;
@@ -68,13 +68,13 @@ public class Aria2File {
         List<Aria2File> aria2FileList = new ArrayList<>(array.length());
         for (int i = 0; i < array.length(); i++) {
             JSONObject object = array.getJSONObject(i);
-            long completedLength = object.getLong(Aria2RpcJsonLabel.COMPLETED_LENGTH);
-            int index = object.getInt(Aria2RpcJsonLabel.INDEX);
-            long length = object.getLong(Aria2RpcJsonLabel.LENGTH);
-            String path = object.getString(Aria2RpcJsonLabel.PATH);
-            boolean isSelected = object.getBoolean(Aria2RpcJsonLabel.SELECTED);
+            long completedLength = object.getLong(Aria2RpcJsonConstant.COMPLETED_LENGTH);
+            int index = object.getInt(Aria2RpcJsonConstant.INDEX);
+            long length = object.getLong(Aria2RpcJsonConstant.LENGTH);
+            String path = object.getString(Aria2RpcJsonConstant.PATH);
+            boolean isSelected = object.getBoolean(Aria2RpcJsonConstant.SELECTED);
 
-            JSONArray urisArray = object.getJSONArray(Aria2RpcJsonLabel.URIS);
+            JSONArray urisArray = object.getJSONArray(Aria2RpcJsonConstant.URIS);
             List<String> uris = JSONHelper.convertToList(urisArray);
 
             aria2FileList.add(new Aria2File(completedLength,

@@ -1,4 +1,4 @@
-package com.mlieou.yaara.aria2RPC.model;
+package com.mlieou.yaara.aria2RPC.unused;
 
 import java.util.List;
 

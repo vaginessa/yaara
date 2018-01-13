@@ -1,7 +1,4 @@
-package com.mlieou.yaara.aria2RPC.model;
-
-import android.os.Parcel;
-import android.os.Parcelable;
+package com.mlieou.yaara.aria2RPC.unused;
 
 import com.google.gson.Gson;
 
@@ -41,10 +38,5 @@ public class Aria2GlobalStat {
 
     public int getNumStoppedTotal() {
         return numStoppedTotal;
-    }
-
-    public static Aria2GlobalStat deserialize(JSONObject jsonObject) {
-        Gson gson = new Gson();
-        return gson.fromJson(jsonObject.toString(), Aria2GlobalStat.class);
     }
 }

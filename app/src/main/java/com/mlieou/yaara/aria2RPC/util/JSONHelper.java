@@ -37,14 +37,13 @@ public class JSONHelper {
     }
 
     public static JSONObject convertHashMapToJsonObject(HashMap<String, String> map) {
-        if (map == null || map.size() == 0) return null;
-        JSONObject object;
+        if (map == null || map.size() == 0) return new JSONObject();
+        JSONObject object = new JSONObject();
         try {
-            object = new JSONObject();
             for (Map.Entry<String, String> entry : map.entrySet())
                 object.put(entry.getKey(), entry.getValue());
         } catch (JSONException e) {
-            object = null;
+            e.printStackTrace();
         }
         return object;
     }

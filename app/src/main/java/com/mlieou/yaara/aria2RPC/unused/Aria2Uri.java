@@ -1,6 +1,6 @@
-package com.mlieou.yaara.aria2RPC.model;
+package com.mlieou.yaara.aria2RPC.unused;
 
-import com.mlieou.yaara.aria2RPC.Aria2RpcJsonLabel;
+import com.mlieou.yaara.aria2RPC.constant.Aria2RpcJsonConstant;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,8 +35,8 @@ public class Aria2Uri {
         List<Aria2Uri> list = new ArrayList<>(array.length());
         for (int i = 0; i < array.length(); i++) {
             JSONObject object = array.getJSONObject(i);
-            list.add(new Aria2Uri(object.getString(Aria2RpcJsonLabel.URI),
-                    object.getString(Aria2RpcJsonLabel.STATUS)));
+            list.add(new Aria2Uri(object.getString(Aria2RpcJsonConstant.URI),
+                    object.getString(Aria2RpcJsonConstant.STATUS)));
         }
         return list;
     }

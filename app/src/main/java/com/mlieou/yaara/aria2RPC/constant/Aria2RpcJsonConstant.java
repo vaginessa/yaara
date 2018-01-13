@@ -1,10 +1,10 @@
-package com.mlieou.yaara.aria2RPC;
+package com.mlieou.yaara.aria2RPC.constant;
 
 /**
  * Created by mengdi on 12/29/17.
  */
 
-public interface Aria2RpcJsonLabel {
+public interface Aria2RpcJsonConstant {
     String JSONRPC = "jsonrpc";
     String ID = "id";
     String METHOD = "method";
@@ -22,6 +22,8 @@ public interface Aria2RpcJsonLabel {
     String PATH = "path";
     String SELECTED = "selected";
     String URIS = "uris";
+    String OK = "OK";
+    String SESSION_ID = "sessionId";
 
     String TOKEN = "token";
 }

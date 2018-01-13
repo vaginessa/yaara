@@ -1,13 +1,7 @@
 package com.mlieou.yaara.aria2RPC;
 
-import com.mlieou.yaara.aria2RPC.model.Aria2File;
-import com.mlieou.yaara.aria2RPC.model.Aria2GlobalStat;
+import com.mlieou.yaara.aria2RPC.constant.Aria2RpcJsonConstant;
 import com.mlieou.yaara.aria2RPC.model.Aria2How;
-import com.mlieou.yaara.aria2RPC.model.Aria2Peer;
-import com.mlieou.yaara.aria2RPC.model.Aria2Server;
-import com.mlieou.yaara.aria2RPC.model.Aria2TaskStatus;
-import com.mlieou.yaara.aria2RPC.model.Aria2Uri;
-import com.mlieou.yaara.aria2RPC.model.Aria2Version;
 import com.mlieou.yaara.aria2RPC.util.JSONHelper;
 
 import org.json.JSONArray;
@@ -28,9 +22,10 @@ import okhttp3.Response;
  */
 
 public class Aria2RpcClient {
-    private static final String TAG = "Aria2RpcClient";
+    
+    private static final String EMPTY_STRING = "";
 
-    private static final String DEFAULT_ID = "";
+    private static final String DEFAULT_ID = EMPTY_STRING;
 
     private OkHttpClient mClient;
     private String mSecret;
@@ -58,9 +53,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT);
         } else {
-            return "";
+            return EMPTY_STRING;
         }
     }
 
@@ -80,9 +75,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT);
         } else
-            return "";
+            return EMPTY_STRING;
     }
 
     public List<String> addMetalink(String metalink,
@@ -99,7 +94,7 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            JSONArray resultArray = jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT);
+            JSONArray resultArray = jsonObject.getJSONArray(Aria2RpcJsonConstant.RESULT);
             return JSONHelper.convertToList(resultArray);
         } else
             return new ArrayList<>();
@@ -114,9 +109,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT);
         } else
-            return "";
+            return EMPTY_STRING;
     }
 
     public String forceRemove(String gid) throws IOException, JSONException {
@@ -128,9 +123,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT);
         } else
-            return "";
+            return EMPTY_STRING;
     }
 
     public String pause(String gid) throws IOException, JSONException {
@@ -142,9 +137,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT);
         } else
-            return "";
+            return EMPTY_STRING;
     }
 
     public boolean pauseAll() throws IOException, JSONException {
@@ -155,7 +150,7 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT).equals(Aria2RpcJsonConstant.OK);
         } else
             return false;
     }
@@ -169,9 +164,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT);
         } else
-            return "";
+            return EMPTY_STRING;
     }
 
     public boolean forcePauseAll() throws IOException, JSONException {
@@ -182,7 +177,7 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT).equals(Aria2RpcJsonConstant.OK);
         } else
             return false;
     }
@@ -196,9 +191,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT);
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT);
         } else
-            return "";
+            return EMPTY_STRING;
     }
 
     public boolean unpauseAll() throws IOException, JSONException {
@@ -209,12 +204,12 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT).equals(Aria2RpcJsonConstant.OK);
         } else
             return false;
     }
 
-    public Aria2TaskStatus tellStatus(String gid, List<String> keys)
+    public String tellStatus(String gid, List<String> keys)
             throws IOException, JSONException{
         Response response = mClient.newCall(Aria2RpcRequest.tellStatus(
                 DEFAULT_ID,
@@ -225,14 +220,12 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            // TODO consider keys
-            return Aria2TaskStatus.deserialize(
-                    jsonObject.getJSONObject(Aria2RpcJsonLabel.RESULT));
+            return jsonObject.getJSONObject(Aria2RpcJsonConstant.RESULT).toString();
         } else
-            return new Aria2TaskStatus();
+            return EMPTY_STRING;
     }
 
-    public List<Aria2Uri> getUris(String gid) throws IOException, JSONException {
+    public String getUris(String gid) throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.getUris(
                 DEFAULT_ID,
                 mUrl,
@@ -241,15 +234,14 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            if (jsonObject.has(Aria2RpcJsonLabel.ERROR))
-                return new ArrayList<>();
-            JSONArray jsonArray = jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT);
-            return Aria2Uri.convertToList(jsonArray);
+            if (jsonObject.has(Aria2RpcJsonConstant.ERROR))
+                return EMPTY_STRING;
+            return jsonObject.getJSONArray(Aria2RpcJsonConstant.RESULT).toString();
         }
-        return new ArrayList<>();
+        return EMPTY_STRING;
     }
 
-    public List<Aria2File> getFiles(String gid) throws IOException, JSONException {
+    public String getFiles(String gid) throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.getFiles(
                 DEFAULT_ID,
                 mUrl,
@@ -258,13 +250,12 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            JSONArray jsonArray = jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT);
-            return Aria2File.convertToList(jsonArray);
+            return jsonObject.getJSONArray(Aria2RpcJsonConstant.RESULT).toString();
         }
-        return new ArrayList<>();
+        return EMPTY_STRING;
     }
 
-    public List<Aria2Peer> getPeers(String gid) throws IOException, JSONException {
+    public String getPeers(String gid) throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.getPeers(
                 DEFAULT_ID,
                 mUrl,
@@ -273,13 +264,12 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            JSONArray jsonArray = jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT);
-            return Aria2Peer.convertToList(jsonArray);
+            return jsonObject.getJSONArray(Aria2RpcJsonConstant.RESULT).toString();
         }
-        return new ArrayList<>();
+        return EMPTY_STRING;
     }
 
-    public List<Aria2Server> getServers(String gid) throws IOException, JSONException {
+    public String getServers(String gid) throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.getServers(
                 DEFAULT_ID,
                 mUrl,
@@ -288,13 +278,12 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            JSONArray jsonArray = jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT);
-            return Aria2Server.convertToList(jsonArray);
+            return jsonObject.getJSONArray(Aria2RpcJsonConstant.RESULT).toString();
         }
-        return new ArrayList<>();
+        return EMPTY_STRING;
     }
 
-    public List<Aria2TaskStatus> tellActive(List<String> keys) throws IOException, JSONException {
+    public String tellActive(List<String> keys) throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.tellActive(
                 DEFAULT_ID,
                 mUrl,
@@ -303,14 +292,12 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            // TODO consider keys
-            return Aria2TaskStatus.deserializeList(
-                    jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT));
+            return jsonObject.getJSONArray(Aria2RpcJsonConstant.RESULT).toString();
         } else
-            return new ArrayList<>();
+            return EMPTY_STRING;
     }
 
-    public List<Aria2TaskStatus> tellWaiting(int offset, int num, List<String> keys)
+    public String tellWaiting(int offset, int num, List<String> keys)
             throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.tellWaiting(
                 DEFAULT_ID,
@@ -322,14 +309,12 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            // TODO consider keys
-            return Aria2TaskStatus.deserializeList(
-                    jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT));
+            return jsonObject.getJSONArray(Aria2RpcJsonConstant.RESULT).toString();
         } else
-            return new ArrayList<>();
+            return EMPTY_STRING;
     }
 
-    public List<Aria2TaskStatus> tellStopped(int offset, int num, List<String> keys)
+    public String tellStopped(int offset, int num, List<String> keys)
             throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.tellStopped(
                 DEFAULT_ID,
@@ -341,11 +326,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            // TODO consider keys
-            return Aria2TaskStatus.deserializeList(
-                    jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT));
+            return jsonObject.getJSONArray(Aria2RpcJsonConstant.RESULT).toString();
         } else
-            return new ArrayList<>();
+            return EMPTY_STRING;
     }
 
     public int changePosition(String gid, int pos, Aria2How how)
@@ -360,12 +343,12 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getInt(Aria2RpcJsonLabel.RESULT);
+            return jsonObject.getInt(Aria2RpcJsonConstant.RESULT);
         } else
             return -1;
     }
 
-    public int[] changeUri(String gid,
+    public String changeUri(String gid,
                            int fileIndex,
                            List<String> delUris,
                            List<String> addUris,
@@ -383,13 +366,12 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            JSONArray jsonArray = jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT);
-            return new int[] {jsonArray.getInt(0), jsonArray.getInt(1)};
+            return jsonObject.getJSONArray(Aria2RpcJsonConstant.RESULT).toString();
         } else
-            return new int[] {0, 0};
+            return EMPTY_STRING;
     }
 
-    public HashMap<String, String> getOption(String gid) throws IOException, JSONException {
+    public String getOption(String gid) throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.getOption(
                 DEFAULT_ID,
                 mUrl,
@@ -398,10 +380,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            JSONObject optionJson = jsonObject.getJSONObject(Aria2RpcJsonLabel.RESULT);
-            return JSONHelper.toHashMap(optionJson);
+            return jsonObject.getJSONObject(Aria2RpcJsonConstant.RESULT).toString();
         }
-        return new HashMap<>();
+        return EMPTY_STRING;
     }
 
     public boolean changeOption(String gid, HashMap<String, String> options)
@@ -415,12 +396,13 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT)
+                    .equals(Aria2RpcJsonConstant.OK);
         }
         return false;
     }
 
-    public HashMap<String, String> getGlobalOption() throws IOException, JSONException {
+    public String getGlobalOption() throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.getGlobalOption(
                 DEFAULT_ID,
                 mUrl,
@@ -428,10 +410,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            JSONObject optionJson = jsonObject.getJSONObject(Aria2RpcJsonLabel.RESULT);
-            return JSONHelper.toHashMap(optionJson);
+            return jsonObject.getJSONObject(Aria2RpcJsonConstant.RESULT).toString();
         }
-        return new HashMap<>();
+        return EMPTY_STRING;
     }
 
     public boolean changeGlobalOption(HashMap<String, String> options)
@@ -444,12 +425,13 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT)
+                    .equals(Aria2RpcJsonConstant.OK);
         }
         return false;
     }
 
-    public Aria2GlobalStat getGlobalStat() throws IOException, JSONException {
+    public String getGlobalStat() throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.getGlobalStat(
                 DEFAULT_ID,
                 mUrl,
@@ -457,10 +439,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return Aria2GlobalStat.deserialize(
-                    jsonObject.getJSONObject(Aria2RpcJsonLabel.RESULT));
+            return jsonObject.getJSONObject(Aria2RpcJsonConstant.RESULT).toString();
         }
-        return new Aria2GlobalStat();
+        return EMPTY_STRING;
     }
 
     public boolean purgeDownloadResult() throws IOException, JSONException {
@@ -471,7 +452,8 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT)
+                    .equals(Aria2RpcJsonConstant.OK);
         }
         return false;
     }
@@ -485,12 +467,13 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT)
+                    .equals(Aria2RpcJsonConstant.OK);
         }
         return false;
     }
 
-    public Aria2Version getVersion() throws IOException, JSONException {
+    public String getVersion() throws IOException, JSONException {
         Response response = mClient.newCall(Aria2RpcRequest.getVersion(
                 DEFAULT_ID,
                 mUrl,
@@ -498,10 +481,9 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return Aria2Version.deserialize(
-                    jsonObject.getJSONObject(Aria2RpcJsonLabel.RESULT));
+            return jsonObject.getJSONObject(Aria2RpcJsonConstant.RESULT).toString();
         }
-        return new Aria2Version();
+        return EMPTY_STRING;
     }
 
     public String getSessionInfo() throws IOException, JSONException {
@@ -512,9 +494,10 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getJSONObject(Aria2RpcJsonLabel.RESULT).getString("sessionId");
+            return jsonObject.getJSONObject(Aria2RpcJsonConstant.RESULT)
+                    .getString(Aria2RpcJsonConstant.SESSION_ID);
         }
-        return "";
+        return EMPTY_STRING;
     }
 
     public boolean shutdown() throws IOException, JSONException {
@@ -525,7 +508,8 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT)
+                    .equals(Aria2RpcJsonConstant.OK);
         }
         return false;
     }
@@ -538,7 +522,8 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT)
+                    .equals(Aria2RpcJsonConstant.OK);
         }
         return false;
     }
@@ -551,7 +536,7 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonLabel.RESULT).equals("OK");
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT).equals(Aria2RpcJsonConstant.OK);
         }
         return false;
     }
@@ -565,7 +550,7 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return JSONHelper.convertToList(jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT));
+            return JSONHelper.convertToList(jsonObject.getJSONArray(Aria2RpcJsonConstant.RESULT));
         }
         return new ArrayList<>();
     }
@@ -577,7 +562,7 @@ public class Aria2RpcClient {
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return JSONHelper.convertToList(jsonObject.getJSONArray(Aria2RpcJsonLabel.RESULT));
+            return JSONHelper.convertToList(jsonObject.getJSONArray(Aria2RpcJsonConstant.RESULT));
         }
         return new ArrayList<>();
     }

@@ -1,4 +1,4 @@
-package com.mlieou.yaara.aria2RPC;
+package com.mlieou.yaara.aria2RPC.constant;
 
 /**
  * Created by mengdi on 12/29/17.

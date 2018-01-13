@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.adapter.TaskAdapter;
 import com.mlieou.yaara.aria2RPC.Aria2RpcClient;
-import com.mlieou.yaara.aria2RPC.model.Aria2TaskStatus;
+import com.mlieou.yaara.aria2RPC.unused.Aria2TaskStatus;
 
 import java.util.List;
 
