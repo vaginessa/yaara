@@ -1,6 +1,6 @@
-package com.mlieou.yaara.aria2RPC.unused;
+package com.mlieou.yaara.model;
 
-import com.mlieou.yaara.aria2RPC.constant.Aria2RpcJsonConstant;
+import com.mlieou.yaara.rpc.aria2.constant.Aria2RpcJsonConstant;
 
 import org.json.JSONArray;
 import org.json.JSONException;

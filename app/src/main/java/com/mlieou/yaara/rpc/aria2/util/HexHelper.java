@@ -1,4 +1,4 @@
-package com.mlieou.yaara.aria2RPC.util;
+package com.mlieou.yaara.rpc.aria2.util;
 
 /**
  * Created by mengdi on 1/4/18.

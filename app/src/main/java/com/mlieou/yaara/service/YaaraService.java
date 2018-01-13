@@ -7,9 +7,11 @@ import android.os.HandlerThread;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.mlieou.yaara.YaaraClient;
 import com.mlieou.yaara.activity.MainActivity;
-import com.mlieou.yaara.aria2RPC.Aria2RpcClient;
-import com.mlieou.yaara.aria2RPC.unused.Aria2GlobalStat;
+import com.mlieou.yaara.model.ServerProfile;
+import com.mlieou.yaara.rpc.aria2.Aria2RpcClient;
+import com.mlieou.yaara.model.GlobalStatus;
 
 /**
  * Created by mengdi on 12/26/17.
@@ -21,23 +23,21 @@ public class YaaraService extends IntentService {
 
     public static final String GLOBAL_STATUS = "global_status";
 
-    public static final String GLOBAL_STATUS_DOWNLOAD = GLOBAL_STATUS + "_download";
-    public static final String GLOBAL_STATUS_UPLOAD = GLOBAL_STATUS + "_upload";
-
-    private Aria2RpcClient mClient;
     private Handler mUpdateHandler;
     private HandlerThread handlerThread;
     private LocalBroadcastManager manager;
+
+    private ServerProfile profile = new ServerProfile("", "10.24.233.100", 6800, "jsonrpc", "", ServerProfile.Protocol.HTTP, ServerProfile.RequestMethod.POST);
+    private YaaraClient mClient = new YaaraClient(profile);
 
     private Runnable fetchGlobalStatus = new Runnable() {
         @Override
         public void run() {
             try {
-                Aria2GlobalStat status = mClient.getGlobalStat();
+                GlobalStatus status = mClient.getGlobalStatus();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.setAction(GLOBAL_STATUS);
-                intent.putExtra(GLOBAL_STATUS_DOWNLOAD, status.getDownloadSpeed());
-                intent.putExtra(GLOBAL_STATUS_UPLOAD, status.getUploadSpeed());
+                intent.putExtra(GLOBAL_STATUS, status);
                 manager.sendBroadcast(intent);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -48,7 +48,6 @@ public class YaaraService extends IntentService {
 
     public YaaraService() {
         super(SERVICE_NAME);
-        mClient = new Aria2RpcClient("10.24.233.100", 6800, "jsonrpc");
         manager = LocalBroadcastManager.getInstance(this);
         handlerThread = new HandlerThread("handler");
         handlerThread.start();

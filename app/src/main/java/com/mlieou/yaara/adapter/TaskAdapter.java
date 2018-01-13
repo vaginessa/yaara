@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mlieou.yaara.R;
-import com.mlieou.yaara.aria2RPC.unused.Aria2TaskStatus;
+import com.mlieou.yaara.model.Aria2TaskStatus;
 
 import java.util.List;
 

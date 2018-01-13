@@ -16,7 +16,9 @@ import android.view.View;
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.adapter.TaskPagerAdapter;
 import com.mlieou.yaara.fragment.SimpleNewTaskFragment;
+import com.mlieou.yaara.model.GlobalStatus;
 import com.mlieou.yaara.service.YaaraService;
+import com.mlieou.yaara.util.NetworkSpeedParser;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -26,11 +28,14 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            long download = intent.getLongExtra(YaaraService.GLOBAL_STATUS_DOWNLOAD, 0);
-            long upload = intent.getLongExtra(YaaraService.GLOBAL_STATUS_UPLOAD, 0);
-            getSupportActionBar().setSubtitle("D: " + download + " U: " + upload);
+            GlobalStatus status = intent.getParcelableExtra(YaaraService.GLOBAL_STATUS);
+            getSupportActionBar().setSubtitle(buildSubtitle(status));
         }
     };
+
+    private String buildSubtitle(GlobalStatus status) {
+        return "Download: " + NetworkSpeedParser.parse(status.getDownloadSpeed()) + " Upload: " + NetworkSpeedParser.parse(status.getUploadSpeed());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

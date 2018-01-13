@@ -1,8 +1,9 @@
-package com.mlieou.yaara.aria2RPC;
+package com.mlieou.yaara.rpc.aria2;
 
-import com.mlieou.yaara.aria2RPC.constant.Aria2RpcJsonConstant;
-import com.mlieou.yaara.aria2RPC.model.Aria2How;
-import com.mlieou.yaara.aria2RPC.util.JSONHelper;
+import com.mlieou.yaara.rpc.aria2.constant.Aria2RpcJsonConstant;
+import com.mlieou.yaara.rpc.aria2.model.Aria2How;
+import com.mlieou.yaara.rpc.aria2.util.JSONHelper;
+import com.mlieou.yaara.rpc.aria2.util.RequestBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +44,7 @@ public class Aria2RpcClient {
 
     public String addUri(List<String> uris, HashMap<String, String> options, int position)
             throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.addUri(
+        Response response = mClient.newCall(RequestBuilder.addUri(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -64,7 +65,7 @@ public class Aria2RpcClient {
                              HashMap<String, String> options,
                              int position)
             throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.addTorrent(
+        Response response = mClient.newCall(RequestBuilder.addTorrent(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -84,7 +85,7 @@ public class Aria2RpcClient {
                                     HashMap<String, String> options,
                                     int position)
             throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.addMetalink(
+        Response response = mClient.newCall(RequestBuilder.addMetalink(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -101,7 +102,7 @@ public class Aria2RpcClient {
     }
 
     public String remove(String gid) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.remove(
+        Response response = mClient.newCall(RequestBuilder.remove(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -115,7 +116,7 @@ public class Aria2RpcClient {
     }
 
     public String forceRemove(String gid) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.forceRemove(
+        Response response = mClient.newCall(RequestBuilder.forceRemove(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -129,7 +130,7 @@ public class Aria2RpcClient {
     }
 
     public String pause(String gid) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.pause(
+        Response response = mClient.newCall(RequestBuilder.pause(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -143,20 +144,21 @@ public class Aria2RpcClient {
     }
 
     public boolean pauseAll() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.pauseAll(
+        Response response = mClient.newCall(RequestBuilder.pauseAll(
                 DEFAULT_ID,
                 mUrl,
                 mSecret
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonConstant.RESULT).equals(Aria2RpcJsonConstant.OK);
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT)
+                    .equals(Aria2RpcJsonConstant.OK);
         } else
             return false;
     }
 
     public String forcePause(String gid) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.forcePause(
+        Response response = mClient.newCall(RequestBuilder.forcePause(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -170,20 +172,21 @@ public class Aria2RpcClient {
     }
 
     public boolean forcePauseAll() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.forcePauseAll(
+        Response response = mClient.newCall(RequestBuilder.forcePauseAll(
                 DEFAULT_ID,
                 mUrl,
                 mSecret
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonConstant.RESULT).equals(Aria2RpcJsonConstant.OK);
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT)
+                    .equals(Aria2RpcJsonConstant.OK);
         } else
             return false;
     }
 
     public String unpause(String gid) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.unpause(
+        Response response = mClient.newCall(RequestBuilder.unpause(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -197,21 +200,22 @@ public class Aria2RpcClient {
     }
 
     public boolean unpauseAll() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.unpauseAll(
+        Response response = mClient.newCall(RequestBuilder.unpauseAll(
                 DEFAULT_ID,
                 mUrl,
                 mSecret
         )).execute();
         if (response.isSuccessful()) {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            return jsonObject.getString(Aria2RpcJsonConstant.RESULT).equals(Aria2RpcJsonConstant.OK);
+            return jsonObject.getString(Aria2RpcJsonConstant.RESULT)
+                    .equals(Aria2RpcJsonConstant.OK);
         } else
             return false;
     }
 
     public String tellStatus(String gid, List<String> keys)
             throws IOException, JSONException{
-        Response response = mClient.newCall(Aria2RpcRequest.tellStatus(
+        Response response = mClient.newCall(RequestBuilder.tellStatus(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -226,7 +230,7 @@ public class Aria2RpcClient {
     }
 
     public String getUris(String gid) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.getUris(
+        Response response = mClient.newCall(RequestBuilder.getUris(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -242,7 +246,7 @@ public class Aria2RpcClient {
     }
 
     public String getFiles(String gid) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.getFiles(
+        Response response = mClient.newCall(RequestBuilder.getFiles(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -256,7 +260,7 @@ public class Aria2RpcClient {
     }
 
     public String getPeers(String gid) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.getPeers(
+        Response response = mClient.newCall(RequestBuilder.getPeers(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -270,7 +274,7 @@ public class Aria2RpcClient {
     }
 
     public String getServers(String gid) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.getServers(
+        Response response = mClient.newCall(RequestBuilder.getServers(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -284,7 +288,7 @@ public class Aria2RpcClient {
     }
 
     public String tellActive(List<String> keys) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.tellActive(
+        Response response = mClient.newCall(RequestBuilder.tellActive(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -299,7 +303,7 @@ public class Aria2RpcClient {
 
     public String tellWaiting(int offset, int num, List<String> keys)
             throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.tellWaiting(
+        Response response = mClient.newCall(RequestBuilder.tellWaiting(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -316,7 +320,7 @@ public class Aria2RpcClient {
 
     public String tellStopped(int offset, int num, List<String> keys)
             throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.tellStopped(
+        Response response = mClient.newCall(RequestBuilder.tellStopped(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -333,7 +337,7 @@ public class Aria2RpcClient {
 
     public int changePosition(String gid, int pos, Aria2How how)
             throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.changePosition(
+        Response response = mClient.newCall(RequestBuilder.changePosition(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -354,7 +358,7 @@ public class Aria2RpcClient {
                            List<String> addUris,
                            int position)
             throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.changeUri(
+        Response response = mClient.newCall(RequestBuilder.changeUri(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -372,7 +376,7 @@ public class Aria2RpcClient {
     }
 
     public String getOption(String gid) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.getOption(
+        Response response = mClient.newCall(RequestBuilder.getOption(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -387,7 +391,7 @@ public class Aria2RpcClient {
 
     public boolean changeOption(String gid, HashMap<String, String> options)
             throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.changeOption(
+        Response response = mClient.newCall(RequestBuilder.changeOption(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -403,7 +407,7 @@ public class Aria2RpcClient {
     }
 
     public String getGlobalOption() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.getGlobalOption(
+        Response response = mClient.newCall(RequestBuilder.getGlobalOption(
                 DEFAULT_ID,
                 mUrl,
                 mSecret
@@ -417,7 +421,7 @@ public class Aria2RpcClient {
 
     public boolean changeGlobalOption(HashMap<String, String> options)
             throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.changeGlobalOption(
+        Response response = mClient.newCall(RequestBuilder.changeGlobalOption(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -432,7 +436,7 @@ public class Aria2RpcClient {
     }
 
     public String getGlobalStat() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.getGlobalStat(
+        Response response = mClient.newCall(RequestBuilder.getGlobalStat(
                 DEFAULT_ID,
                 mUrl,
                 mSecret
@@ -445,7 +449,7 @@ public class Aria2RpcClient {
     }
 
     public boolean purgeDownloadResult() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.purgeDownloadResult(
+        Response response = mClient.newCall(RequestBuilder.purgeDownloadResult(
                 DEFAULT_ID,
                 mUrl,
                 mSecret
@@ -459,7 +463,7 @@ public class Aria2RpcClient {
     }
 
     public boolean removeDownloadResult(String gid) throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.removeDownloadResult(
+        Response response = mClient.newCall(RequestBuilder.removeDownloadResult(
                 DEFAULT_ID,
                 mUrl,
                 mSecret,
@@ -474,7 +478,7 @@ public class Aria2RpcClient {
     }
 
     public String getVersion() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.getVersion(
+        Response response = mClient.newCall(RequestBuilder.getVersion(
                 DEFAULT_ID,
                 mUrl,
                 mSecret
@@ -487,7 +491,7 @@ public class Aria2RpcClient {
     }
 
     public String getSessionInfo() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.getSessionInfo(
+        Response response = mClient.newCall(RequestBuilder.getSessionInfo(
                 DEFAULT_ID,
                 mUrl,
                 mSecret
@@ -501,7 +505,7 @@ public class Aria2RpcClient {
     }
 
     public boolean shutdown() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.shutdown(
+        Response response = mClient.newCall(RequestBuilder.shutdown(
                 DEFAULT_ID,
                 mUrl,
                 mSecret
@@ -515,7 +519,7 @@ public class Aria2RpcClient {
     }
 
     public boolean forceShutdown() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.forceShutdown(
+        Response response = mClient.newCall(RequestBuilder.forceShutdown(
                 DEFAULT_ID,
                 mUrl,
                 mSecret
@@ -529,7 +533,7 @@ public class Aria2RpcClient {
     }
 
     public boolean saveSession() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.saveSession(
+        Response response = mClient.newCall(RequestBuilder.saveSession(
                 DEFAULT_ID,
                 mUrl,
                 mSecret
@@ -544,7 +548,7 @@ public class Aria2RpcClient {
     // TODO: multi-call
 
     public List<String> listMethods() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.listMethods(
+        Response response = mClient.newCall(RequestBuilder.listMethods(
                 DEFAULT_ID,
                 mUrl
         )).execute();
@@ -556,7 +560,7 @@ public class Aria2RpcClient {
     }
 
     public List<String> listNotifications() throws IOException, JSONException {
-        Response response = mClient.newCall(Aria2RpcRequest.listNotifications(
+        Response response = mClient.newCall(RequestBuilder.listNotifications(
                 DEFAULT_ID,
                 mUrl
         )).execute();

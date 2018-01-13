@@ -50,4 +50,31 @@ public class ServerProfile {
         this.requestMethod = requestMethod;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getRequestPath() {
+        return requestPath;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public Protocol getProtocol() {
+        return protocol;
+    }
+
+    public RequestMethod getRequestMethod() {
+        return requestMethod;
+    }
 }

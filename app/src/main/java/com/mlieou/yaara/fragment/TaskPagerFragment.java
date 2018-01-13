@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.adapter.TaskAdapter;
-import com.mlieou.yaara.aria2RPC.Aria2RpcClient;
-import com.mlieou.yaara.aria2RPC.unused.Aria2TaskStatus;
+import com.mlieou.yaara.rpc.aria2.Aria2RpcClient;
+import com.mlieou.yaara.model.Aria2TaskStatus;
 
 import java.util.List;
 
@@ -59,26 +59,6 @@ public class TaskPagerFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new TaskAdapter(getContext());
         recyclerView.setAdapter(mAdapter);
-        new fetchTask().execute();
         return view;
-    }
-
-    class fetchTask extends AsyncTask<Void, Void, List<Aria2TaskStatus>> {
-
-        @Override
-        protected List<Aria2TaskStatus> doInBackground(Void... voids) {
-            Aria2RpcClient client = new Aria2RpcClient("10.24.233.100", 6800, "jsonrpc");
-            try {
-                return client.tellStopped(0, 10, null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<Aria2TaskStatus> list) {
-            mAdapter.swapData(list);
-        }
     }
 }

@@ -1,4 +1,4 @@
-package com.mlieou.yaara.aria2RPC.unused;
+package com.mlieou.yaara.model;
 
 import org.json.JSONArray;
 import org.json.JSONException;
