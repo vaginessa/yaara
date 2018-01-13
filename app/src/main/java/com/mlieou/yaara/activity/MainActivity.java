@@ -18,6 +18,7 @@ import com.mlieou.yaara.adapter.TaskPagerAdapter;
 import com.mlieou.yaara.fragment.SimpleNewTaskFragment;
 import com.mlieou.yaara.model.GlobalStatus;
 import com.mlieou.yaara.service.YaaraService;
+import com.mlieou.yaara.service.YaaraServiceManager;
 import com.mlieou.yaara.util.NetworkSpeedParser;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            GlobalStatus status = intent.getParcelableExtra(YaaraService.GLOBAL_STATUS);
+            GlobalStatus status = intent.getParcelableExtra(YaaraService.EXTRA_GLOBAL_STATUS);
             getSupportActionBar().setSubtitle(buildSubtitle(status));
         }
     };
@@ -51,15 +52,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(YaaraService.GLOBAL_STATUS));
-        Intent intent = new Intent(this, YaaraService.class);
-        intent.setAction(YaaraService.GLOBAL_STATUS);
-        startService(intent);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(YaaraService.UPDATE_GLOBAL_STATUS));
+        YaaraServiceManager.startGlobalStatusUpdate(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        YaaraServiceManager.stopGlobalStatusUpdate(this);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 
