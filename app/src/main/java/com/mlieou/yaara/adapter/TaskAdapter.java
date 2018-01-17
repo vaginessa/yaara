@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.model.Aria2TaskStatus;
+import com.mlieou.yaara.model.TaskStatusLite;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
     private static final String TAG = "TaskAdapter";
 
     Context mContext;
-    List<Aria2TaskStatus> mTaskList;
+    List<TaskStatusLite> mTaskList;
 
     public TaskAdapter(Context context) {
         mContext = context;
@@ -37,7 +38,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
 
     @Override
     public void onBindViewHolder(TaskAdapterViewHolder holder, int position) {
-        Aria2TaskStatus status = mTaskList.get(position);
+        TaskStatusLite status = mTaskList.get(position);
+        // TODO
         holder.taskTitle.setText(status.getGid());
         holder.taskProgress.setProgress((int)(status.getCompletedLength() * 100 / status.getTotalLength()));
         holder.taskDownloadSpeed.setText("" + status.getDownloadSpeed());
@@ -50,7 +52,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
         return mTaskList.size();
     }
 
-    public void swapData(List<Aria2TaskStatus> list) {
+    public void swapData(List<TaskStatusLite> list) {
         mTaskList = list;
         notifyDataSetChanged();
     }

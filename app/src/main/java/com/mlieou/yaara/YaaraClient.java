@@ -2,6 +2,7 @@ package com.mlieou.yaara;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mlieou.yaara.model.TaskType;
 import com.mlieou.yaara.rpc.aria2.Aria2RpcClient;
 import com.mlieou.yaara.model.GlobalStatus;
 import com.mlieou.yaara.model.ServerProfile;
@@ -20,12 +21,6 @@ import java.util.List;
 
 public class YaaraClient {
 
-    public enum TaskState {
-        ACTIVE,
-        WAITING,
-        STOPPED
-    }
-
     private Aria2RpcClient mClient;
     private ServerProfile mProfile;
     private Gson mGson;
@@ -36,7 +31,7 @@ public class YaaraClient {
         mClient = new Aria2RpcClient(mProfile.getHost(), mProfile.getPort(), mProfile.getRequestPath());
     }
 
-    public List<TaskStatusLite> getTaskStatusLiteList(TaskState state) {
+    public List<TaskStatusLite> getTaskStatusLiteList(TaskType state) {
         List<TaskStatusLite> list;
         try {
             String jsonStr;

@@ -18,7 +18,6 @@ import com.mlieou.yaara.adapter.TaskPagerAdapter;
 import com.mlieou.yaara.fragment.SimpleNewTaskFragment;
 import com.mlieou.yaara.model.GlobalStatus;
 import com.mlieou.yaara.service.YaaraService;
-import com.mlieou.yaara.service.YaaraServiceManager;
 import com.mlieou.yaara.util.NetworkSpeedParser;
 
 public class MainActivity extends AppCompatActivity {
