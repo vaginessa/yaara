@@ -18,6 +18,8 @@
 
 package com.mlieou.yaara.model;
 
+import com.mlieou.yaara.ServerManager;
+
 public class ServerProfile {
 
     public enum Protocol {
@@ -48,6 +50,10 @@ public class ServerProfile {
         this.secret = secret;
         this.protocol = protocol;
         this.requestMethod = requestMethod;
+    }
+
+    public ServerProfile(ServerManager manager) {
+
     }
 
     public String getName() {

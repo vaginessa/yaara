@@ -1,21 +1,25 @@
 package com.mlieou.yaara.service;
 
-import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Binder;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 
-import com.mlieou.yaara.YaaraClient;
+import com.mlieou.yaara.HandlerInterface;
+import com.mlieou.yaara.Aria2Manager;
+import com.mlieou.yaara.ServerManager;
+import com.mlieou.yaara.WeakHandler;
 import com.mlieou.yaara.model.ServerProfile;
 
 /**
  * Created by mengdi on 12/26/17.
  */
 
-public class YaaraService extends Service {
+public class YaaraService extends Service implements HandlerInterface {
 
     public static final class Request {
         public static final String GET_GLOBAL_STATUS = "get_global_status";
@@ -51,37 +55,39 @@ public class YaaraService extends Service {
 //    private YaaraClient mClient = new YaaraClient(profile);
 
     private static final String SERVICE_NAME = "YaaraService";
+    private static final String HANDLER_THREAD_NAME = "HandlerThread";
 
-    public YaaraService() {
-        super(SERVICE_NAME);
+    private Handler mHandler;
+    private HandlerThread mThread;
+    private ServerManager mServerManager;
+    private Aria2Manager mManager;
+    private Messenger mMessenger;
+
+    @Override
+    public void onCreate() {
+        mThread = new HandlerThread(HANDLER_THREAD_NAME);
+        mThread.start();
+
+        mHandler = new WeakHandler(mThread.getLooper(), this);
+        mMessenger = new Messenger(mHandler);
+
+        mServerManager = new ServerManager(this);
+        mManager = new Aria2Manager(mServerManager);
+        ServerProfile profile = new ServerProfile(mServerManager);
+        mManager.initServer(profile);
+    }
+
+    @Override
+    public void handleMessage(Message msg, Handler handler) {
+        Messenger messenger = msg.replyTo;
+        // TODO
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return mBinder;
+        return mMessenger.getBinder();
     }
 
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        String action = intent == null ? "" : intent.getAction();
-        Intent response = new Intent(INTENT_SERVICE_COMPLETED);
-        switch (action) {
-            case Request.GET_GLOBAL_STATUS:
-                response.putExtra(DATA_TYPE, DataType.GLOBAL_STATUS);
-                response.putExtra(RESULT, mClient.getGlobalStatus());
-                break;
-            case Request.GET_WAITING_TASK:
-                break;
-            case Request.GET_ACTIVE_TASK:
-                break;
-            case Request.GET_STOPPED_TASK:
-                break;
-            default:
-                break;
-        }
-        // send broadcast
-        LocalBroadcastManager.getInstance(this).sendBroadcast(response);
-    }
 
 }
