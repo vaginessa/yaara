@@ -18,7 +18,7 @@
 
 package com.mlieou.yaara.model;
 
-import com.mlieou.yaara.ServerManager;
+import com.mlieou.yaara.ServerPreferencesManager;
 
 public class ServerProfile {
 
@@ -52,7 +52,7 @@ public class ServerProfile {
         this.requestMethod = requestMethod;
     }
 
-    public ServerProfile(ServerManager manager) {
+    public ServerProfile(ServerPreferencesManager manager) {
 
     }
 

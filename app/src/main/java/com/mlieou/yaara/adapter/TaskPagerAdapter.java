@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.mlieou.yaara.fragment.TaskPagerFragment;
+import com.mlieou.yaara.model.TaskType;
 
 /**
  * Created by mengdi on 1/6/18.
@@ -23,11 +24,11 @@ public class TaskPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return TaskPagerFragment.newInstance(TaskPagerFragment.TaskType.ACTIVE);
+                return TaskPagerFragment.newInstance(TaskType.ACTIVE);
             case 1:
-                return TaskPagerFragment.newInstance(TaskPagerFragment.TaskType.WAITING);
+                return TaskPagerFragment.newInstance(TaskType.WAITING);
             case 2:
-                return TaskPagerFragment.newInstance(TaskPagerFragment.TaskType.STOPPED);
+                return TaskPagerFragment.newInstance(TaskType.STOPPED);
             default:
                 // fallback
                 return new Fragment();

@@ -1,6 +1,7 @@
 package com.mlieou.yaara.fragment;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +14,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mlieou.yaara.R;
+import com.mlieou.yaara.activity.MainActivity;
 import com.mlieou.yaara.adapter.TaskAdapter;
 import com.mlieou.yaara.model.TaskStatusLite;
 import com.mlieou.yaara.model.TaskType;
@@ -40,19 +43,12 @@ public class TaskPagerFragment extends Fragment {
     TaskType mTaskType;
 
     TaskAdapter mAdapter;
-    BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            List<TaskStatusLite> list = intent.getParcelableArrayListExtra(YaaraService.RESULT);
-            // TODO
-            mAdapter.swapData(list);
-        }
-    };
+
+    MainActivity mActivity;
 
     public TaskPagerFragment() {}
 
     public static TaskPagerFragment newInstance(TaskType taskType) {
-
         Bundle args = new Bundle();
         args.putSerializable(TASK_TYPE, taskType);
 
@@ -78,31 +74,35 @@ public class TaskPagerFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getContext() != null) {
-            String action;
-            switch (mTaskType) {
-                case WAITING:
-                    action = YaaraService.Response.WAITING_TASK;
-                    break;
-                case STOPPED:
-                    action = YaaraService.Response.STOPPED_TASK;
-                    break;
-                case ACTIVE:
-                    action = YaaraService.Response.ACTIVE_TASK;
-                    break;
-                default:
-                    action = "";
-            }
-            LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter(action));
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getActivity() instanceof MainActivity) {
+            mActivity = (MainActivity) getActivity();
+        } else {
+            mActivity = null;
         }
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        if (getContext() != null)
-            LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mReceiver);
+    public void onResume() {
+        super.onResume();
+        if (!getUserVisibleHint()) {
+            return;
+        }
+        mActivity.startUpdateGlobalStatusWithTaskType(mTaskType);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isResumed()) {
+            onResume();
+        }
     }
 }
