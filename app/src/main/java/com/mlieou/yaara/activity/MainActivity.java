@@ -11,12 +11,17 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mlieou.yaara.HandlerInterface;
 import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.R;
@@ -62,6 +67,12 @@ public class MainActivity extends AppCompatActivity implements HandlerInterface 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new DrawerBuilder()
+                .withActivity(this)
+                .withTranslucentStatusBar(false)
+                .withActionBarDrawerToggle(false)
+                .build();
 
         mUpdateHandler = new WeakHandler(this);
         mMessenger = new Messenger(mUpdateHandler);
