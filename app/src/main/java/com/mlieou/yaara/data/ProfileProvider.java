@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * Created by mengdi on 1/10/18.
+ * Created by mlieou on 1/10/18.
  */
 
 public class ProfileProvider extends ContentProvider {

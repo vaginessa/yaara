@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by mengdi on 1/4/18.
+ * Created by mlieou on 1/4/18.
  */
 
-public class Aria2TaskStatus {
+public class Aria2TaskStatusModel {
 
     private byte[] bitfield;
     private long completedLength;
@@ -98,8 +98,8 @@ public class Aria2TaskStatus {
         return uploadSpeed;
     }
 
-    public static Aria2TaskStatus deserialize(JSONObject object) throws JSONException {
-        Aria2TaskStatus status = new Aria2TaskStatus();
+    public static Aria2TaskStatusModel deserialize(JSONObject object) throws JSONException {
+        Aria2TaskStatusModel status = new Aria2TaskStatusModel();
         status.gid = object.getString("gid");
         status.completedLength = object.getLong("completedLength");
         status.totalLength = object.getLong("totalLength");
@@ -107,11 +107,11 @@ public class Aria2TaskStatus {
         return status;
     }
 
-    public static List<Aria2TaskStatus> deserializeList(JSONArray array) throws JSONException {
-        List<Aria2TaskStatus> statusList = new ArrayList<>(array.length());
+    public static List<Aria2TaskStatusModel> deserializeList(JSONArray array) throws JSONException {
+        List<Aria2TaskStatusModel> statusList = new ArrayList<>(array.length());
         for (int i = 0; i < array.length(); i++) {
             JSONObject object = array.getJSONObject(i);
-            statusList.add(Aria2TaskStatus.deserialize(object));
+            statusList.add(Aria2TaskStatusModel.deserialize(object));
         }
         return statusList;
     }

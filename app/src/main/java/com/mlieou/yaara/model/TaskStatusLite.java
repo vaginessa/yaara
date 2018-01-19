@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.mlieou.yaara.rpc.aria2.constant.Aria2RpcKey;
 
 /**
- * Created by mengdi on 1/7/18.
+ * Created by mlieou on 1/7/18.
  */
 
 public class TaskStatusLite implements Parcelable {
@@ -16,12 +16,26 @@ public class TaskStatusLite implements Parcelable {
             Aria2RpcKey.TOTAL_LENGTH,
             Aria2RpcKey.COMPLETED_LENGTH,
             Aria2RpcKey.DOWNLOAD_SPEED,
-            Aria2RpcKey.UPLOAD_SPEED
+            Aria2RpcKey.UPLOAD_SPEED,
+            Aria2RpcKey.STATUS
     };
+
 
     private String gid;
     private long downloadSpeed;
     private long uploadSpeed;
+    private long completedLength;
+    private long totalLength;
+    private String status;
+
+    protected TaskStatusLite(Parcel in) {
+        gid = in.readString();
+        downloadSpeed = in.readLong();
+        uploadSpeed = in.readLong();
+        completedLength = in.readLong();
+        totalLength = in.readLong();
+        status = in.readString();
+    }
 
     public String getGid() {
         return gid;
@@ -43,15 +57,8 @@ public class TaskStatusLite implements Parcelable {
         return totalLength;
     }
 
-    private long completedLength;
-    private long totalLength;
-
-    protected TaskStatusLite(Parcel in) {
-        gid = in.readString();
-        downloadSpeed = in.readLong();
-        uploadSpeed = in.readLong();
-        completedLength = in.readLong();
-        totalLength = in.readLong();
+    public String getStatus() {
+        return status;
     }
 
     @Override
@@ -61,6 +68,7 @@ public class TaskStatusLite implements Parcelable {
         dest.writeLong(uploadSpeed);
         dest.writeLong(completedLength);
         dest.writeLong(totalLength);
+        dest.writeString(status);
     }
 
     @Override

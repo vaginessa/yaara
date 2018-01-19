@@ -8,7 +8,7 @@ import android.os.Bundle;
 import com.mlieou.yaara.R;
 
 /**
- * Created by mengdi on 1/11/18.
+ * Created by mlieou on 1/11/18.
  */
 
 public class SimpleNewTaskFragment extends DialogFragment {

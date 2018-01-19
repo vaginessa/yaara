@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 /**
- * Created by mengdi on 1/4/18.
+ * Created by mlieou on 1/4/18.
  */
 
 public class GlobalStatus implements Parcelable {

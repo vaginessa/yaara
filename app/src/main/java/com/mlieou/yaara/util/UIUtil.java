@@ -20,8 +20,23 @@ package com.mlieou.yaara.util;
 
 import com.mlieou.yaara.model.GlobalStatus;
 
+import java.time.LocalTime;
+import java.util.Locale;
+
 public class UIUtil {
-    private static String buildSubtitle(GlobalStatus status) {
+    public static String buildSubtitle(GlobalStatus status) {
         return "Download: " + NetworkSpeedParser.parse(status.getDownloadSpeed()) + " Upload: " + NetworkSpeedParser.parse(status.getUploadSpeed());
+    }
+
+    public static String secondsToTime(long totalSeconds) {
+        if (totalSeconds >= 86400) {
+            long days = totalSeconds / 86400;
+            if (days == 1)  return "1 day";
+            return "" + days + " days";
+        }
+        int hours = (int) totalSeconds / 3600;
+        int minutes = (int) (totalSeconds % 3600) / 60;
+        int sec = (int) totalSeconds / 3600;
+        return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, sec);
     }
 }

@@ -4,38 +4,43 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mlieou.yaara.HandlerInterface;
+import com.mlieou.yaara.HandlerCallback;
+import com.mlieou.yaara.ServerPreferencesManager;
 import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.WeakHandler;
 import com.mlieou.yaara.adapter.TaskPagerAdapter;
 import com.mlieou.yaara.fragment.SimpleNewTaskFragment;
+import com.mlieou.yaara.fragment.TaskFragmentCallback;
+import com.mlieou.yaara.model.GlobalStatus;
+import com.mlieou.yaara.model.RefreshBundle;
 import com.mlieou.yaara.model.TaskType;
 import com.mlieou.yaara.service.YaaraService;
+import com.mlieou.yaara.util.UIUtil;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
 
-public class MainActivity extends AppCompatActivity implements HandlerInterface {
+public class MainActivity extends AppCompatActivity implements HandlerCallback {
 
     private TaskPagerAdapter mAdapter;
 
@@ -43,9 +48,10 @@ public class MainActivity extends AppCompatActivity implements HandlerInterface 
     private Messenger mMessenger;
     private Messenger mServiceMessenger;
     private boolean mIsServiceBound;
+    private ServerPreferencesManager mServerPreferencesManager;
 
     private Timer mRefreshTimer;
-    private CountDownLatch mCountdownLatch;
+    private int mUpdateInterval = 1000;
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -67,12 +73,7 @@ public class MainActivity extends AppCompatActivity implements HandlerInterface 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        new DrawerBuilder()
-                .withActivity(this)
-                .withTranslucentStatusBar(false)
-                .withActionBarDrawerToggle(false)
-                .build();
+        mServerPreferencesManager = new ServerPreferencesManager(this);
 
         mUpdateHandler = new WeakHandler(this);
         mMessenger = new Messenger(mUpdateHandler);
@@ -104,7 +105,12 @@ public class MainActivity extends AppCompatActivity implements HandlerInterface 
     @Override
     protected void onStart() {
         super.onStart();
-        doBindService();
+        if (mServerPreferencesManager.isServerProfileExist()) {
+            displayMainContent();
+            doBindService();
+        } else {
+            hideMainContent();
+        }
     }
 
     @Override
@@ -112,6 +118,24 @@ public class MainActivity extends AppCompatActivity implements HandlerInterface 
         super.onStop();
         stopUIUpdate();
         doUnbindService();
+    }
+
+    private void hideMainContent() {
+        TextView notice = findViewById(R.id.tv_no_server_notice);
+        FloatingActionButton fab = findViewById(R.id.fab_new_task);
+        LinearLayout mainContent = findViewById(R.id.main_content);
+        notice.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.INVISIBLE);
+        mainContent.setVisibility(View.INVISIBLE);
+    }
+
+    private void displayMainContent() {
+        TextView notice = findViewById(R.id.tv_no_server_notice);
+        FloatingActionButton fab = findViewById(R.id.fab_new_task);
+        LinearLayout mainContent = findViewById(R.id.main_content);
+        notice.setVisibility(View.INVISIBLE);
+        fab.setVisibility(View.VISIBLE);
+        mainContent.setVisibility(View.VISIBLE);
     }
 
     public void newTask(View view) {
@@ -131,11 +155,15 @@ public class MainActivity extends AppCompatActivity implements HandlerInterface 
         }
     }
 
-    public void startUpdateGlobalStatusWithTaskType(TaskType taskType) {
+    public void startUpdateGlobalStatusAndTaskList(TaskType taskType) {
         // requesting new task type, stop old ui update
         stopUIUpdate();
 
-        int updateInterval = 1000;
+        if (!mServerPreferencesManager.isServerProfileExist())
+            return;
+
+        mUpdateInterval = mServerPreferencesManager.getUpdateInterval() * 1000;
+
         mRefreshTimer = new Timer();
         mRefreshTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -158,11 +186,9 @@ public class MainActivity extends AppCompatActivity implements HandlerInterface 
                 message.replyTo = mMessenger;
                 try {
                     mServiceMessenger.send(message);
-                } catch (RemoteException e) {
-                    // TODO
-                }
+                } catch (RemoteException e) {}
             }
-        }, 0, updateInterval);
+        }, 0, mUpdateInterval);
     }
 
     public void stopUIUpdate() {
@@ -177,7 +203,11 @@ public class MainActivity extends AppCompatActivity implements HandlerInterface 
         switch (msg.what) {
             case MessageCode.UPDATE_TASK_LIST_AND_GLOBAL_STATUS:
                 // list received and global status received, update subtitle and list
-                getSupportActionBar().setSubtitle((String) msg.obj);
+                RefreshBundle bundle = (RefreshBundle) msg.obj;
+                GlobalStatus globalStatus = bundle.getGlobalStatus();
+                getSupportActionBar().setSubtitle(UIUtil.buildSubtitle(globalStatus));
+                TaskFragmentCallback callback = (TaskFragmentCallback) mAdapter.getCurrentFragment();
+                callback.swapData(bundle.getTaskList());
         }
     }
 }

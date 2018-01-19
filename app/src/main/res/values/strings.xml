@@ -21,6 +21,9 @@
     <string name="preference_aria2_request_method">Request Method</string>
     <string name="preference_aria2_secret_token">Secret Token</string>
 
+    <string name="preference_category_yaara_settings_title">Yaara Settings</string>
+    <string name="preference_yaara_update_interval">Update Interval</string>
+
     <string name="preference_list_protocol_http">HTTP</string>
     <string name="preference_list_protocol_http_val">@string/preference_list_protocol_http</string>
     <string name="preference_list_protocol_https">HTTPS</string>
@@ -35,6 +38,10 @@
     <string name="preference_list_request_method_post">POST</string>
     <string name="preference_list_request_method_post_val">@string/preference_list_request_method_post</string>
 
+    <string name="preference_list_update_interval_1_second">1 Second</string>
+    <string name="preference_list_update_interval_2_second">2 Seconds</string>
+    <string name="preference_list_update_interval_5_second">5 Seconds</string>
+    <string name="preference_list_update_interval_10_second">10 Seconds</string>
 
     <!-- Preference default value -->
     <string name="preference_aria2_request_path_default_val">jsonrpc</string>

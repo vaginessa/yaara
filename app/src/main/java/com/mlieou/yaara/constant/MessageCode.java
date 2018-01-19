@@ -19,8 +19,6 @@
 package com.mlieou.yaara.constant;
 
 public interface MessageCode {
-    int TEST_RECEIVED = -2;
-    int TEST = -1;
 
     int GET_ACTIVE_TASKS = 0;
     int GET_WAITING_TASKS = 1;

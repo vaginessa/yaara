@@ -14,6 +14,7 @@
         <item>@string/preference_list_protocol_web_socket_val</item>
         <item>@string/preference_list_protocol_web_socket_security_val</item>
     </string-array>
+
     <string-array name="preference_list_request_method_entries">
         <item>@string/preference_list_request_method_get</item>
         <item>@string/preference_list_request_method_post</item>
@@ -21,6 +22,19 @@
     <string-array name="preference_list_request_method_entry_values">
         <item>@string/preference_list_request_method_get_val</item>
         <item>@string/preference_list_request_method_post_val</item>
+    </string-array>
+
+    <string-array name="preference_list_update_interval_entries">
+        <item>@string/preference_list_update_interval_1_second</item>
+        <item>@string/preference_list_update_interval_2_second</item>
+        <item>@string/preference_list_update_interval_5_second</item>
+        <item>@string/preference_list_update_interval_10_second</item>
+    </string-array>
+    <string-array name="preference_list_update_interval_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
     </string-array>
 
 </resources>

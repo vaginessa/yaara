@@ -7,26 +7,26 @@ import android.os.Message;
 import java.lang.ref.WeakReference;
 
 /**
- * Created by mengdi on 1/16/18.
+ * Created by mlieou on 1/16/18.
  */
 
 public class WeakHandler extends Handler {
-    private WeakReference<HandlerInterface> mWeakRef;
+    private WeakReference<HandlerCallback> mWeakRef;
 
-    public WeakHandler(HandlerInterface handlerInterface) {
-        this.mWeakRef = new WeakReference<HandlerInterface>(handlerInterface);
+    public WeakHandler(HandlerCallback handlerCallback) {
+        this.mWeakRef = new WeakReference<HandlerCallback>(handlerCallback);
     }
 
-    public WeakHandler(Looper looper, HandlerInterface handlerInterface) {
+    public WeakHandler(Looper looper, HandlerCallback handlerCallback) {
         super(looper);
-        this.mWeakRef = new WeakReference<HandlerInterface>(handlerInterface);
+        this.mWeakRef = new WeakReference<HandlerCallback>(handlerCallback);
     }
 
     @Override
     public void handleMessage(Message msg) {
-        HandlerInterface handlerInterface = mWeakRef.get();
-        if (handlerInterface != null) {
-            handlerInterface.handleMessage(msg, this);
+        HandlerCallback handlerCallback = mWeakRef.get();
+        if (handlerCallback != null) {
+            handlerCallback.handleMessage(msg, this);
         }
     }
 }

@@ -10,17 +10,17 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
-import com.mlieou.yaara.HandlerInterface;
+import com.mlieou.yaara.HandlerCallback;
 import com.mlieou.yaara.YaaraClientManager;
 import com.mlieou.yaara.ServerPreferencesManager;
 import com.mlieou.yaara.WeakHandler;
 import com.mlieou.yaara.model.ServerProfile;
 
 /**
- * Created by mengdi on 12/26/17.
+ * Created by mlieou on 12/26/17.
  */
 
-public class YaaraService extends Service implements HandlerInterface {
+public class YaaraService extends Service implements HandlerCallback {
     private static final String HANDLER_THREAD_NAME = "HandlerThread";
 
     private Handler mAPIHandler;
@@ -39,8 +39,10 @@ public class YaaraService extends Service implements HandlerInterface {
 
         mServerPreferencesManager = new ServerPreferencesManager(this);
         mClientManager = new YaaraClientManager(mServerPreferencesManager);
-        ServerProfile profile = new ServerProfile(mServerPreferencesManager);
-        mClientManager.initServer(profile);
+        if (mServerPreferencesManager.isServerProfileExist()) {
+            ServerProfile profile = mServerPreferencesManager.getDefaultServerProfile();
+            mClientManager.initServer(profile);
+        }
     }
 
     @Override

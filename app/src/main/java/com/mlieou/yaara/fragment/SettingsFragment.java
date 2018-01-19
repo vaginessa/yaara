@@ -15,7 +15,7 @@ import com.mlieou.yaara.widget.NumberPickerPreference;
 import java.util.Map;
 
 /**
- * Created by mengdi on 1/10/18.
+ * Created by mlieou on 1/10/18.
  */
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {

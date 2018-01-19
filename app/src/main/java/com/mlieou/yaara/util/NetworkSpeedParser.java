@@ -1,7 +1,7 @@
 package com.mlieou.yaara.util;
 
 /**
- * Created by mengdi on 1/13/18.
+ * Created by mlieou on 1/13/18.
  */
 
 public class NetworkSpeedParser {

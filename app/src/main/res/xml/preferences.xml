@@ -34,6 +34,7 @@
             android:entries="@array/preference_list_protocol_entries"
             android:entryValues="@array/preference_list_protocol_entry_values"
             android:defaultValue="@string/preference_aria2_protocol_default_val"
+            android:enabled="false"
             android:summary="%s"/>
 
         <ListPreference
@@ -42,13 +43,29 @@
             android:entries="@array/preference_list_request_method_entries"
             android:entryValues="@array/preference_list_request_method_entry_values"
             android:defaultValue="@string/preference_aria2_request_method_default_val"
+            android:enabled="false"
             android:summary="%s"/>
 
         <EditTextPreference
             android:title="@string/preference_aria2_secret_token"
             android:key="pref_aria2_secret_token"
             android:inputType="textNoSuggestions"
+            android:enabled="false"
             android:summary="@string/preference_not_set"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/preference_category_yaara_settings_title"
+        android:key="pref_cat_yaara_settings">
+
+        <ListPreference
+            android:title="@string/preference_yaara_update_interval"
+            android:key="pref_yaara_update_interval"
+            android:entries="@array/preference_list_update_interval_entries"
+            android:entryValues="@array/preference_list_update_interval_entry_values"
+            android:defaultValue="1"
+            android:summary="%s"/>
 
     </PreferenceCategory>
 

@@ -52,10 +52,6 @@ public class ServerProfile {
         this.requestMethod = requestMethod;
     }
 
-    public ServerProfile(ServerPreferencesManager manager) {
-
-    }
-
     public String getName() {
         return name;
     }

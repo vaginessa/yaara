@@ -9,16 +9,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mlieou.yaara.R;
-import com.mlieou.yaara.model.Aria2TaskStatus;
 import com.mlieou.yaara.model.TaskStatusLite;
+import com.mlieou.yaara.rpc.aria2.constant.Aria2TaskStatus;
+import com.mlieou.yaara.util.NetworkSpeedParser;
+import com.mlieou.yaara.util.UIUtil;
 
 import java.util.List;
 
 /**
- * Created by mengdi on 1/7/18.
+ * Created by mlieou on 1/7/18.
  */
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterViewHolder> implements Aria2TaskStatus {
 
     private static final String TAG = "TaskAdapter";
 
@@ -39,11 +41,32 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
     @Override
     public void onBindViewHolder(TaskAdapterViewHolder holder, int position) {
         TaskStatusLite status = mTaskList.get(position);
-        // TODO
+
         holder.taskTitle.setText(status.getGid());
-        holder.taskProgress.setProgress((int)(status.getCompletedLength() * 100 / status.getTotalLength()));
-        holder.taskDownloadSpeed.setText("" + status.getDownloadSpeed());
-        holder.taskRemainTime.setText("N/A");
+
+        if (status.getTotalLength() != 0)
+            holder.taskProgress.setProgress((int)(status.getCompletedLength() * 100 / status.getTotalLength()));
+        else
+            holder.taskProgress.setProgress(0);
+
+        switch (status.getStatus()) {
+            case ACTIVE:
+                holder.taskDownloadSpeed.setText(NetworkSpeedParser.parse(status.getDownloadSpeed()));
+                // set remain time
+                if (status.getDownloadSpeed() == 0)
+                    holder.taskRemainTime.setText("--:--:--");
+                else
+                    holder.taskRemainTime.setText(UIUtil.secondsToTime(
+                            (status.getTotalLength() - status.getCompletedLength())
+                                    / status.getDownloadSpeed()));
+                break;
+            case WAITING:case PAUSED:
+                holder.taskDownloadSpeed.setText(status.getStatus());
+                break;
+            case COMPLETE:case ERROR:case REMOVED:
+                holder.taskDownloadSpeed.setText(status.getStatus());
+                break;
+        }
     }
 
     @Override

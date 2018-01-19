@@ -12,7 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
 /**
- * Created by mengdi on 1/11/18.
+ * Created by mlieou on 1/11/18.
  */
 
 public class NumberPickerPreference extends DialogPreference {

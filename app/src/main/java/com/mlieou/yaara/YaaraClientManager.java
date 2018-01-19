@@ -13,12 +13,13 @@ import com.mlieou.yaara.model.TaskStatusLite;
 import com.mlieou.yaara.model.TaskType;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by mengdi on 1/16/18.
+ * Created by mlieou on 1/16/18.
  */
 
 public class YaaraClientManager implements MessageCode {
@@ -31,6 +32,8 @@ public class YaaraClientManager implements MessageCode {
 
     public YaaraClientManager(ServerPreferencesManager manager) {
         this.mServerPreferencesManager = manager;
+        // TODO
+        mClient = new YaaraClient(mServerPreferencesManager.getDefaultServerProfile());
     }
 
     public void initServer(ServerProfile profile) {
@@ -51,21 +54,18 @@ public class YaaraClientManager implements MessageCode {
                 break;
             case GET_ACTIVE_TASKS:
                 messageToSend.what = UPDATE_TASK_LIST_AND_GLOBAL_STATUS;
-                messageToSend.obj = test(TaskType.ACTIVE);
+                messageToSend.obj = handleTaskRequest(TaskType.ACTIVE);
                 mMessenger.send(messageToSend);
-                //handleTaskRequest(TaskType.ACTIVE);
                 break;
             case GET_WAITING_TASKS:
                 messageToSend.what = UPDATE_TASK_LIST_AND_GLOBAL_STATUS;
-                messageToSend.obj = test(TaskType.WAITING);
+                messageToSend.obj = handleTaskRequest(TaskType.WAITING);
                 mMessenger.send(messageToSend);
-                //handleTaskRequest(TaskType.WAITING);
                 break;
             case GET_STOPPED_TASKS:
                 messageToSend.what = UPDATE_TASK_LIST_AND_GLOBAL_STATUS;
-                messageToSend.obj = test(TaskType.STOPPED);
+                messageToSend.obj = handleTaskRequest(TaskType.STOPPED);
                 mMessenger.send(messageToSend);
-                //handleTaskRequest(TaskType.STOPPED);
                 break;
             case ADD_HTTP_TASK:
                 break;
@@ -78,19 +78,11 @@ public class YaaraClientManager implements MessageCode {
         }
     }
 
-    private void handleTaskRequest(TaskType type) throws RemoteException {
-        Message messageToSend = new Message();
-        GlobalStatus status = mClient.getGlobalStatus();
+    private RefreshBundle handleTaskRequest(TaskType type) throws RemoteException {
+        RefreshBundle bundle;
         List<TaskStatusLite> list = mClient.getTaskStatusLiteList(type);
-        RefreshBundle bundle = new RefreshBundle(list, status);
-        messageToSend.what = UPDATE_TASK_LIST_AND_GLOBAL_STATUS;
-        messageToSend.obj = bundle;
-        mMessenger.send(messageToSend);
-    }
-
-    private String test(TaskType taskType) {
-        Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss z");
-        return taskType + formatter.format(currentTime);
+        GlobalStatus status = mClient.getGlobalStatus();
+        bundle = new RefreshBundle(list, status);
+        return bundle;
     }
 }

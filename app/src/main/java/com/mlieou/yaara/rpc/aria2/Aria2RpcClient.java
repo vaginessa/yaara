@@ -19,7 +19,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 /**
- * Created by mengdi on 12/26/17.
+ * Created by mlieou on 12/26/17.
  */
 
 public class Aria2RpcClient {

@@ -3,7 +3,7 @@ package com.mlieou.yaara.model;
 import java.util.List;
 
 /**
- * Created by mengdi on 1/4/18.
+ * Created by mlieou on 1/4/18.
  */
 
 public class Aria2BitTorrent {

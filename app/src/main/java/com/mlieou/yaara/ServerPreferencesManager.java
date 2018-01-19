@@ -1,23 +1,33 @@
 package com.mlieou.yaara;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 
 import com.mlieou.yaara.model.ServerProfile;
 
 import java.util.List;
 
 /**
- * Created by mengdi on 1/16/18.
+ * Created by mlieou on 1/16/18.
  */
 
 public class ServerPreferencesManager {
+
     Context mContext;
+    SharedPreferences mPreference;
+
     public ServerPreferencesManager(Context context) {
         mContext = context;
+        mPreference = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
     public ServerProfile getDefaultServerProfile() {
-        return new ServerProfile("Jarvis", "10.24.233.100", 6800, "jsonrpc", null, ServerProfile.Protocol.HTTP, ServerProfile.RequestMethod.POST);
+        String name = mPreference.getString("pref_aria2_alias", "");
+        String host = mPreference.getString("pref_aria2_host", "");
+        int post = mPreference.getInt("pref_aria2_port", 6800);
+        return new ServerProfile(name, host, post, "jsonrpc", null, ServerProfile.Protocol.HTTP, ServerProfile.RequestMethod.POST);
     }
 
     public List<ServerProfile> getAllServerProfile() {
@@ -36,5 +46,12 @@ public class ServerPreferencesManager {
 
     }
 
+    public boolean isServerProfileExist() {
+        return !mPreference.getString("pref_aria2_host", "").equals("");
+    }
 
+    public int getUpdateInterval() {
+        String interval = mPreference.getString("pref_yaara_update_interval", "1");
+        return Integer.valueOf(interval);
+    }
 }
