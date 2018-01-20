@@ -4,13 +4,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -22,11 +20,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mlieou.yaara.HandlerCallback;
-import com.mlieou.yaara.ServerPreferencesManager;
+import com.mlieou.yaara.core.HandlerCallback;
+import com.mlieou.yaara.core.ServerPreferencesManager;
 import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.R;
-import com.mlieou.yaara.WeakHandler;
+import com.mlieou.yaara.core.WeakHandler;
 import com.mlieou.yaara.adapter.TaskPagerAdapter;
 import com.mlieou.yaara.fragment.SimpleNewTaskFragment;
 import com.mlieou.yaara.fragment.TaskFragmentCallback;
@@ -38,7 +36,6 @@ import com.mlieou.yaara.util.UIUtil;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.CountDownLatch;
 
 public class MainActivity extends AppCompatActivity implements HandlerCallback {
 
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
     private ServerPreferencesManager mServerPreferencesManager;
 
     private Timer mRefreshTimer;
-    private int mUpdateInterval = 1000;
+    private int mUpdateInterval;
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override

@@ -29,15 +29,14 @@ dependencies {
     implementation "com.android.support:cardview-v7:${libVersions['SupportLib']}"
     implementation "com.android.support:design:${libVersions['SupportLib']}"
     implementation "com.android.support:support-annotations:${libVersions['SupportLib']}"
-
-    implementation("com.mikepenz:materialdrawer:${libVersions['MaterialDrawer']}") {
-        transitive = true
-    }
-
     implementation "com.android.support.constraint:constraint-layout:${libVersions['ConstraintLayout']}"
 
     implementation "com.squareup.okhttp3:okhttp:${libVersions['OkHttp']}"
     implementation "com.google.code.gson:gson:${libVersions['Gson']}"
+    implementation "org.greenrobot:eventbus:${libVersions['EventBus']}"
+    implementation("com.mikepenz:materialdrawer:${libVersions['MaterialDrawer']}") {
+        transitive = true
+    }
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation "com.android.support.test:runner:${libVersions['SupportTest']}"

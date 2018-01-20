@@ -10,10 +10,10 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
-import com.mlieou.yaara.HandlerCallback;
-import com.mlieou.yaara.YaaraClientManager;
-import com.mlieou.yaara.ServerPreferencesManager;
-import com.mlieou.yaara.WeakHandler;
+import com.mlieou.yaara.core.HandlerCallback;
+import com.mlieou.yaara.core.YaaraClientManager;
+import com.mlieou.yaara.core.ServerPreferencesManager;
+import com.mlieou.yaara.core.WeakHandler;
 import com.mlieou.yaara.model.ServerProfile;
 
 /**

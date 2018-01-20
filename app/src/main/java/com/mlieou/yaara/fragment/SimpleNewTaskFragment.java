@@ -21,9 +21,9 @@ public class SimpleNewTaskFragment extends DialogFragment {
         builder.setPositiveButton(R.string.add, (dialogInterface, i) -> {
 
         });
-        builder.setNeutralButton(R.string.advance, (dialogInterface, i) -> {
-
-        });
+//        builder.setNeutralButton(R.string.advance, (dialogInterface, i) -> {
+//
+//        });
         builder.setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
             getDialog().cancel();
         });

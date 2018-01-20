@@ -18,8 +18,6 @@
 
 package com.mlieou.yaara.model;
 
-import com.mlieou.yaara.ServerPreferencesManager;
-
 public class ServerProfile {
 
     public enum Protocol {

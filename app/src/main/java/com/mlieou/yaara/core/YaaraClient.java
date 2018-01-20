@@ -1,4 +1,4 @@
-package com.mlieou.yaara;
+package com.mlieou.yaara.core;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

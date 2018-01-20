@@ -1,4 +1,4 @@
-package com.mlieou.yaara;
+package com.mlieou.yaara.core;
 
 import android.os.Handler;
 import android.os.Looper;

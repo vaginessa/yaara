@@ -1,4 +1,4 @@
-package com.mlieou.yaara;
+package com.mlieou.yaara.core;
 
 import android.os.Handler;
 import android.os.Message;
@@ -12,10 +12,6 @@ import com.mlieou.yaara.model.ServerProfile;
 import com.mlieou.yaara.model.TaskStatusLite;
 import com.mlieou.yaara.model.TaskType;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,8 +24,6 @@ public class YaaraClientManager implements MessageCode {
     private ServerPreferencesManager mServerPreferencesManager;
     private ServerProfile mProfile;
 
-    private boolean mUpdatingStatus = false;
-
     public YaaraClientManager(ServerPreferencesManager manager) {
         this.mServerPreferencesManager = manager;
         // TODO
@@ -38,6 +32,7 @@ public class YaaraClientManager implements MessageCode {
 
     public void initServer(ServerProfile profile) {
         mProfile = profile;
+        mClient = new YaaraClient(mProfile);
     }
 
     public void setHandlerMessenger(Messenger messenger) {
