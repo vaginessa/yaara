@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.activity.MainActivity;
 import com.mlieou.yaara.adapter.TaskAdapter;
-import com.mlieou.yaara.model.TaskStatusLite;
+import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.model.TaskType;
 
 import java.util.List;
@@ -97,7 +97,7 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
     }
 
     @Override
-    public void swapData(List<TaskStatusLite> list) {
+    public void swapData(List<TaskStatus> list) {
         mAdapter.swapData(list);
     }
 }

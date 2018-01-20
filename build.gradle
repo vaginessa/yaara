@@ -40,7 +40,8 @@ subprojects {
                     Espresso            : '3.0.1',
                     Gson                : '2.8.2',
                     MaterialDrawer      : '6.0.2@aar',
-                    EventBus            : '3.1.1'
+                    EventBus            : '3.1.1',
+                    Retrofit            : '2.3.0'
             ]
         }
     }

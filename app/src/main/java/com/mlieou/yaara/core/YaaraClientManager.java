@@ -9,7 +9,7 @@ import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.model.GlobalStatus;
 import com.mlieou.yaara.model.RefreshBundle;
 import com.mlieou.yaara.model.ServerProfile;
-import com.mlieou.yaara.model.TaskStatusLite;
+import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.model.TaskType;
 
 import java.util.List;
@@ -75,7 +75,7 @@ public class YaaraClientManager implements MessageCode {
 
     private RefreshBundle handleTaskRequest(TaskType type) throws RemoteException {
         RefreshBundle bundle;
-        List<TaskStatusLite> list = mClient.getTaskStatusLiteList(type);
+        List<TaskStatus> list = mClient.getTaskStatusLiteList(type);
         GlobalStatus status = mClient.getGlobalStatus();
         bundle = new RefreshBundle(list, status);
         return bundle;

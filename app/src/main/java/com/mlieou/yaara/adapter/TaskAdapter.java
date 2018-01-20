@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mlieou.yaara.R;
-import com.mlieou.yaara.model.TaskStatusLite;
+import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.rpc.aria2.constant.Aria2TaskStatus;
 import com.mlieou.yaara.util.NetworkSpeedParser;
 import com.mlieou.yaara.util.UIUtil;
@@ -25,7 +25,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
     private static final String TAG = "TaskAdapter";
 
     Context mContext;
-    List<TaskStatusLite> mTaskList;
+    List<TaskStatus> mTaskList;
 
     public TaskAdapter(Context context) {
         mContext = context;
@@ -40,9 +40,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
 
     @Override
     public void onBindViewHolder(TaskAdapterViewHolder holder, int position) {
-        TaskStatusLite status = mTaskList.get(position);
+        TaskStatus status = mTaskList.get(position);
 
-        holder.taskTitle.setText(status.getGid());
+        holder.taskTitle.setText(status.getTaskName());
 
         if (status.getTotalLength() != 0)
             holder.taskProgress.setProgress((int)(status.getCompletedLength() * 100 / status.getTotalLength()));
@@ -75,7 +75,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
         return mTaskList.size();
     }
 
-    public void swapData(List<TaskStatusLite> list) {
+    public void swapData(List<TaskStatus> list) {
         mTaskList = list;
         notifyDataSetChanged();
     }

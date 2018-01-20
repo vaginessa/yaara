@@ -32,6 +32,8 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:${libVersions['ConstraintLayout']}"
 
     implementation "com.squareup.okhttp3:okhttp:${libVersions['OkHttp']}"
+    implementation "com.squareup.retrofit2:retrofit:${libVersions['Retrofit']}"
+    implementation "com.squareup.retrofit2:converter-gson:${libVersions['Retrofit']}"
     implementation "com.google.code.gson:gson:${libVersions['Gson']}"
     implementation "org.greenrobot:eventbus:${libVersions['EventBus']}"
     implementation("com.mikepenz:materialdrawer:${libVersions['MaterialDrawer']}") {

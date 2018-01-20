@@ -21,15 +21,15 @@ package com.mlieou.yaara.model;
 import java.util.List;
 
 public class RefreshBundle {
-    private List<TaskStatusLite> taskList;
+    private List<TaskStatus> taskList;
     private GlobalStatus globalStatus;
 
-    public RefreshBundle(List<TaskStatusLite> taskList, GlobalStatus globalStatus) {
+    public RefreshBundle(List<TaskStatus> taskList, GlobalStatus globalStatus) {
         this.taskList = taskList;
         this.globalStatus = globalStatus;
     }
 
-    public List<TaskStatusLite> getTaskList() {
+    public List<TaskStatus> getTaskList() {
         return taskList;
     }
 

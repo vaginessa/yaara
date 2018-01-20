@@ -13,4 +13,8 @@ public interface Aria2RpcKey {
     String BITFIELD = "bitfield";
     String DOWNLOAD_SPEED = "downloadSpeed";
     String UPLOAD_SPEED = "uploadSpeed";
+    String BIT_TORRENT = "bittorrent";
+    String DIR = "dir";
+    String FILES = "files";
+
 }

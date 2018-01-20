@@ -1,6 +1,6 @@
 package com.mlieou.yaara.fragment;
 
-import com.mlieou.yaara.model.TaskStatusLite;
+import com.mlieou.yaara.model.TaskStatus;
 
 import java.util.List;
 
@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public interface TaskFragmentCallback {
-    void swapData(List<TaskStatusLite> list);
+    void swapData(List<TaskStatus> list);
 }
