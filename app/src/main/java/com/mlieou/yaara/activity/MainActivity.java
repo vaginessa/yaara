@@ -135,9 +135,21 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
         mainContent.setVisibility(View.VISIBLE);
     }
 
-    public void newTask(View view) {
+    public void showNewTaskDialog(View view) {
         SimpleNewTaskFragment fragment = new SimpleNewTaskFragment();
         fragment.show(getFragmentManager(), NEW_TASK_DIALOG);
+    }
+
+    public void sumbitTask(String url) {
+        Message message = new Message();
+        message.what = MessageCode.ADD_HTTP_TASK;
+        message.obj = url;
+        message.replyTo = mMessenger;
+        try {
+            mServiceMessenger.send(message);
+        } catch (RemoteException e) {
+
+        }
     }
 
     private void doBindService() {

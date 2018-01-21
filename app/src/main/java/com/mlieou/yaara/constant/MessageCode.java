@@ -33,4 +33,5 @@ public interface MessageCode {
 
     int UPDATE_TASK_LIST_AND_GLOBAL_STATUS = 128;
     int UPDATE_GLOBAL_STATUS = 129;
+    int HTTP_TASK_ADDED = 130;
 }

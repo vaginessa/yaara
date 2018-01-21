@@ -90,7 +90,8 @@ public class YaaraClient {
         }
     }
 
-    private String getTaskName(TaskStatus status) {
+    private static String getTaskName(TaskStatus status) {
+        if (status == null) return "";
         String taskName;
         // check if it's a bittorrent task, then use info name as taskName
         if (status.getBittorrent() != null && status.getBittorrent().getInfo() != null) {
@@ -131,6 +132,18 @@ public class YaaraClient {
             jsonStr = "";
         }
         return mGson.fromJson(jsonStr, GlobalStatus.class);
+    }
+
+    public String addHttpTask(String url) {
+        List<String> urlList = new ArrayList<>();
+        urlList.add(url);
+        String gid;
+        try {
+            gid = mClient.addUri(urlList, new HashMap<>(), 0);
+        } catch (Exception e) {
+            gid = "";
+        }
+        return gid;
     }
 
     public String unpause(String gid) {

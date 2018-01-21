@@ -36,7 +36,7 @@ public class UIUtil {
         }
         int hours = (int) totalSeconds / 3600;
         int minutes = (int) (totalSeconds % 3600) / 60;
-        int sec = (int) totalSeconds / 3600;
+        int sec = (int) totalSeconds % 60;
         return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, sec);
     }
 }

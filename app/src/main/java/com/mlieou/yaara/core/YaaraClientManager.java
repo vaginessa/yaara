@@ -63,6 +63,9 @@ public class YaaraClientManager implements MessageCode {
                 mMessenger.send(messageToSend);
                 break;
             case ADD_HTTP_TASK:
+                messageToSend.what = HTTP_TASK_ADDED;
+                messageToSend.obj = mClient.addHttpTask((String) msg.obj);
+                mMessenger.send(messageToSend);
                 break;
             case START_TASK:
                 break;
