@@ -20,7 +20,6 @@ package com.mlieou.yaara.util;
 
 import com.mlieou.yaara.model.GlobalStatus;
 
-import java.time.LocalTime;
 import java.util.Locale;
 
 public class UIUtil {
@@ -31,7 +30,7 @@ public class UIUtil {
     public static String secondsToTime(long totalSeconds) {
         if (totalSeconds >= 86400) {
             long days = totalSeconds / 86400;
-            if (days == 1)  return "1 day";
+            if (days == 1) return "1 day";
             return "" + days + " days";
         }
         int hours = (int) totalSeconds / 3600;

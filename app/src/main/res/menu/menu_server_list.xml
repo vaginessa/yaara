@@ -2,9 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_add_server"
+    <item
+        android:id="@+id/action_add_server"
         android:icon="@drawable/ic_add_white"
-        app:showAsAction="ifRoom"
-        android:title="@string/menu_action_add_server" />
+        android:title="@string/menu_action_add_server"
+        app:showAsAction="ifRoom" />
 
 </menu>

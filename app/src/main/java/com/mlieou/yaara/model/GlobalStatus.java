@@ -3,15 +3,29 @@ package com.mlieou.yaara.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.Gson;
-
-import org.json.JSONObject;
-
 /**
  * Created by mlieou on 1/4/18.
  */
 
 public class GlobalStatus implements Parcelable {
+    public static final Parcelable.Creator<GlobalStatus> CREATOR = new Parcelable.Creator<GlobalStatus>() {
+        @Override
+        public GlobalStatus createFromParcel(Parcel source) {
+            GlobalStatus globalStatus = new GlobalStatus();
+            globalStatus.downloadSpeed = source.readLong();
+            globalStatus.uploadSpeed = source.readLong();
+            globalStatus.numActive = source.readInt();
+            globalStatus.numWaiting = source.readInt();
+            globalStatus.numStopped = source.readInt();
+            globalStatus.numStoppedTotal = source.readInt();
+            return globalStatus;
+        }
+
+        @Override
+        public GlobalStatus[] newArray(int size) {
+            return new GlobalStatus[size];
+        }
+    };
     private long downloadSpeed;
     private long uploadSpeed;
     private int numActive;
@@ -43,7 +57,6 @@ public class GlobalStatus implements Parcelable {
         return numStoppedTotal;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -58,23 +71,4 @@ public class GlobalStatus implements Parcelable {
         dest.writeInt(numStopped);
         dest.writeInt(numStoppedTotal);
     }
-
-    public static final Parcelable.Creator<GlobalStatus> CREATOR = new Parcelable.Creator<GlobalStatus>() {
-        @Override
-        public GlobalStatus createFromParcel(Parcel source) {
-            GlobalStatus globalStatus = new GlobalStatus();
-            globalStatus.downloadSpeed = source.readLong();
-            globalStatus.uploadSpeed = source.readLong();
-            globalStatus.numActive = source.readInt();
-            globalStatus.numWaiting = source.readInt();
-            globalStatus.numStopped = source.readInt();
-            globalStatus.numStoppedTotal = source.readInt();
-            return globalStatus;
-        }
-
-        @Override
-        public GlobalStatus[] newArray(int size) {
-            return new GlobalStatus[size];
-        }
-    };
 }

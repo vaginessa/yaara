@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,12 +76,12 @@ public class NumberPickerPreference extends DialogPreference {
         setValue(restorePersistedValue ? getPersistedInt(MIN_VALUE) : (Integer) defaultValue);
     }
 
+    public int getValue() {
+        return this.value;
+    }
+
     public void setValue(int value) {
         this.value = value;
         persistInt(this.value);
-    }
-
-    public int getValue() {
-        return this.value;
     }
 }

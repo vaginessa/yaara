@@ -19,10 +19,10 @@ public class JSONHelper {
     private static final String TOKEN = "token:";
 
     public static void addList(JSONArray target, List<String> list) {
-        if (list == null || list.size() == 0)   return;
+        if (list == null || list.size() == 0) return;
         JSONArray listArray = new JSONArray();
         for (String element : list)
-                listArray.put(element);
+            listArray.put(element);
         target.put(listArray);
     }
 

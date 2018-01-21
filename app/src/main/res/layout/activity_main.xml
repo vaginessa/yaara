@@ -32,7 +32,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="Please add your Aria2 server in Settings"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_new_task"

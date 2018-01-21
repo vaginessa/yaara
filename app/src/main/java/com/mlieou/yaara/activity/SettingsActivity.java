@@ -1,7 +1,7 @@
 package com.mlieou.yaara.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.fragment.SettingsFragment;

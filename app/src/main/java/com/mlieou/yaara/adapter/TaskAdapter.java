@@ -45,7 +45,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
         holder.taskTitle.setText(status.getTaskName());
 
         if (status.getTotalLength() != 0)
-            holder.taskProgress.setProgress((int)(status.getCompletedLength() * 100 / status.getTotalLength()));
+            holder.taskProgress.setProgress((int) (status.getCompletedLength() * 100 / status.getTotalLength()));
         else
             holder.taskProgress.setProgress(0);
 
@@ -60,10 +60,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
                             (status.getTotalLength() - status.getCompletedLength())
                                     / status.getDownloadSpeed()));
                 break;
-            case WAITING:case PAUSED:
+            case WAITING:
+            case PAUSED:
                 holder.taskDownloadSpeed.setText(status.getStatus());
                 break;
-            case COMPLETE:case ERROR:case REMOVED:
+            case COMPLETE:
+            case ERROR:
+            case REMOVED:
                 holder.taskDownloadSpeed.setText(status.getStatus());
                 break;
         }
@@ -71,7 +74,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
 
     @Override
     public int getItemCount() {
-        if (mTaskList == null)  return 0;
+        if (mTaskList == null) return 0;
         return mTaskList.size();
     }
 

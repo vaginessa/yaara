@@ -1,8 +1,5 @@
 package com.mlieou.yaara.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.mlieou.yaara.rpc.aria2.constant.Aria2RpcKey;
 
@@ -66,6 +63,10 @@ public class TaskStatus {
 
     public String getTaskName() {
         return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
     public String getGid() {
@@ -162,9 +163,5 @@ public class TaskStatus {
 
     public boolean isVerifyIntegrityPending() {
         return verifyIntegrityPending;
-    }
-
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
     }
 }

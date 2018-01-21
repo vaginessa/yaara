@@ -2,7 +2,6 @@ package com.mlieou.yaara.core;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 
 import com.mlieou.yaara.model.ServerProfile;

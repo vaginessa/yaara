@@ -6,7 +6,6 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.activity.MainActivity;

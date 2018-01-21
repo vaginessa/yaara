@@ -195,7 +195,7 @@ public class RequestBuilder {
         params.put(fileIndex);
         JSONHelper.addList(params, delUris);
         JSONHelper.addList(params, addUris);
-        return buildRequest(id, url, params,Aria2RpcMethod.changeUri);
+        return buildRequest(id, url, params, Aria2RpcMethod.changeUri);
     }
 
     public static Request getOption(String id, String url, String secret, String gid) {
@@ -203,10 +203,10 @@ public class RequestBuilder {
     }
 
     public static Request changeOption(String id,
-                                    String url,
-                                    String secret,
-                                    String gid,
-                                    HashMap<String, String> options) {
+                                       String url,
+                                       String secret,
+                                       String gid,
+                                       HashMap<String, String> options) {
         JSONArray params = new JSONArray();
         JSONHelper.addSecret(params, secret);
         params.put(gid);

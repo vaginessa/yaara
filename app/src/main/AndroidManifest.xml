@@ -19,15 +19,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SettingsActivity" />
-        <activity android:name=".activity.TaskDetailActivity" />
-        <activity android:name=".activity.NewTaskActivity" />
 
         <service
             android:name=".service.YaaraService"
             android:exported="false" />
 
-        <activity android:name=".activity.ServerListActivity" />
-        <activity android:name=".activity.NewServerActivity"></activity>
     </application>
 
 </manifest>

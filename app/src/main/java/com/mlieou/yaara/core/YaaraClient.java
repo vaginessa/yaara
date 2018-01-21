@@ -1,13 +1,12 @@
 package com.mlieou.yaara.core;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
-import com.mlieou.yaara.model.TaskType;
-import com.mlieou.yaara.rpc.aria2.Aria2RpcClient;
 import com.mlieou.yaara.model.GlobalStatus;
 import com.mlieou.yaara.model.ServerProfile;
 import com.mlieou.yaara.model.TaskStatus;
+import com.mlieou.yaara.model.TaskType;
+import com.mlieou.yaara.rpc.aria2.Aria2RpcClient;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -36,6 +35,28 @@ public class YaaraClient {
         mFullUpdatePerformed = new HashSet<>();
     }
 
+    private static String getTaskName(TaskStatus status) {
+        if (status == null) return "";
+        String taskName;
+        // check if it's a bittorrent task, then use info name as taskName
+        if (status.getBittorrent() != null && status.getBittorrent().getInfo() != null) {
+            taskName = status.getBittorrent().getInfo().name;
+        } else if (status.getFiles() != null && status.getFiles().size() > 0) {
+            // if it has a file list, use the first file name as taskName
+            String dir = status.getDir();
+            String path = status.getFiles().get(0).getPath();
+
+            // if path start with [METADATA], then it is a magnet link, use path as taskName
+            if (path.startsWith("[METADATA]"))
+                taskName = path;
+            else
+                // otherwise, taskName should be the file name
+                taskName = path.substring(dir.length() + 1);
+        } else
+            taskName = "";
+        return taskName;
+    }
+
     public List<TaskStatus> getTaskStatusLiteList(TaskType state) {
         List<TaskStatus> list;
         try {
@@ -60,11 +81,11 @@ public class YaaraClient {
                 default:
                     jsonStr = "";
             }
-            Type collectionType = new TypeToken<List<TaskStatus>>(){}.getType();
+            Type collectionType = new TypeToken<List<TaskStatus>>() {
+            }.getType();
             list = mGson.fromJson(jsonStr, collectionType);
             setNameForAllTasks(list);
         } catch (Exception e) {
-            e.printStackTrace();
             list = new ArrayList<>(0);
         }
         return list;
@@ -90,34 +111,11 @@ public class YaaraClient {
         }
     }
 
-    private static String getTaskName(TaskStatus status) {
-        if (status == null) return "";
-        String taskName;
-        // check if it's a bittorrent task, then use info name as taskName
-        if (status.getBittorrent() != null && status.getBittorrent().getInfo() != null) {
-            taskName = status.getBittorrent().getInfo().name;
-        } else if (status.getFiles() != null && status.getFiles().size() > 0) {
-            // if it has a file list, use the first file name as taskName
-            String dir = status.getDir();
-            String path = status.getFiles().get(0).getPath();
-
-            // if path start with [METADATA], then it is a magnet link, use path as taskName
-            if (path.startsWith("[METADATA]"))
-                taskName = path;
-            else
-                // otherwise, taskName should be the file name
-                taskName = path.substring(dir.length() + 1);
-        }
-        else
-            taskName = "";
-        return taskName;
-    }
-
     public TaskStatus getTaskStatus(String gid) {
         TaskStatus status;
         try {
-             String str = mClient.tellStatus(gid, Arrays.asList(TaskStatus.REQUEST_FULL_UPDATE));
-             status = mGson.fromJson(str, TaskStatus.class);
+            String str = mClient.tellStatus(gid, Arrays.asList(TaskStatus.REQUEST_FULL_UPDATE));
+            status = mGson.fromJson(str, TaskStatus.class);
         } catch (Exception e) {
             status = null;
         }

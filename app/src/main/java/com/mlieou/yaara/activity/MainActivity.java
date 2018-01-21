@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -13,19 +14,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mlieou.yaara.R;
+import com.mlieou.yaara.adapter.TaskPagerAdapter;
+import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.core.HandlerCallback;
 import com.mlieou.yaara.core.ServerPreferencesManager;
-import com.mlieou.yaara.constant.MessageCode;
-import com.mlieou.yaara.R;
 import com.mlieou.yaara.core.WeakHandler;
-import com.mlieou.yaara.adapter.TaskPagerAdapter;
 import com.mlieou.yaara.fragment.SimpleNewTaskFragment;
 import com.mlieou.yaara.fragment.TaskFragmentCallback;
 import com.mlieou.yaara.model.GlobalStatus;
@@ -39,17 +39,16 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements HandlerCallback {
 
+    public static final String NEW_TASK_DIALOG = "new_task_dialog";
+    private static final String TAG = "MainActivity";
     private TaskPagerAdapter mAdapter;
-
     private Handler mUpdateHandler;
     private Messenger mMessenger;
     private Messenger mServiceMessenger;
     private boolean mIsServiceBound;
     private ServerPreferencesManager mServerPreferencesManager;
-
     private Timer mRefreshTimer;
     private int mUpdateInterval;
-
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -61,10 +60,6 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
             mServiceMessenger = null;
         }
     };
-
-    private static final String TAG = "MainActivity";
-
-    public static final String NEW_TASK_DIALOG = "new_task_dialog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +190,8 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
                 message.replyTo = mMessenger;
                 try {
                     mServiceMessenger.send(message);
-                } catch (RemoteException e) {}
+                } catch (RemoteException e) {
+                }
             }
         }, 0, mUpdateInterval);
     }

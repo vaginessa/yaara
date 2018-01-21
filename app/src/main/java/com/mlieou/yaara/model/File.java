@@ -1,13 +1,5 @@
 package com.mlieou.yaara.model;
 
-import com.mlieou.yaara.rpc.aria2.constant.Aria2RpcJsonConstant;
-import com.mlieou.yaara.rpc.aria2.util.JSONHelper;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,11 +7,6 @@ import java.util.List;
  */
 
 public class File {
-
-    public class Uri {
-        public String uri;
-        public String status;
-    }
 
     private int index;
     private String path;
@@ -50,5 +37,10 @@ public class File {
 
     public List<Uri> getUris() {
         return uris;
+    }
+
+    public class Uri {
+        public String uri;
+        public String status;
     }
 }

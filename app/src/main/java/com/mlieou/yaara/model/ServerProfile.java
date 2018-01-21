@@ -20,26 +20,13 @@ package com.mlieou.yaara.model;
 
 public class ServerProfile {
 
-    public enum Protocol {
-        HTTP,
-        HTTPS,
-        WEB_SOCKET,
-        WEB_SOCKET_SECURITY
-    }
-
-    public enum RequestMethod {
-        POST,
-        GET
-    }
-
-  private String name;
-  private String host;
-  private int port;
-  private String requestPath;
-  private String secret;
-  private Protocol protocol;
-  private RequestMethod requestMethod;
-
+    private String name;
+    private String host;
+    private int port;
+    private String requestPath;
+    private String secret;
+    private Protocol protocol;
+    private RequestMethod requestMethod;
     public ServerProfile(String name, String host, int port, String requestPath, String secret, Protocol protocol, RequestMethod requestMethod) {
         this.name = name;
         this.host = host;
@@ -76,5 +63,17 @@ public class ServerProfile {
 
     public RequestMethod getRequestMethod() {
         return requestMethod;
+    }
+
+    public enum Protocol {
+        HTTP,
+        HTTPS,
+        WEB_SOCKET,
+        WEB_SOCKET_SECURITY
+    }
+
+    public enum RequestMethod {
+        POST,
+        GET
     }
 }

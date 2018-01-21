@@ -26,17 +26,16 @@ import java.util.List;
 
 public class TaskPagerFragment extends Fragment implements TaskFragmentCallback {
 
-    private static final String TAG = "TaskPagerFragment";
-
     public static final String TASK_TYPE = "take_type";
-
+    private static final String TAG = "TaskPagerFragment";
     TaskType mTaskType;
 
     TaskAdapter mAdapter;
 
     MainActivity mActivity;
 
-    public TaskPagerFragment() {}
+    public TaskPagerFragment() {
+    }
 
     public static TaskPagerFragment newInstance(TaskType taskType) {
         Bundle args = new Bundle();

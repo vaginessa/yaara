@@ -23,7 +23,7 @@ import okhttp3.Response;
  */
 
 public class Aria2RpcClient {
-    
+
     private static final String EMPTY_STRING = "";
 
     private static final String DEFAULT_ID = EMPTY_STRING;
@@ -214,7 +214,7 @@ public class Aria2RpcClient {
     }
 
     public String tellStatus(String gid, List<String> keys)
-            throws IOException, JSONException{
+            throws IOException, JSONException {
         Response response = mClient.newCall(RequestBuilder.tellStatus(
                 DEFAULT_ID,
                 mUrl,
@@ -353,10 +353,10 @@ public class Aria2RpcClient {
     }
 
     public String changeUri(String gid,
-                           int fileIndex,
-                           List<String> delUris,
-                           List<String> addUris,
-                           int position)
+                            int fileIndex,
+                            List<String> delUris,
+                            List<String> addUris,
+                            int position)
             throws IOException, JSONException {
         Response response = mClient.newCall(RequestBuilder.changeUri(
                 DEFAULT_ID,
