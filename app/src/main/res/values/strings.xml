@@ -11,6 +11,8 @@
     <string name="submit">Submit</string>
     <string name="simple_new_task_title">New task</string>
 
+    <string name="label_yaara_service">Yaara Background Operation Service</string>
+
     <!-- Preference -->
     <string name="preference_category_aria2_settings_title">Aria2 Settings</string>
     <string name="preference_aria2_alias">Name</string>

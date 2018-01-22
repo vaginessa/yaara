@@ -22,7 +22,12 @@
 
         <service
             android:name=".service.YaaraService"
+            android:label="@string/label_yaara_service"
             android:exported="false" />
+
+        <provider
+            android:authorities="yaara"
+            android:name=".data.YaaraDataProvider" />
 
     </application>
 
