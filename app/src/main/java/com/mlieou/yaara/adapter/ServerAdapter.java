@@ -18,43 +18,60 @@
 
 package com.mlieou.yaara.adapter;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.mlieou.yaara.R;
 import com.mlieou.yaara.model.ServerProfile;
 
 import java.util.List;
 
 public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerAdapterViewHolder> {
 
-    private List<ServerProfile> mServerList;
+    private Cursor mCursor;
+    private Context mContext;
 
-    public ServerAdapter() {
+    public ServerAdapter(Context context) {
+        mContext = context;
     }
 
     @Override
     public ServerAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(mContext).inflate(R.layout.drawer_item_server, parent, false);
+        return new ServerAdapterViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ServerAdapterViewHolder holder, int position) {
+        mCursor.moveToPosition(position);
+        
+    }
 
+    public void swapData(Cursor cursor) {
+        mCursor = cursor;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        if (mServerList == null) {
+        if (mCursor == null) {
             return 0;
         }
-        return mServerList.size();
+        return mCursor.getCount();
     }
 
     public class ServerAdapterViewHolder extends RecyclerView.ViewHolder {
 
+        private TextView serverName;
+
         public ServerAdapterViewHolder(View itemView) {
             super(itemView);
+            serverName = itemView.findViewById(R.id.tv_server_name);
         }
     }
 }

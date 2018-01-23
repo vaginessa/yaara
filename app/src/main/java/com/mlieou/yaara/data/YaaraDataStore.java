@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
 
 @SuppressWarnings("unused")
 public interface YaaraDataStore {
-    String AUTHORITY = "yaara";
+    String AUTHORITY = "com.mlieou.yaara";
 
     String TYPE_PRIMARY_KEY = "INTEGER PRIMARY KEY AUTOINCREMENT";
     String TYPE_INT = "INTEGER";
@@ -39,6 +39,8 @@ public interface YaaraDataStore {
     interface Servers extends BaseColumns {
 
         String TABLE_NAME = "servers";
+
+        String PATH = "server";
 
         String NAME = "name";
         String HOSTNAME = "hostname";
