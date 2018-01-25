@@ -16,7 +16,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mikepenz.materialdrawer.Drawer;
@@ -142,19 +141,23 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
     private void hideMainContent() {
         TextView notice = findViewById(R.id.tv_no_server_notice);
         FloatingActionButton fab = findViewById(R.id.fab_new_task);
-        LinearLayout mainContent = findViewById(R.id.main_content);
+        TabLayout tab = findViewById(R.id.tab);
+        ViewPager pager = findViewById(R.id.view_pager_container);
         notice.setVisibility(View.VISIBLE);
         fab.setVisibility(View.INVISIBLE);
-        mainContent.setVisibility(View.INVISIBLE);
+        tab.setVisibility(View.INVISIBLE);
+        pager.setVisibility(View.INVISIBLE);
     }
 
     private void displayMainContent() {
         TextView notice = findViewById(R.id.tv_no_server_notice);
         FloatingActionButton fab = findViewById(R.id.fab_new_task);
-        LinearLayout mainContent = findViewById(R.id.main_content);
+        TabLayout tab = findViewById(R.id.tab);
+        ViewPager pager = findViewById(R.id.view_pager_container);
         notice.setVisibility(View.INVISIBLE);
         fab.setVisibility(View.VISIBLE);
-        mainContent.setVisibility(View.VISIBLE);
+        tab.setVisibility(View.VISIBLE);
+        pager.setVisibility(View.VISIBLE);
     }
 
     public void showNewTaskDialog(View view) {
