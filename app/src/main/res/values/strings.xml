@@ -58,4 +58,7 @@
     <!-- Server Editor -->
     <string name="server_editor_title">Edit server</string>
 
+    <!-- Drawer -->
+    <string name="drawer_section_server">Server</string>
+
 </resources>

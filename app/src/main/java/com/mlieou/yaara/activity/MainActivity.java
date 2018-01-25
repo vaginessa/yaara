@@ -18,9 +18,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.adapter.TaskPagerAdapter;
 import com.mlieou.yaara.constant.MessageCode;
@@ -35,6 +38,7 @@ import com.mlieou.yaara.model.RefreshBundle;
 import com.mlieou.yaara.model.TaskType;
 import com.mlieou.yaara.service.YaaraService;
 import com.mlieou.yaara.util.UIUtil;
+import com.mlieou.yaara.widget.ServerDrawerItem;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
     public static final String NEW_TASK_DIALOG = "new_task_dialog";
     private static final String TAG = "MainActivity";
     private Toolbar mToolbar;
+    private AccountHeader mHeader;
     private Drawer mDrawer;
 
     private TaskPagerAdapter mAdapter;
@@ -76,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
         mMessenger = new Messenger(mUpdateHandler);
 
         mToolbar = findViewById(R.id.toolbar);
+        mHeader = buildHeader();
         mDrawer = buildDrawer();
 
         TabLayout tab = findViewById(R.id.tab);
@@ -85,10 +91,23 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
         tab.setupWithViewPager(pager);
     }
 
+    private AccountHeader buildHeader() {
+        AccountHeaderBuilder builder = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.drawer_header)
+                .withSelectionFirstLine("YAARA")
+                .withSelectionSecondLine("Aria2 Remote for Android");
+        return builder.build();
+    }
+
     private Drawer buildDrawer() {
+
         DrawerBuilder builder = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(mToolbar)
+                .addDrawerItems(new SectionDrawerItem()
+                        .withName(R.string.drawer_section_server).withDivider(false))
+                .withAccountHeader(mHeader)
 
                 // settings item
                 .addStickyDrawerItems(new PrimaryDrawerItem()

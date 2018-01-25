@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="gray">#747474</color>
+    <color name="color_drawer_icon">#8A000000</color>
+    <color name="color_drawer_text">#DE000000</color>
 
     <string-array name="icon_colors">
         <item>#311b92</item>
