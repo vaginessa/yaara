@@ -27,11 +27,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mlieou.yaara.R;
-import com.mlieou.yaara.model.ServerProfile;
-
-import java.util.List;
+import com.mlieou.yaara.data.YaaraDataStore;
 
 public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerAdapterViewHolder> {
+
+    public static final String[] PROJECTION = {
+            YaaraDataStore.Servers._ID,
+            YaaraDataStore.Servers.NAME,
+            YaaraDataStore.Servers.HOSTNAME,
+            YaaraDataStore.Servers.PORT,
+            YaaraDataStore.Servers.SECRET_TOKEN
+    };
+
+    private static final int ID_INDEX = 0;
+    private static final int NAME_INDEX = 1;
+    private static final int HOSTNAME_INDEX = 2;
+    private static final int PORT_INDEX = 3;
+    private static final int SECRET_TOKEN_INDEX = 4;
 
     private Cursor mCursor;
     private Context mContext;
@@ -49,7 +61,13 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerAdap
     @Override
     public void onBindViewHolder(ServerAdapterViewHolder holder, int position) {
         mCursor.moveToPosition(position);
-        
+
+        String name = mCursor.getString(NAME_INDEX);
+        String hostname = mCursor.getString(HOSTNAME_INDEX);
+        int port = mCursor.getInt(PORT_INDEX);
+        String secretToken = mCursor.getString(SECRET_TOKEN_INDEX);
+
+        holder.serverName.setText(name);
     }
 
     public void swapData(Cursor cursor) {
@@ -65,11 +83,11 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerAdap
         return mCursor.getCount();
     }
 
-    public class ServerAdapterViewHolder extends RecyclerView.ViewHolder {
+    class ServerAdapterViewHolder extends RecyclerView.ViewHolder {
 
         private TextView serverName;
 
-        public ServerAdapterViewHolder(View itemView) {
+        ServerAdapterViewHolder(View itemView) {
             super(itemView);
             serverName = itemView.findViewById(R.id.tv_server_name);
         }

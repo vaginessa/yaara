@@ -3,4 +3,20 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="gray">#747474</color>
+
+    <string-array name="icon_colors">
+        <item>#311b92</item>
+        <item>#0d47a1</item>
+        <item>#006064</item>
+        <item>#33691e</item>
+        <item>#1b5e20</item>
+        <item>#004d40</item>
+        <item>#827717</item>
+        <item>#999900</item>
+        <item>#e65100</item>
+        <item>#bf360c</item>
+    </string-array>
+
 </resources>

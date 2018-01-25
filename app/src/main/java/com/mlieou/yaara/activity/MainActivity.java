@@ -14,18 +14,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.adapter.TaskPagerAdapter;
 import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.core.HandlerCallback;
 import com.mlieou.yaara.core.ServerPreferencesManager;
 import com.mlieou.yaara.core.WeakHandler;
+import com.mlieou.yaara.fragment.AboutDialogFragment;
 import com.mlieou.yaara.fragment.SimpleNewTaskFragment;
 import com.mlieou.yaara.fragment.TaskFragmentCallback;
 import com.mlieou.yaara.model.GlobalStatus;
@@ -41,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
 
     public static final String NEW_TASK_DIALOG = "new_task_dialog";
     private static final String TAG = "MainActivity";
+    private Toolbar mToolbar;
+    private Drawer mDrawer;
+
     private TaskPagerAdapter mAdapter;
     private Handler mUpdateHandler;
     private Messenger mMessenger;
@@ -70,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
         mUpdateHandler = new WeakHandler(this);
         mMessenger = new Messenger(mUpdateHandler);
 
+        mToolbar = findViewById(R.id.toolbar);
+        mDrawer = buildDrawer();
+
         TabLayout tab = findViewById(R.id.tab);
         mAdapter = new TaskPagerAdapter(getSupportFragmentManager());
         ViewPager pager = findViewById(R.id.view_pager_container);
@@ -77,21 +86,28 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
         tab.setupWithViewPager(pager);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    private Drawer buildDrawer() {
+        DrawerBuilder builder = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(mToolbar)
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+                // settings item
+                .addStickyDrawerItems(new PrimaryDrawerItem()
+                        .withName(R.string.settings)
+                        .withIcon(R.drawable.ic_settings)
+                        .withOnDrawerItemClickListener((view, position, drawerItem) ->
+                                startSettings())
+                        .withSelectable(false))
+
+                // about item
+                .addStickyDrawerItems(new PrimaryDrawerItem()
+                        .withName(R.string.about)
+                        .withIcon(R.drawable.ic_info_outline)
+                        .withOnDrawerItemClickListener(((view, position, drawerItem) ->
+                                displayAboutDialog()))
+                        .withSelectable(false));
+
+        return builder.build();
     }
 
     @Override
@@ -110,6 +126,17 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
         super.onStop();
         stopUIUpdate();
         doUnbindService();
+    }
+
+    private boolean startSettings() {
+        startActivity(new Intent(this, SettingsActivity.class));
+        return true;
+    }
+
+    private boolean displayAboutDialog() {
+        AboutDialogFragment fragment = new AboutDialogFragment();
+        fragment.show(getFragmentManager(), "ABOUT");
+        return true;
     }
 
     private void hideMainContent() {
@@ -210,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
                 // list received and global status received, update subtitle and list
                 RefreshBundle bundle = (RefreshBundle) msg.obj;
                 GlobalStatus globalStatus = bundle.getGlobalStatus();
-                getSupportActionBar().setSubtitle(UIUtil.buildSubtitle(globalStatus));
+                mToolbar.setSubtitle(UIUtil.buildSubtitle(globalStatus));
                 TaskFragmentCallback callback = (TaskFragmentCallback) mAdapter.getCurrentFragment();
                 callback.swapData(bundle.getTaskList());
         }

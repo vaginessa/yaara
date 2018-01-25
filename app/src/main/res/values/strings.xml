@@ -9,6 +9,8 @@
     <string name="cancel">Cancel</string>
     <string name="advance">Advance</string>
     <string name="submit">Submit</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
     <string name="simple_new_task_title">New task</string>
 
     <string name="label_yaara_service">Yaara Background Operation Service</string>
@@ -52,5 +54,8 @@
     <string name="preference_aria2_request_method_default_val">@string/preference_list_request_method_post_val</string>
 
     <string name="preference_not_set">Not set</string>
+
+    <!-- Server Editor -->
+    <string name="server_editor_title">Edit server</string>
 
 </resources>

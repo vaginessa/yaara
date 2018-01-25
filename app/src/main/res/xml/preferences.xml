@@ -1,72 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:key="pref_cat_aria2_settings"
-        android:title="@string/preference_category_aria2_settings_title">
-
-        <EditTextPreference
-            android:inputType="textNoSuggestions"
-            android:key="pref_aria2_alias"
-            android:summary="@string/preference_not_set"
-            android:title="@string/preference_aria2_alias" />
-
-        <EditTextPreference
-            android:inputType="textUri"
-            android:key="pref_aria2_host"
-            android:summary="@string/preference_not_set"
-            android:title="@string/preference_aria2_host" />
-
-        <com.mlieou.yaara.widget.NumberPickerPreference
-            android:defaultValue="@string/preference_aria2_port_default_val"
-            android:key="pref_aria2_port"
-            android:title="@string/preference_aria2_port" />
-
-        <EditTextPreference
-            android:defaultValue="@string/preference_aria2_request_path_default_val"
-            android:inputType="textNoSuggestions"
-            android:key="pref_aria2_request_path"
-            android:title="@string/preference_aria2_request_path" />
-
-        <ListPreference
-            android:defaultValue="@string/preference_aria2_protocol_default_val"
-            android:enabled="false"
-            android:entries="@array/preference_list_protocol_entries"
-            android:entryValues="@array/preference_list_protocol_entry_values"
-            android:key="pref_aria2_protocol"
-            android:summary="%s"
-            android:title="@string/preference_aria2_protocol" />
-
-        <ListPreference
-            android:defaultValue="@string/preference_aria2_request_method_default_val"
-            android:enabled="false"
-            android:entries="@array/preference_list_request_method_entries"
-            android:entryValues="@array/preference_list_request_method_entry_values"
-            android:key="pref_aria2_request_method"
-            android:summary="%s"
-            android:title="@string/preference_aria2_request_method" />
-
-        <EditTextPreference
-            android:enabled="false"
-            android:inputType="textNoSuggestions"
-            android:key="pref_aria2_secret_token"
-            android:summary="@string/preference_not_set"
-            android:title="@string/preference_aria2_secret_token" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="pref_cat_yaara_settings"
-        android:title="@string/preference_category_yaara_settings_title">
-
-        <ListPreference
-            android:defaultValue="1"
-            android:entries="@array/preference_list_update_interval_entries"
-            android:entryValues="@array/preference_list_update_interval_entry_values"
-            android:key="pref_yaara_update_interval"
-            android:summary="%s"
-            android:title="@string/preference_yaara_update_interval" />
-
-    </PreferenceCategory>
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/preference_list_update_interval_entries"
+        android:entryValues="@array/preference_list_update_interval_entry_values"
+        android:key="pref_yaara_update_interval"
+        android:summary="%s"
+        android:title="@string/preference_yaara_update_interval" />
 
 </PreferenceScreen>
