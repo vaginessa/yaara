@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 
 import com.mlieou.yaara.R;
 
@@ -32,6 +33,6 @@ public class LetterIcon extends AppCompatTextView {
         int colorIndex = letter % 10;
         getBackground().setColorFilter(
                 Color.parseColor(colorArray[colorIndex]), PorterDuff.Mode.SRC_ATOP);
-        setText(letter);
+        setText(Character.toString(letter));
     }
 }

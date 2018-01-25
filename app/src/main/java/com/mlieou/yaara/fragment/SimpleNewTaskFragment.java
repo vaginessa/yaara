@@ -25,7 +25,7 @@ public class SimpleNewTaskFragment extends DialogFragment {
         EditText url = view.findViewById(R.id.et_task_link);
         builder.setTitle(R.string.simple_new_task_title).setView(view);
         builder.setPositiveButton(R.string.add, (dialogInterface, i) -> {
-            activity.sumbitTask(url.getText().toString());
+            activity.submitTask(url.getText().toString());
             getDialog().dismiss();
         });
 //        builder.setNeutralButton(R.string.advance, (dialogInterface, i) -> {

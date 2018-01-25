@@ -41,6 +41,7 @@ public interface YaaraDataStore {
         String TABLE_NAME = "servers";
 
         String PATH = "server";
+        Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH);
 
         String NAME = "name";
         String HOSTNAME = "hostname";

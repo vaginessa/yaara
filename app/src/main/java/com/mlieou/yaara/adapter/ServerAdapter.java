@@ -39,11 +39,11 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerAdap
             YaaraDataStore.Servers.SECRET_TOKEN
     };
 
-    private static final int ID_INDEX = 0;
-    private static final int NAME_INDEX = 1;
-    private static final int HOSTNAME_INDEX = 2;
-    private static final int PORT_INDEX = 3;
-    private static final int SECRET_TOKEN_INDEX = 4;
+    public static final int ID_INDEX = 0;
+    public static final int NAME_INDEX = 1;
+    public static final int HOSTNAME_INDEX = 2;
+    public static final int PORT_INDEX = 3;
+    public static final int SECRET_TOKEN_INDEX = 4;
 
     private Cursor mCursor;
     private Context mContext;
@@ -86,6 +86,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerAdap
     class ServerAdapterViewHolder extends RecyclerView.ViewHolder {
 
         private TextView serverName;
+        private
 
         ServerAdapterViewHolder(View itemView) {
             super(itemView);

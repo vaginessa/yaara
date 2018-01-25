@@ -25,7 +25,14 @@ import android.widget.TextView;
 import com.mikepenz.materialdrawer.model.AbstractDrawerItem;
 import com.mlieou.yaara.R;
 
+import java.util.List;
+
 public class ServerDrawerItem extends AbstractDrawerItem<ServerDrawerItem, ServerDrawerItem.ViewHolder> {
+
+    String name;
+    public ServerDrawerItem(String servername) {
+        name = servername;
+    }
 
     @Override
     public ViewHolder getViewHolder(View v) {
@@ -40,6 +47,13 @@ public class ServerDrawerItem extends AbstractDrawerItem<ServerDrawerItem, Serve
     @Override
     public int getLayoutRes() {
         return R.layout.drawer_item_server;
+    }
+
+    @Override
+    public void bindView(ViewHolder holder, List<Object> payloads) {
+        super.bindView(holder, payloads);
+        holder.serverName.setText(name);
+        holder.letterIcon.setLetter(name);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

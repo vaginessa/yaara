@@ -1,9 +1,13 @@
 package com.mlieou.yaara.activity;
 
+import android.app.LoaderManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.ServiceConnection;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -15,6 +19,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,11 +30,13 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mlieou.yaara.R;
+import com.mlieou.yaara.adapter.ServerAdapter;
 import com.mlieou.yaara.adapter.TaskPagerAdapter;
 import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.core.HandlerCallback;
 import com.mlieou.yaara.core.ServerPreferencesManager;
 import com.mlieou.yaara.core.WeakHandler;
+import com.mlieou.yaara.data.YaaraDataStore;
 import com.mlieou.yaara.fragment.AboutDialogFragment;
 import com.mlieou.yaara.fragment.SimpleNewTaskFragment;
 import com.mlieou.yaara.fragment.TaskFragmentCallback;
@@ -43,15 +50,16 @@ import com.mlieou.yaara.widget.ServerDrawerItem;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements HandlerCallback {
+public class MainActivity extends AppCompatActivity implements HandlerCallback, LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String NEW_TASK_DIALOG = "new_task_dialog";
+    private static final int ID_SERVER_LOADER = 1000;
     private static final String TAG = "MainActivity";
     private Toolbar mToolbar;
     private AccountHeader mHeader;
     private Drawer mDrawer;
 
-    private TaskPagerAdapter mAdapter;
+    private TaskPagerAdapter mTaskPagerAdapter;
     private Handler mUpdateHandler;
     private Messenger mMessenger;
     private Messenger mServiceMessenger;
@@ -85,10 +93,12 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
         mDrawer = buildDrawer();
 
         TabLayout tab = findViewById(R.id.tab);
-        mAdapter = new TaskPagerAdapter(getSupportFragmentManager());
+        mTaskPagerAdapter = new TaskPagerAdapter(getSupportFragmentManager());
         ViewPager pager = findViewById(R.id.view_pager_container);
-        pager.setAdapter(mAdapter);
+        pager.setAdapter(mTaskPagerAdapter);
         tab.setupWithViewPager(pager);
+
+        getLoaderManager().restartLoader(ID_SERVER_LOADER, null, this);
     }
 
     private AccountHeader buildHeader() {
@@ -105,8 +115,6 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
         DrawerBuilder builder = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(mToolbar)
-                .addDrawerItems(new SectionDrawerItem()
-                        .withName(R.string.drawer_section_server).withDivider(false))
                 .withAccountHeader(mHeader)
 
                 // settings item
@@ -184,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
         fragment.show(getFragmentManager(), NEW_TASK_DIALOG);
     }
 
-    public void sumbitTask(String url) {
+    public void submitTask(String url) {
         Message message = new Message();
         message.what = MessageCode.ADD_HTTP_TASK;
         message.obj = url;
@@ -260,8 +268,41 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback {
                 RefreshBundle bundle = (RefreshBundle) msg.obj;
                 GlobalStatus globalStatus = bundle.getGlobalStatus();
                 mToolbar.setSubtitle(UIUtil.buildSubtitle(globalStatus));
-                TaskFragmentCallback callback = (TaskFragmentCallback) mAdapter.getCurrentFragment();
+                TaskFragmentCallback callback = (TaskFragmentCallback) mTaskPagerAdapter.getCurrentFragment();
                 callback.swapData(bundle.getTaskList());
         }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        switch (i) {
+            case ID_SERVER_LOADER:
+                return new CursorLoader(this,
+                        YaaraDataStore.Servers.CONTENT_URI,
+                        ServerAdapter.PROJECTION,
+                        "1",
+                        null,
+                        null);
+            default:
+                throw new UnsupportedOperationException("Not implemented!");
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        // add header
+        mDrawer.addItem((new SectionDrawerItem()
+                .withName(R.string.drawer_section_server).withDivider(false)));
+
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(ServerAdapter.NAME_INDEX);
+            mDrawer.addItem(new ServerDrawerItem(name));
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mDrawer.removeAllItems();
     }
 }
