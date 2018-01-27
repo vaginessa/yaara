@@ -1,11 +1,15 @@
 package com.mlieou.yaara.fragment;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.data.YaaraDataStore;
@@ -54,6 +58,7 @@ public class ServerEditor extends PreferenceFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.server_editor);
+        setHasOptionsMenu(true);
 
         sNotSet = getResources().getString(R.string.preference_not_set);
         mAliasName = (EditTextPreference) findPreference(KEY_SERVER_NAME);
@@ -66,7 +71,34 @@ public class ServerEditor extends PreferenceFragment
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_server_editor, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_submit:
+                persistData();
+                getActivity().finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         return false;
+    }
+
+    private void persistData() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(YaaraDataStore.Servers.NAME, mAliasName.getText());
+        contentValues.put(YaaraDataStore.Servers.HOSTNAME, mHostname.getText());
+        contentValues.put(YaaraDataStore.Servers.PORT, mPort.getValue());
+        contentValues.put(YaaraDataStore.Servers.SECRET_TOKEN, mSecretToken.getText());
+        getActivity().getContentResolver().insert(YaaraDataStore.Servers.CONTENT_URI, contentValues);
     }
 }

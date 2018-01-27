@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 /**
  * Created by mlieou on 1/21/18.
@@ -71,7 +70,7 @@ public class YaaraDataProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Not implemented");
         }
-
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 

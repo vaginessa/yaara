@@ -19,7 +19,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,6 +28,7 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.adapter.ServerAdapter;
 import com.mlieou.yaara.adapter.TaskPagerAdapter;
@@ -291,6 +291,8 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+        mDrawer.removeAllItems();
+
         // add header
         mDrawer.addItem((new SectionDrawerItem()
                 .withName(R.string.drawer_section_server).withDivider(false)));
@@ -299,6 +301,19 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
             String name = cursor.getString(ServerAdapter.NAME_INDEX);
             mDrawer.addItem(new ServerDrawerItem(name));
         }
+
+        // add new server action
+        mDrawer.addItem(new PrimaryDrawerItem()
+                .withName(R.string.drawer_item_title_new_server)
+                .withIcon(R.drawable.ic_add)
+                .withSelectable(false)
+        .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                startActivity(new Intent(getBaseContext(), ServerEditorActivity.class));
+                return true;
+            }
+        }));
     }
 
     @Override
