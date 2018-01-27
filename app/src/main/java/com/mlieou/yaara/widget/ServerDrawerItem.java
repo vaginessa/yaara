@@ -30,8 +30,13 @@ import java.util.List;
 public class ServerDrawerItem extends AbstractDrawerItem<ServerDrawerItem, ServerDrawerItem.ViewHolder> {
 
     String name;
-    public ServerDrawerItem(String servername) {
-        name = servername;
+    String hostname;
+    int port;
+
+    public ServerDrawerItem(String serverName, String hostname, int port) {
+        name = serverName;
+        this.hostname = hostname;
+        this.port = port;
     }
 
     @Override
@@ -49,22 +54,40 @@ public class ServerDrawerItem extends AbstractDrawerItem<ServerDrawerItem, Serve
         return R.layout.drawer_item_server;
     }
 
+    public ServerDrawerItem withServerName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public ServerDrawerItem withServerHostname(String hostname) {
+        this.hostname = hostname;
+        return this;
+    }
+
+    public ServerDrawerItem withServerPort(int port) {
+        this.port = port;
+        return this;
+    }
+
     @Override
     public void bindView(ViewHolder holder, List<Object> payloads) {
         super.bindView(holder, payloads);
         holder.serverName.setText(name);
         holder.letterIcon.setLetter(name);
+        holder.serverAddress.setText(hostname + ":" + port);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         LetterIcon letterIcon;
         TextView serverName;
+        TextView serverAddress;
 
         public ViewHolder(View itemView) {
             super(itemView);
             letterIcon = itemView.findViewById(R.id.li_icon);
             serverName = itemView.findViewById(R.id.tv_server_name);
+            serverAddress = itemView.findViewById(R.id.tv_server_address);
         }
     }
 }

@@ -299,7 +299,9 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
 
         while (cursor.moveToNext()) {
             String name = cursor.getString(ServerAdapter.NAME_INDEX);
-            mDrawer.addItem(new ServerDrawerItem(name));
+            String hostname = cursor.getString(ServerAdapter.HOSTNAME_INDEX);
+            int port = cursor.getInt(ServerAdapter.PORT_INDEX);
+            mDrawer.addItem(new ServerDrawerItem(name, hostname, port));
         }
 
         // add new server action
