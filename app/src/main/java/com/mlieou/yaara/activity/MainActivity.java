@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                             mServerProfileManager.setActiveServerId(id);
                             reloadServerProfile();
                         }
-                        return true;
+                        return false;
                     }
                 })
 
