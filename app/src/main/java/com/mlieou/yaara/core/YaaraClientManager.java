@@ -21,17 +21,15 @@ import java.util.List;
 public class YaaraClientManager implements MessageCode {
     private YaaraClient mClient;
     private Messenger mMessenger;
-    private ServerPreferencesManager mServerPreferencesManager;
+    private ServerProfileManager mServerProfileManager;
     private ServerProfile mProfile;
 
-    public YaaraClientManager(ServerPreferencesManager manager) {
-        this.mServerPreferencesManager = manager;
-        // TODO
-        mClient = new YaaraClient(mServerPreferencesManager.getDefaultServerProfile());
+    public YaaraClientManager(ServerProfileManager manager) {
+        this.mServerProfileManager = manager;
     }
 
-    public void initServer(ServerProfile profile) {
-        mProfile = profile;
+    public void initServer() {
+        mProfile = mServerProfileManager.getActiveServerProfile();
         mClient = new YaaraClient(mProfile);
     }
 
@@ -42,6 +40,9 @@ public class YaaraClientManager implements MessageCode {
     public void handleMessage(Message msg, Handler handler) throws RemoteException {
         Message messageToSend = new Message();
         switch (msg.what) {
+            case RELOAD_SERVER_PROFILE:
+                initServer();
+                break;
             case GET_GLOBAL_STATUS:
                 messageToSend.what = UPDATE_GLOBAL_STATUS;
                 messageToSend.obj = mClient.getGlobalStatus();

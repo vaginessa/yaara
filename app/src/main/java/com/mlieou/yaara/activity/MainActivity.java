@@ -35,7 +35,7 @@ import com.mlieou.yaara.adapter.ServerAdapter;
 import com.mlieou.yaara.adapter.TaskPagerAdapter;
 import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.core.HandlerCallback;
-import com.mlieou.yaara.core.ServerPreferencesManager;
+import com.mlieou.yaara.core.ServerProfileManager;
 import com.mlieou.yaara.core.WeakHandler;
 import com.mlieou.yaara.data.YaaraDataStore;
 import com.mlieou.yaara.fragment.AboutDialogFragment;
@@ -60,12 +60,14 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     private AccountHeader mHeader;
     private Drawer mDrawer;
 
+    private int mActiveServerId = -1;
+
     private TaskPagerAdapter mTaskPagerAdapter;
     private Handler mUpdateHandler;
     private Messenger mMessenger;
     private Messenger mServiceMessenger;
     private boolean mIsServiceBound;
-    private ServerPreferencesManager mServerPreferencesManager;
+    private ServerProfileManager mServerProfileManager;
     private Timer mRefreshTimer;
     private int mUpdateInterval;
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mServerPreferencesManager = new ServerPreferencesManager(this);
+        mServerProfileManager = new ServerProfileManager(this);
 
         mUpdateHandler = new WeakHandler(this);
         mMessenger = new Messenger(mUpdateHandler);
@@ -122,7 +124,8 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         long id = drawerItem.getIdentifier();
                         if (id > 0) {
-
+                            mServerProfileManager.setActiveServerId(id);
+                            reloadServerProfile();
                         }
                         return true;
                     }
@@ -150,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     @Override
     protected void onStart() {
         super.onStart();
-        if (mServerPreferencesManager.isServerProfileExist()) {
+        if (mServerProfileManager.isServerProfileExist()) {
             displayMainContent();
             doBindService();
         } else {
@@ -174,6 +177,17 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
         AboutDialogFragment fragment = new AboutDialogFragment();
         fragment.show(getFragmentManager(), "ABOUT");
         return true;
+    }
+
+    private void reloadServerProfile() {
+        if (mServiceMessenger == null)  return;
+        Message message = new Message();
+        message.what = MessageCode.RELOAD_SERVER_PROFILE;
+        try {
+            mServiceMessenger.send(message);
+        } catch (RemoteException e) {
+
+        }
     }
 
     private void hideMainContent() {
@@ -231,10 +245,10 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
         // requesting new task type, stop old ui update
         stopUIUpdate();
 
-        if (!mServerPreferencesManager.isServerProfileExist())
+        if (!mServerProfileManager.isServerProfileExist())
             return;
 
-        mUpdateInterval = mServerPreferencesManager.getUpdateInterval() * 1000;
+        mUpdateInterval = mServerProfileManager.getUpdateInterval() * 1000;
 
         mRefreshTimer = new Timer();
         mRefreshTimer.scheduleAtFixedRate(new TimerTask() {
@@ -328,6 +342,9 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                 return true;
             }
         }));
+
+        // select active server
+        mDrawer.setSelection(mServerProfileManager.getActiveServerId());
     }
 
     @Override

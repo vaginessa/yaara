@@ -11,10 +11,9 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 
 import com.mlieou.yaara.core.HandlerCallback;
-import com.mlieou.yaara.core.ServerPreferencesManager;
+import com.mlieou.yaara.core.ServerProfileManager;
 import com.mlieou.yaara.core.WeakHandler;
 import com.mlieou.yaara.core.YaaraClientManager;
-import com.mlieou.yaara.model.ServerProfile;
 
 /**
  * Created by mlieou on 12/26/17.
@@ -25,7 +24,7 @@ public class YaaraService extends Service implements HandlerCallback {
 
     private Handler mAPIHandler;
     private HandlerThread mAPIHandlerThread;
-    private ServerPreferencesManager mServerPreferencesManager;
+    private ServerProfileManager mServerProfileManager;
     private YaaraClientManager mClientManager;
     private Messenger mAPIHandlerThreadMessenger;
 
@@ -37,11 +36,10 @@ public class YaaraService extends Service implements HandlerCallback {
         mAPIHandler = new WeakHandler(mAPIHandlerThread.getLooper(), this);
         mAPIHandlerThreadMessenger = new Messenger(mAPIHandler);
 
-        mServerPreferencesManager = new ServerPreferencesManager(this);
-        mClientManager = new YaaraClientManager(mServerPreferencesManager);
-        if (mServerPreferencesManager.isServerProfileExist()) {
-            ServerProfile profile = mServerPreferencesManager.getDefaultServerProfile();
-            mClientManager.initServer(profile);
+        mServerProfileManager = new ServerProfileManager(this);
+        mClientManager = new YaaraClientManager(mServerProfileManager);
+        if (mServerProfileManager.isServerProfileExist()) {
+            mClientManager.initServer();
         }
     }
 

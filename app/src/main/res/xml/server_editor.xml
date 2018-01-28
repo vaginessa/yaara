@@ -28,7 +28,6 @@
         android:key="pref_aria2_request_path"
         android:title="@string/preference_aria2_request_path"
         android:enabled="false"
-        android:visibility="invisible"
         android:persistent="false"/>
 
     <ListPreference
@@ -39,7 +38,6 @@
         android:key="pref_aria2_protocol"
         android:summary="%s"
         android:title="@string/preference_aria2_protocol"
-        android:visibility="invisible"
         android:persistent="false"/>
 
     <ListPreference
@@ -50,7 +48,6 @@
         android:key="pref_aria2_request_method"
         android:summary="%s"
         android:title="@string/preference_aria2_request_method"
-        android:visibility="invisible"
         android:persistent="false"/>
 
     <EditTextPreference

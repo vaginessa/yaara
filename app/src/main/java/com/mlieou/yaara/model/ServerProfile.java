@@ -37,6 +37,14 @@ public class ServerProfile {
         this.requestMethod = requestMethod;
     }
 
+    public ServerProfile(String hostname, int port, String secretToken) {
+        this("", hostname, port, "jsonrpc", secretToken, Protocol.HTTP, RequestMethod.POST);
+    }
+
+    public ServerProfile(String hostname, int port) {
+        this(hostname, port, "");
+    }
+
     public String getName() {
         return name;
     }
