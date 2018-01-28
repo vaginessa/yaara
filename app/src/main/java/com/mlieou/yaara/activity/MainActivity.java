@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.preference.Preference;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -50,7 +51,7 @@ import com.mlieou.yaara.widget.ServerDrawerItem;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements HandlerCallback, LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements HandlerCallback, LoaderManager.LoaderCallbacks<Cursor>, Preference.OnPreferenceChangeListener {
 
     public static final String NEW_TASK_DIALOG = "new_task_dialog";
     private static final int ID_SERVER_LOADER = 1000;
@@ -116,6 +117,16 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                 .withActivity(this)
                 .withToolbar(mToolbar)
                 .withAccountHeader(mHeader)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        long id = drawerItem.getIdentifier();
+                        if (id > 0) {
+
+                        }
+                        return true;
+                    }
+                })
 
                 // settings item
                 .addStickyDrawerItems(new PrimaryDrawerItem()
@@ -301,7 +312,8 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
             String name = cursor.getString(ServerAdapter.NAME_INDEX);
             String hostname = cursor.getString(ServerAdapter.HOSTNAME_INDEX);
             int port = cursor.getInt(ServerAdapter.PORT_INDEX);
-            mDrawer.addItem(new ServerDrawerItem(name, hostname, port));
+            long id = cursor.getLong(ServerAdapter.ID_INDEX);
+            mDrawer.addItem(new ServerDrawerItem(name, hostname, port).withSelectable(true).withIdentifier(id));
         }
 
         // add new server action
@@ -321,5 +333,10 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mDrawer.removeAllItems();
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        return false;
     }
 }

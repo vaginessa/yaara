@@ -69,12 +69,18 @@ public class ServerDrawerItem extends AbstractDrawerItem<ServerDrawerItem, Serve
         return this;
     }
 
+    public String getServerName() {
+        return name;
+    }
+
     @Override
     public void bindView(ViewHolder holder, List<Object> payloads) {
         super.bindView(holder, payloads);
         holder.serverName.setText(name);
         holder.letterIcon.setLetter(name);
         holder.serverAddress.setText(hostname + ":" + port);
+        holder.itemView.setSelected(isSelected());
+//        onPostBindView(this, holder.itemView);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
