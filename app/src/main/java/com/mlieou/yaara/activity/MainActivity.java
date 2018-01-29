@@ -21,7 +21,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
 
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -158,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
             doBindService();
         } else {
             hideMainContent();
+            mDrawer.openDrawer();
         }
     }
 
@@ -191,22 +191,18 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     }
 
     private void hideMainContent() {
-        TextView notice = findViewById(R.id.tv_no_server_notice);
         FloatingActionButton fab = findViewById(R.id.fab_new_task);
         TabLayout tab = findViewById(R.id.tab);
         ViewPager pager = findViewById(R.id.view_pager_container);
-        notice.setVisibility(View.VISIBLE);
         fab.setVisibility(View.INVISIBLE);
         tab.setVisibility(View.GONE);
         pager.setVisibility(View.INVISIBLE);
     }
 
     private void displayMainContent() {
-        TextView notice = findViewById(R.id.tv_no_server_notice);
         FloatingActionButton fab = findViewById(R.id.fab_new_task);
         TabLayout tab = findViewById(R.id.tab);
         ViewPager pager = findViewById(R.id.view_pager_container);
-        notice.setVisibility(View.INVISIBLE);
         fab.setVisibility(View.VISIBLE);
         tab.setVisibility(View.VISIBLE);
         pager.setVisibility(View.VISIBLE);
