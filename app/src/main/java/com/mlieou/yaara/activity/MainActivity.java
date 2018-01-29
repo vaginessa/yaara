@@ -21,7 +21,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
 
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -56,9 +55,13 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     public static final String NEW_TASK_DIALOG = "new_task_dialog";
     private static final int ID_SERVER_LOADER = 1000;
     private static final String TAG = "MainActivity";
+
     private Toolbar mToolbar;
     private AccountHeader mHeader;
     private Drawer mDrawer;
+    private FloatingActionButton mFab;
+    private TabLayout mTab;
+    private ViewPager mPager;
 
     private int mActiveServerId = -1;
 
@@ -86,20 +89,23 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mFab = findViewById(R.id.fab_new_task);
+        mTab = findViewById(R.id.tab);
+        mPager = findViewById(R.id.view_pager_container);
+        mToolbar = findViewById(R.id.toolbar);
+
         mServerProfileManager = new ServerProfileManager(this);
 
         mUpdateHandler = new WeakHandler(this);
         mMessenger = new Messenger(mUpdateHandler);
 
-        mToolbar = findViewById(R.id.toolbar);
         mHeader = buildHeader();
         mDrawer = buildDrawer();
 
-        TabLayout tab = findViewById(R.id.tab);
         mTaskPagerAdapter = new TaskPagerAdapter(getSupportFragmentManager());
-        ViewPager pager = findViewById(R.id.view_pager_container);
-        pager.setAdapter(mTaskPagerAdapter);
-        tab.setupWithViewPager(pager);
+        mPager.setAdapter(mTaskPagerAdapter);
+        mTab.setupWithViewPager(mPager);
 
         getLoaderManager().restartLoader(ID_SERVER_LOADER, null, this);
     }
@@ -125,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                         long id = drawerItem.getIdentifier();
                         if (id > 0) {
                             mServerProfileManager.setActiveServerId(id);
+                            displayMainContent();
                             reloadServerProfile();
                         }
                         return false;
@@ -153,9 +160,9 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     @Override
     protected void onStart() {
         super.onStart();
+        doBindService();
         if (mServerProfileManager.isServerProfileExist()) {
             displayMainContent();
-            doBindService();
         } else {
             hideMainContent();
         }
@@ -191,25 +198,16 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     }
 
     private void hideMainContent() {
-        TextView notice = findViewById(R.id.tv_no_server_notice);
-        FloatingActionButton fab = findViewById(R.id.fab_new_task);
-        TabLayout tab = findViewById(R.id.tab);
-        ViewPager pager = findViewById(R.id.view_pager_container);
-        notice.setVisibility(View.VISIBLE);
-        fab.setVisibility(View.INVISIBLE);
-        tab.setVisibility(View.INVISIBLE);
-        pager.setVisibility(View.INVISIBLE);
+        mFab.setVisibility(View.INVISIBLE);
+        mTab.setVisibility(View.GONE);
+        mPager.setVisibility(View.INVISIBLE);
+        mDrawer.openDrawer();
     }
 
     private void displayMainContent() {
-        TextView notice = findViewById(R.id.tv_no_server_notice);
-        FloatingActionButton fab = findViewById(R.id.fab_new_task);
-        TabLayout tab = findViewById(R.id.tab);
-        ViewPager pager = findViewById(R.id.view_pager_container);
-        notice.setVisibility(View.INVISIBLE);
-        fab.setVisibility(View.VISIBLE);
-        tab.setVisibility(View.VISIBLE);
-        pager.setVisibility(View.VISIBLE);
+        mFab.setVisibility(View.VISIBLE);
+        mTab.setVisibility(View.VISIBLE);
+        mPager.setVisibility(View.VISIBLE);
     }
 
     public void showNewTaskDialog(View view) {
@@ -244,9 +242,6 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     public void startUpdateGlobalStatusAndTaskList(TaskType taskType) {
         // requesting new task type, stop old ui update
         stopUIUpdate();
-
-        if (!mServerProfileManager.isServerProfileExist())
-            return;
 
         mUpdateInterval = mServerProfileManager.getUpdateInterval() * 1000;
 

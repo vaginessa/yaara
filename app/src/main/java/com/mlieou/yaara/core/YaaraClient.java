@@ -8,6 +8,9 @@ import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.model.TaskType;
 import com.mlieou.yaara.rpc.aria2.Aria2RpcClient;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,41 +60,36 @@ public class YaaraClient {
         return taskName;
     }
 
-    public List<TaskStatus> getTaskStatusLiteList(TaskType state) {
+    public List<TaskStatus> getTaskStatusLiteList(TaskType state) throws IOException, JSONException {
         List<TaskStatus> list;
-        try {
-            String jsonStr;
-            List<String> keys;
-            if (!mFullUpdatePerformed.contains(state)) {
-                mFullUpdatePerformed.add(state);
-                keys = Arrays.asList(TaskStatus.REQUEST_FULL_UPDATE);
-            } else {
-                keys = Arrays.asList(TaskStatus.REQUEST_DELTA_UPDATE);
-            }
-            switch (state) {
-                case ACTIVE:
-                    jsonStr = mClient.tellActive(keys);
-                    break;
-                case STOPPED:
-                    jsonStr = mClient.tellStopped(-1, 64, keys);
-                    break;
-                case WAITING:
-                    jsonStr = mClient.tellWaiting(-1, 64, keys);
-                    break;
-                default:
-                    jsonStr = "";
-            }
-            Type collectionType = new TypeToken<List<TaskStatus>>() {
-            }.getType();
-            list = mGson.fromJson(jsonStr, collectionType);
-            setNameForAllTasks(list);
-        } catch (Exception e) {
-            list = new ArrayList<>(0);
+        String jsonStr;
+        List<String> keys;
+        if (!mFullUpdatePerformed.contains(state)) {
+            mFullUpdatePerformed.add(state);
+            keys = Arrays.asList(TaskStatus.REQUEST_FULL_UPDATE);
+        } else {
+            keys = Arrays.asList(TaskStatus.REQUEST_DELTA_UPDATE);
         }
+        switch (state) {
+            case ACTIVE:
+                jsonStr = mClient.tellActive(keys);
+                break;
+            case STOPPED:
+                jsonStr = mClient.tellStopped(-1, 64, keys);
+                break;
+            case WAITING:
+                jsonStr = mClient.tellWaiting(-1, 64, keys);
+                break;
+            default:
+                jsonStr = "";
+        }
+        Type collectionType = new TypeToken<List<TaskStatus>>(){}.getType();
+        list = mGson.fromJson(jsonStr, collectionType);
+        setNameForAllTasks(list);
         return list;
     }
 
-    private void setNameForAllTasks(List<TaskStatus> list) {
+    private void setNameForAllTasks(List<TaskStatus> list) throws JSONException, IOException {
         for (TaskStatus status : list) {
             String gid = status.getGid();
             if (mTaskNameMap.containsKey(gid)) {
@@ -111,36 +109,23 @@ public class YaaraClient {
         }
     }
 
-    public TaskStatus getTaskStatus(String gid) {
+    public TaskStatus getTaskStatus(String gid) throws IOException, JSONException {
         TaskStatus status;
-        try {
-            String str = mClient.tellStatus(gid, Arrays.asList(TaskStatus.REQUEST_FULL_UPDATE));
-            status = mGson.fromJson(str, TaskStatus.class);
-        } catch (Exception e) {
-            status = null;
-        }
+        String str = mClient.tellStatus(gid, Arrays.asList(TaskStatus.REQUEST_FULL_UPDATE));
+        status = mGson.fromJson(str, TaskStatus.class);
         return status;
     }
 
-    public GlobalStatus getGlobalStatus() {
-        String jsonStr;
-        try {
-            jsonStr = mClient.getGlobalStat();
-        } catch (Exception e) {
-            jsonStr = "";
-        }
+    public GlobalStatus getGlobalStatus() throws IOException, JSONException {
+        String jsonStr = mClient.getGlobalStat();
         return mGson.fromJson(jsonStr, GlobalStatus.class);
     }
 
-    public String addHttpTask(String url) {
+    public String addHttpTask(String url) throws IOException, JSONException {
         List<String> urlList = new ArrayList<>();
         urlList.add(url);
         String gid;
-        try {
-            gid = mClient.addUri(urlList, new HashMap<>(), 0);
-        } catch (Exception e) {
-            gid = "";
-        }
+        gid = mClient.addUri(urlList, new HashMap<>(), 0);
         return gid;
     }
 

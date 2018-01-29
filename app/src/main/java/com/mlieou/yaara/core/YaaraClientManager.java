@@ -12,6 +12,9 @@ import com.mlieou.yaara.model.ServerProfile;
 import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.model.TaskType;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -39,45 +42,45 @@ public class YaaraClientManager implements MessageCode {
 
     public void handleMessage(Message msg, Handler handler) throws RemoteException {
         Message messageToSend = new Message();
-        switch (msg.what) {
-            case RELOAD_SERVER_PROFILE:
-                initServer();
-                break;
-            case GET_GLOBAL_STATUS:
-                messageToSend.what = UPDATE_GLOBAL_STATUS;
-                messageToSend.obj = mClient.getGlobalStatus();
-                mMessenger.send(messageToSend);
-                break;
-            case GET_ACTIVE_TASKS:
-                messageToSend.what = UPDATE_TASK_LIST_AND_GLOBAL_STATUS;
-                messageToSend.obj = handleTaskRequest(TaskType.ACTIVE);
-                mMessenger.send(messageToSend);
-                break;
-            case GET_WAITING_TASKS:
-                messageToSend.what = UPDATE_TASK_LIST_AND_GLOBAL_STATUS;
-                messageToSend.obj = handleTaskRequest(TaskType.WAITING);
-                mMessenger.send(messageToSend);
-                break;
-            case GET_STOPPED_TASKS:
-                messageToSend.what = UPDATE_TASK_LIST_AND_GLOBAL_STATUS;
-                messageToSend.obj = handleTaskRequest(TaskType.STOPPED);
-                mMessenger.send(messageToSend);
-                break;
-            case ADD_HTTP_TASK:
-                messageToSend.what = HTTP_TASK_ADDED;
-                messageToSend.obj = mClient.addHttpTask((String) msg.obj);
-                mMessenger.send(messageToSend);
-                break;
-            case START_TASK:
-                break;
-            case PAUSE_TASK:
-                break;
-            case REMOVE_TASK:
-                break;
+        try {
+            switch (msg.what) {
+                case RELOAD_SERVER_PROFILE:
+                    initServer();
+                    break;
+                case GET_GLOBAL_STATUS:
+                    messageToSend.what = UPDATE_GLOBAL_STATUS;
+                    messageToSend.obj = mClient.getGlobalStatus();
+                    break;
+                case GET_ACTIVE_TASKS:
+                    messageToSend.what = UPDATE_TASK_LIST_AND_GLOBAL_STATUS;
+                    messageToSend.obj = handleTaskRequest(TaskType.ACTIVE);
+                    break;
+                case GET_WAITING_TASKS:
+                    messageToSend.what = UPDATE_TASK_LIST_AND_GLOBAL_STATUS;
+                    messageToSend.obj = handleTaskRequest(TaskType.WAITING);
+                    break;
+                case GET_STOPPED_TASKS:
+                    messageToSend.what = UPDATE_TASK_LIST_AND_GLOBAL_STATUS;
+                    messageToSend.obj = handleTaskRequest(TaskType.STOPPED);
+                    break;
+                case ADD_HTTP_TASK:
+                    messageToSend.what = HTTP_TASK_ADDED;
+                    messageToSend.obj = mClient.addHttpTask((String) msg.obj);
+                    break;
+                case START_TASK:
+                    break;
+                case PAUSE_TASK:
+                    break;
+                case REMOVE_TASK:
+                    break;
+            }
+            mMessenger.send(messageToSend);
+        } catch (Exception e) {
+
         }
     }
 
-    private RefreshBundle handleTaskRequest(TaskType type) throws RemoteException {
+    private RefreshBundle handleTaskRequest(TaskType type) throws RemoteException, IOException, JSONException {
         RefreshBundle bundle;
         List<TaskStatus> list = mClient.getTaskStatusLiteList(type);
         GlobalStatus status = mClient.getGlobalStatus();
