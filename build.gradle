@@ -19,7 +19,7 @@ allprojects {
 
     ext {
         projectGroupId = 'com.mlieou.yaara'
-        projectVersionCode = 1
+        projectVersionCode = 2
         projectVersionName = '0.0.1'
     }
 

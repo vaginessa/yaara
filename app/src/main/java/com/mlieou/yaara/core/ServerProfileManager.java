@@ -38,7 +38,7 @@ public class ServerProfileManager {
     }
 
     public boolean isServerProfileExist() {
-        return getActiveServerId() != -1L;
+        return getActiveServerProfile() != null;
     }
 
     public int getUpdateInterval() {
