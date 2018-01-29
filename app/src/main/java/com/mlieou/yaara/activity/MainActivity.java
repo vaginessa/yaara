@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
         ViewPager pager = findViewById(R.id.view_pager_container);
         notice.setVisibility(View.VISIBLE);
         fab.setVisibility(View.INVISIBLE);
-        tab.setVisibility(View.INVISIBLE);
+        tab.setVisibility(View.GONE);
         pager.setVisibility(View.INVISIBLE);
     }
 
