@@ -55,14 +55,15 @@ public class YaaraSQLiteOpenHelper extends SQLiteOpenHelper {
             contentValues.put(YaaraDataStore.Servers.NAME, name);
             contentValues.put(YaaraDataStore.Servers.HOSTNAME, hostname);
             contentValues.put(YaaraDataStore.Servers.PORT, port);
-            db.insert(YaaraDataStore.Servers.TABLE_NAME,
+            long id = db.insert(YaaraDataStore.Servers.TABLE_NAME,
                     null,
                     contentValues);
+            sharedPreferences.edit()
+                    .putLong("pref_active_server", id)
+                    .remove("pref_aria2_alias")
+                    .remove("pref_aria2_host")
+                    .remove("pref_aria2_port")
+                    .apply();
         }
-        sharedPreferences.edit()
-                .remove("pref_aria2_alias")
-                .remove("pref_aria2_host")
-                .remove("pref_aria2_port")
-                .apply();
     }
 }
