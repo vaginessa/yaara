@@ -31,10 +31,11 @@
             android:name=".data.YaaraDataProvider"
             android:authorities="com.mlieou.yaara" />
 
-        <activity android:name=".activity.ServerEditorActivity"
+        <activity
+            android:name=".activity.ServerEditorActivity"
             android:label="@string/activity_title_add_new_server"
-            android:parentActivityName=".activity.MainActivity">
-        </activity>
+            android:parentActivityName=".activity.MainActivity"></activity>
+        <activity android:name=".activity.TaskDetailActivity"></activity>
     </application>
 
 </manifest>
