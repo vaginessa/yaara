@@ -15,6 +15,8 @@
 
     <string name="label_yaara_service">Yaara Background Operation Service</string>
 
+    <string name="empty_list_place_holder">No Task</string>
+
     <!-- Activity titles -->
     <string name="activity_title_add_new_server">Add new server</string>
 

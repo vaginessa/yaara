@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.activity.MainActivity;
@@ -34,6 +35,9 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
 
     MainActivity mActivity;
 
+    RecyclerView mTaskList;
+    LinearLayout mPlaceholder;
+
     public TaskPagerFragment() {
     }
 
@@ -52,10 +56,12 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_task_list, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_task_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mTaskList = view.findViewById(R.id.recycler_view_task_list);
+        mPlaceholder = view.findViewById(R.id.empty_list_placeholder);
+        hideList();
+        mTaskList.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new TaskAdapter(getContext());
-        recyclerView.setAdapter(mAdapter);
+        mTaskList.setAdapter(mAdapter);
         if (getArguments() != null) {
             mTaskType = (TaskType) getArguments().getSerializable(TASK_TYPE);
         }
@@ -97,6 +103,20 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
 
     @Override
     public void swapData(List<TaskStatus> list) {
+        if (list == null || list.size() == 0)
+            hideList();
+        else
+            displayList();
         mAdapter.swapData(list);
+    }
+
+    private void displayList() {
+        mTaskList.setVisibility(View.VISIBLE);
+        mPlaceholder.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideList() {
+        mTaskList.setVisibility(View.INVISIBLE);
+        mPlaceholder.setVisibility(View.VISIBLE);
     }
 }
