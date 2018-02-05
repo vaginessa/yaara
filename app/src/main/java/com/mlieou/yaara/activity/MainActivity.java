@@ -1,6 +1,8 @@
 package com.mlieou.yaara.activity;
 
 import android.app.LoaderManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -44,6 +46,7 @@ import com.mlieou.yaara.model.GlobalStatus;
 import com.mlieou.yaara.model.RefreshBundle;
 import com.mlieou.yaara.model.TaskType;
 import com.mlieou.yaara.service.YaaraService;
+import com.mlieou.yaara.util.ClipboardUtil;
 import com.mlieou.yaara.util.UIUtil;
 import com.mlieou.yaara.widget.ServerDrawerItem;
 
@@ -212,6 +215,18 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
 
     public void showNewTaskDialog(View view) {
         SimpleNewTaskFragment fragment = new SimpleNewTaskFragment();
+
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        if (clipboardManager != null && clipboardManager.hasPrimaryClip()) {
+            ClipData clipData = clipboardManager.getPrimaryClip();
+            ClipData.Item item = clipData.getItemAt(0);
+            CharSequence charSequence = item.getText();
+            if (ClipboardUtil.isValidDownloadLink(charSequence)) {
+                Bundle bundle = new Bundle();
+                bundle.putString(SimpleNewTaskFragment.BUNDLE_DOWNLOAD_LINK, charSequence.toString());
+                fragment.setArguments(bundle);
+            }
+        }
         fragment.show(getFragmentManager(), NEW_TASK_DIALOG);
     }
 

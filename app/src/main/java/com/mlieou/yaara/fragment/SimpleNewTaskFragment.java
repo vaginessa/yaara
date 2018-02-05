@@ -16,6 +16,8 @@ import com.mlieou.yaara.activity.MainActivity;
 
 public class SimpleNewTaskFragment extends DialogFragment {
 
+    public static final String BUNDLE_DOWNLOAD_LINK = "download_link";
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -23,6 +25,13 @@ public class SimpleNewTaskFragment extends DialogFragment {
 
         View view = activity.getLayoutInflater().inflate(R.layout.fragment_dialog_simple_new_task, null);
         EditText url = view.findViewById(R.id.et_task_link);
+
+        if (getArguments() != null) {
+            String downloadLink = getArguments().getString(BUNDLE_DOWNLOAD_LINK);
+            url.getText().clear();
+            url.getText().append(downloadLink);
+        }
+
         builder.setTitle(R.string.simple_new_task_title).setView(view);
         builder.setPositiveButton(R.string.add, (dialogInterface, i) -> {
             activity.submitTask(url.getText().toString());
