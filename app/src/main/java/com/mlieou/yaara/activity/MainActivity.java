@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -21,7 +22,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
 
     private int mActiveServerId = -1;
 
+    private Context mContext;
     private TaskPagerAdapter mTaskPagerAdapter;
     private Handler mUpdateHandler;
     private Messenger mMessenger;
@@ -92,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mContext = this;
 
         mFab = findViewById(R.id.fab_new_task);
         mTab = findViewById(R.id.tab);
@@ -136,6 +143,42 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                             mServerProfileManager.setActiveServerId(id);
                             displayMainContent();
                             reloadServerProfile();
+                        }
+                        return false;
+                    }
+                })
+                .withOnDrawerItemLongClickListener(new Drawer.OnDrawerItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(View view, int position, IDrawerItem drawerItem) {
+                        long id = drawerItem.getIdentifier();
+                        if (id > 0) {
+                            Uri serverUri = Uri.withAppendedPath(YaaraDataStore.Servers.CONTENT_URI, Long.toString(id));
+                            PopupMenu popupMenu = new PopupMenu(mContext, view);
+                            popupMenu.inflate(R.menu.menu_server_popup);
+                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    switch (item.getItemId()) {
+                                        case R.id.action_edit:
+                                            Intent intent = new Intent(mContext, ServerEditorActivity.class);
+                                            intent.setData(serverUri);
+                                            startActivity(intent);
+                                            return true;
+                                        case R.id.action_delete:
+                                            if (mServerProfileManager.getActiveServerId() == id) {
+                                                mServerProfileManager.setActiveServerId(-1L);
+                                                reloadServerProfile();
+                                            }
+                                            getContentResolver().delete(
+                                                    serverUri,
+                                                    null,
+                                                    null);
+                                            return true;
+                                    }
+                                    return false;
+                                }
+                            });
+                            popupMenu.show();
                         }
                         return false;
                     }
