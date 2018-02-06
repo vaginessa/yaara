@@ -1,6 +1,8 @@
 package com.mlieou.yaara.fragment;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -12,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.mlieou.yaara.R;
+import com.mlieou.yaara.activity.ServerEditorActivity;
 import com.mlieou.yaara.data.YaaraDataStore;
 import com.mlieou.yaara.widget.NumberPickerPreference;
 
@@ -54,11 +57,15 @@ public class ServerEditor extends PreferenceFragment
 
     private static String sNotSet;
 
+    private Uri mServerProfileUri;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.server_editor);
         setHasOptionsMenu(true);
+
+        mServerProfileUri = getActivity().getIntent().getData();
 
         sNotSet = getResources().getString(R.string.preference_not_set);
         mAliasName = (EditTextPreference) findPreference(KEY_SERVER_NAME);
@@ -68,6 +75,9 @@ public class ServerEditor extends PreferenceFragment
         mProtocol = (ListPreference) findPreference(KEY_SERVER_PROTOCOL);
         mRequestMethod = (ListPreference) findPreference(KEY_SERVER_REQUEST_METHOD);
         mSecretToken = (EditTextPreference) findPreference(KEY_SERVER_SECRET_TOKEN);
+
+        if (mServerProfileUri != null)
+            retrieveData();
     }
 
     @Override
@@ -99,6 +109,31 @@ public class ServerEditor extends PreferenceFragment
         contentValues.put(YaaraDataStore.Servers.HOSTNAME, mHostname.getText());
         contentValues.put(YaaraDataStore.Servers.PORT, mPort.getValue());
         contentValues.put(YaaraDataStore.Servers.SECRET_TOKEN, mSecretToken.getText());
-        getActivity().getContentResolver().insert(YaaraDataStore.Servers.CONTENT_URI, contentValues);
+
+        if (mServerProfileUri == null) {
+            getActivity().getContentResolver().insert(YaaraDataStore.Servers.CONTENT_URI, contentValues);
+        } else {
+            getActivity().getContentResolver().update(mServerProfileUri, contentValues, null, null);
+        }
+    }
+
+    private void retrieveData() {
+        try (Cursor cursor = getActivity().getContentResolver().query(
+                mServerProfileUri,
+                sProjection,
+                null,
+                null,
+                null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                String aliasName = cursor.getString(NAME_INDEX);
+                String hostname = cursor.getString(HOSTNAME_INDEX);
+                int port = cursor.getInt(PORT_INDEX);
+                String token = cursor.getString(SECRET_TOKEN_INDEX);
+                mAliasName.setText(aliasName);
+                mHostname.setText(hostname);
+                mPort.setValue(port);
+                mSecretToken.setText(token);
+            }
+        }
     }
 }
