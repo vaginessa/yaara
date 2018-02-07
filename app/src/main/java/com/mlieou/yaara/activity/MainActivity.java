@@ -24,8 +24,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.MenuItem;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -135,53 +134,45 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                 .withActivity(this)
                 .withToolbar(mToolbar)
                 .withAccountHeader(mHeader)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        long id = drawerItem.getIdentifier();
-                        if (id > 0) {
-                            mServerProfileManager.setActiveServerId(id);
-                            displayMainContent();
-                            reloadServerProfile();
-                        }
-                        return false;
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    long id = drawerItem.getIdentifier();
+                    if (id > 0) {
+                        mServerProfileManager.setActiveServerId(id);
+                        displayMainContent();
+                        reloadServerProfile();
                     }
+                    return false;
                 })
-                .withOnDrawerItemLongClickListener(new Drawer.OnDrawerItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(View view, int position, IDrawerItem drawerItem) {
-                        long id = drawerItem.getIdentifier();
-                        if (id > 0) {
-                            Uri serverUri = Uri.withAppendedPath(YaaraDataStore.Servers.CONTENT_URI, Long.toString(id));
-                            PopupMenu popupMenu = new PopupMenu(mContext, view);
-                            popupMenu.inflate(R.menu.menu_server_popup);
-                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                @Override
-                                public boolean onMenuItemClick(MenuItem item) {
-                                    switch (item.getItemId()) {
-                                        case R.id.action_edit:
-                                            Intent intent = new Intent(mContext, ServerEditorActivity.class);
-                                            intent.setData(serverUri);
-                                            startActivity(intent);
-                                            return true;
-                                        case R.id.action_delete:
-                                            if (mServerProfileManager.getActiveServerId() == id) {
-                                                mServerProfileManager.setActiveServerId(-1L);
-                                                reloadServerProfile();
-                                            }
-                                            getContentResolver().delete(
-                                                    serverUri,
-                                                    null,
-                                                    null);
-                                            return true;
+                .withOnDrawerItemLongClickListener((view, position, drawerItem) -> {
+                    long id = drawerItem.getIdentifier();
+                    if (id > 0) {
+                        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                        Uri serverUri = Uri.withAppendedPath(YaaraDataStore.Servers.CONTENT_URI, Long.toString(id));
+                        PopupMenu popupMenu = new PopupMenu(mContext, view);
+                        popupMenu.inflate(R.menu.menu_server_popup);
+                        popupMenu.setOnMenuItemClickListener(item -> {
+                            switch (item.getItemId()) {
+                                case R.id.action_edit:
+                                    Intent intent = new Intent(mContext, ServerEditorActivity.class);
+                                    intent.setData(serverUri);
+                                    startActivity(intent);
+                                    return true;
+                                case R.id.action_delete:
+                                    if (mServerProfileManager.getActiveServerId() == id) {
+                                        mServerProfileManager.setActiveServerId(-1L);
+                                        reloadServerProfile();
                                     }
-                                    return false;
-                                }
-                            });
-                            popupMenu.show();
-                        }
-                        return false;
+                                    getContentResolver().delete(
+                                            serverUri,
+                                            null,
+                                            null);
+                                    return true;
+                            }
+                            return false;
+                        });
+                        popupMenu.show();
                     }
+                    return false;
                 })
 
                 // settings item

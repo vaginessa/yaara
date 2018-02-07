@@ -81,6 +81,7 @@ public class ServerEditor extends PreferenceFragment
 
         if (mServerProfileUri != null)
             retrieveData();
+        fillUi();
     }
 
     @Override
@@ -133,7 +134,6 @@ public class ServerEditor extends PreferenceFragment
                 mSecretToken.setText(token);
             }
         }
-        fillUi();
     }
 
     private String checkNull(String value) {
