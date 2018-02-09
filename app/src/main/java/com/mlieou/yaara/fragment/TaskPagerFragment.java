@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
 
     MainActivity mActivity;
 
+    SwipeRefreshLayout mSwipeRefreshLayout;
     RecyclerView mTaskList;
     LinearLayout mPlaceholder;
 
@@ -58,6 +60,7 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
         View view = inflater.inflate(R.layout.layout_task_list, container, false);
         mTaskList = view.findViewById(R.id.recycler_view_task_list);
         mPlaceholder = view.findViewById(R.id.empty_list_placeholder);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         hideList();
         mTaskList.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new TaskAdapter(getContext());
@@ -85,12 +88,12 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
             return;
         }
         mActivity.startUpdateGlobalStatusAndTaskList(mTaskType);
+        mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(true));
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
     }
 
     @Override
@@ -108,6 +111,7 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
         else
             displayList();
         mAdapter.swapData(list);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     private void displayList() {
