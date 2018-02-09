@@ -34,8 +34,9 @@
         <activity
             android:name=".activity.ServerEditorActivity"
             android:label="@string/activity_title_add_new_server"
-            android:parentActivityName=".activity.MainActivity"></activity>
-        <activity android:name=".activity.TaskDetailActivity"></activity>
+            android:parentActivityName=".activity.MainActivity"/>
+        <activity android:name=".activity.TaskDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
