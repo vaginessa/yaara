@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <com.mlieou.yaara.widget.PlaceholderRecyclerView
             android:id="@+id/recycler_view_task_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

@@ -8,17 +8,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.activity.MainActivity;
 import com.mlieou.yaara.adapter.TaskAdapter;
 import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.model.TaskType;
+import com.mlieou.yaara.widget.PlaceholderRecyclerView;
 
 import java.util.List;
 
@@ -37,8 +36,7 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
     MainActivity mActivity;
 
     SwipeRefreshLayout mSwipeRefreshLayout;
-    RecyclerView mTaskList;
-    LinearLayout mPlaceholder;
+    PlaceholderRecyclerView mTaskList;
 
     public TaskPagerFragment() {
     }
@@ -59,12 +57,12 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_task_list, container, false);
         mTaskList = view.findViewById(R.id.recycler_view_task_list);
-        mPlaceholder = view.findViewById(R.id.empty_list_placeholder);
+        View placeholder = view.findViewById(R.id.empty_list_placeholder);
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-        hideList();
         mTaskList.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new TaskAdapter(getContext());
         mTaskList.setAdapter(mAdapter);
+        mTaskList.setEmptyView(placeholder);
         if (getArguments() != null) {
             mTaskType = (TaskType) getArguments().getSerializable(TASK_TYPE);
         }
@@ -106,21 +104,8 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
 
     @Override
     public void swapData(List<TaskStatus> list) {
-        if (list == null || list.size() == 0)
-            hideList();
-        else
-            displayList();
         mAdapter.swapData(list);
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private void displayList() {
-        mTaskList.setVisibility(View.VISIBLE);
-        mPlaceholder.setVisibility(View.INVISIBLE);
-    }
-
-    private void hideList() {
-        mTaskList.setVisibility(View.INVISIBLE);
-        mPlaceholder.setVisibility(View.VISIBLE);
-    }
 }
