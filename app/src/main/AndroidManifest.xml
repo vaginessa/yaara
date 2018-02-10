@@ -36,7 +36,8 @@
             android:label="@string/activity_title_add_new_server"
             android:parentActivityName=".activity.MainActivity"/>
         <activity android:name=".activity.TaskDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activity.MainActivity"/>
     </application>
 
 </manifest>

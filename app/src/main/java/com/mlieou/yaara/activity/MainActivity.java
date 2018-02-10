@@ -14,7 +14,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.preference.Preference;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -50,7 +49,7 @@ import com.mlieou.yaara.widget.ServerDrawerItem;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements HandlerCallback, LoaderManager.LoaderCallbacks<Cursor>, Preference.OnPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements HandlerCallback, LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String NEW_TASK_DIALOG = "new_task_dialog";
     private static final int ID_SERVER_LOADER = 1000;
@@ -345,10 +344,5 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mDrawer.removeAllItems();
-    }
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        return false;
     }
 }

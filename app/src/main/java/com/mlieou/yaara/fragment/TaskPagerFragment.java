@@ -75,24 +75,15 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
     @Override
     public void onResume() {
         super.onResume();
-        if (!getUserVisibleHint()) {
-            return;
-        }
-        mActivity.startUpdateGlobalStatusAndTaskList(mTaskType);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
+        if (getUserVisibleHint())
+            mActivity.startUpdateGlobalStatusAndTaskList(mTaskType);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && isResumed()) {
+        if (isVisibleToUser && isResumed())
             onResume();
-        }
     }
 
     @Override
