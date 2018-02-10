@@ -19,8 +19,8 @@ allprojects {
 
     ext {
         projectGroupId = 'com.mlieou.yaara'
-        projectVersionCode = 3
-        projectVersionName = '0.0.2'
+        projectVersionCode = 4
+        projectVersionName = '0.0.3'
     }
 
     repositories {
