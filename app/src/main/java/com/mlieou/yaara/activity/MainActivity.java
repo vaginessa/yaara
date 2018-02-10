@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -375,9 +377,11 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
         }
 
         // add new server action
+        Drawable icon = getDrawable(R.drawable.ic_add);
+        icon.setColorFilter(getResources().getColor(R.color.color_drawer_icon), PorterDuff.Mode.SRC_ATOP);
         mDrawer.addItem(new PrimaryDrawerItem()
                 .withName(R.string.drawer_item_title_new_server)
-                .withIcon(R.drawable.ic_add)
+                .withIcon(icon)
                 .withSelectable(false)
         .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
