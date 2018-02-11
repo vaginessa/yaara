@@ -140,7 +140,7 @@ public class TaskDetailActivity extends AppCompatActivity implements HandlerCall
     public void handleMessage(Message msg, Handler handler) {
         switch (msg.what) {
             case MessageCode.UPDATE_TASK_STATUS:
-                mTaskStatus = (TaskStatus) msg.obj;
+                mPagerAdapter.updateFragments(msg.obj);
         }
     }
 }

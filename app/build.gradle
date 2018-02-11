@@ -40,6 +40,9 @@ dependencies {
         transitive = true
     }
 
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.2'
 
     testImplementation 'junit:junit:4.12'

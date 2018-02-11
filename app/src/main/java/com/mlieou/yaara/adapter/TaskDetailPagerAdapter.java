@@ -11,6 +11,9 @@ import com.mlieou.yaara.fragment.TaskDetailOverviewFragment;
 import com.mlieou.yaara.fragment.TaskDetailPeerFragment;
 import com.mlieou.yaara.fragment.TaskDetailTrackerFragment;
 
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * Created by mlieou on 2/9/18.
  */
@@ -33,6 +36,8 @@ public class TaskDetailPagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
 
+    private Observable mObservers = new FragmentObserver();
+
     public TaskDetailPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
@@ -40,7 +45,10 @@ public class TaskDetailPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return Fragment.instantiate(mContext, mFragmentClasses[position].getName());
+        Fragment fragment = Fragment.instantiate(mContext, mFragmentClasses[position].getName());
+        if (fragment instanceof Observer)
+            mObservers.addObserver((Observer) fragment);
+        return fragment;
     }
 
     @Override
@@ -52,5 +60,17 @@ public class TaskDetailPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return mTitle[position];
+    }
+
+    public void updateFragments(Object status) {
+        mObservers.notifyObservers(status);
+    }
+
+    private class FragmentObserver extends Observable {
+        @Override
+        public void notifyObservers(Object object) {
+            setChanged();
+            super.notifyObservers(object);
+        }
     }
 }
