@@ -113,7 +113,7 @@ public class YaaraClient {
 
     public TaskStatus getTaskStatus(String gid) throws IOException, JSONException {
         TaskStatus status;
-        String str = mClient.tellStatus(gid, Arrays.asList(TaskStatus.REQUEST_FULL_UPDATE));
+        String str = mClient.tellStatus(gid, new ArrayList<>());
         status = mGson.fromJson(str, TaskStatus.class);
         return status;
     }

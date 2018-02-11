@@ -1,0 +1,69 @@
+package com.mlieou.yaara.adapter;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.TextView;
+
+import com.mlieou.yaara.R;
+import com.mlieou.yaara.model.File;
+import com.mlieou.yaara.model.TaskStatus;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+/**
+ * Created by mlieou on 2/11/18.
+ */
+
+public class TaskDetailFileAdapter extends RecyclerView.Adapter<TaskDetailFileAdapter.TaskDetailFileViewHolder> {
+
+    private List<File> mFileList;
+
+    @Override
+    public TaskDetailFileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_file_list_item, parent, false);
+        return new TaskDetailFileViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(TaskDetailFileViewHolder holder, int position) {
+        File file = mFileList.get(position);
+        holder.filename.setText(file.getPath());
+        holder.isSelected.setChecked(file.isSelected());
+        holder.progress.setText("" + file.getCompletedLength());
+        // TODO
+    }
+
+    @Override
+    public int getItemCount() {
+        if (mFileList == null)
+            return 0;
+        return mFileList.size();
+    }
+
+    public void swapData(TaskStatus status) {
+        mFileList = status.getFiles();
+        notifyDataSetChanged();
+    }
+
+    public class TaskDetailFileViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.cb_selected)
+        CheckBox isSelected;
+        @BindView(R.id.tv_filename)
+        TextView filename;
+        @BindView(R.id.tv_progress)
+        TextView progress;
+
+        public TaskDetailFileViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+}
