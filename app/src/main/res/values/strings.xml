@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">YAARA</string>
 
-    <!-- Menu title -->
-
+    <!-- Hint -->
     <string name="new_task_hint">Add HTTP/FTP/Metalink</string>
+    <string name="simple_new_task_title">New task</string>
+    <string name="activity_title_add_new_server">Add new server</string>
+
+    <!-- Verb -->
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="advance">Advance</string>
@@ -11,12 +14,25 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="save">Save</string>
-    <string name="simple_new_task_title">New task</string>
 
     <string name="label_yaara_service">Yaara Background Operation Service</string>
 
-    <!-- Activity titles -->
-    <string name="activity_title_add_new_server">Add new server</string>
+    <!-- Overview Fragment -->
+    <string name="fragment_overview_file_path">Path:</string>
+    <string name="fragment_overview_gid">GID:</string>
+    <string name="fragment_overview_status">Status:</string>
+    <string name="fragment_overview_remaining_time">Remaining time:</string>
+    <string name="fragment_overview_connection">Connection:</string>
+    <string name="fragment_overview_seeder">Seeder:</string>
+    <string name="fragment_overview_error_code">Error code:</string>
+    <string name="fragment_overview_completed_length">Completed length:</string>
+    <string name="fragment_overview_pieces">Pieces:</string>
+    <string name="fragment_overview_upload_length">Upload length:</string>
+    <string name="fragment_overview_upload_speed">Upload speed:</string>
+    <string name="fragment_overview_info_hash">Info hash:</string>
+    <string name="fragment_overview_error_message">Error message:</string>
+    <string name="fragment_overview_download_speed">Download speed:</string>
+    <string name="fragment_overview_total_length">Total length:</string>
 
     <!-- Preference -->
     <string name="preference_category_aria2_settings_title">Aria2 Settings</string>

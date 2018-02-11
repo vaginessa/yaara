@@ -62,16 +62,12 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     private TabLayout mTab;
     private ViewPager mPager;
 
-    private int mActiveServerId = -1;
-
     private TaskPagerAdapter mTaskPagerAdapter;
-    private Handler mUpdateHandler;
     private Messenger mMessenger;
     private Messenger mServiceMessenger;
     private boolean mIsServiceBound;
     private ServerProfileManager mServerProfileManager;
     private Timer mRefreshTimer;
-    private int mUpdateInterval;
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -96,8 +92,8 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
 
         mServerProfileManager = new ServerProfileManager(this);
 
-        mUpdateHandler = new WeakHandler(this);
-        mMessenger = new Messenger(mUpdateHandler);
+        Handler updateHandler = new WeakHandler(this);
+        mMessenger = new Messenger(updateHandler);
 
         mHeader = buildHeader();
         mDrawer = buildDrawer();
@@ -242,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
         // requesting new task type, stop old ui update
         stopUIUpdate();
 
-        mUpdateInterval = mServerProfileManager.getUpdateInterval() * 1000;
+        int updateInterval = mServerProfileManager.getUpdateInterval() * 1000;
 
         mRefreshTimer = new Timer();
         mRefreshTimer.scheduleAtFixedRate(new TimerTask() {
@@ -269,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                 } catch (RemoteException e) {
                 }
             }
-        }, 0, mUpdateInterval);
+        }, 0, updateInterval);
     }
 
     public void stopUIUpdate() {

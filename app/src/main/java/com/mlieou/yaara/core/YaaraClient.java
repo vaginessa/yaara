@@ -24,6 +24,8 @@ import java.util.List;
 
 public class YaaraClient {
 
+    private static final String TAG = "YaaraClient";
+
     private Aria2RpcClient mClient;
     private ServerProfile mProfile;
     private Gson mGson;
