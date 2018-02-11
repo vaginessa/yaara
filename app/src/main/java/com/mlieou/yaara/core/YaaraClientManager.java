@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.model.GlobalStatus;
@@ -22,6 +23,9 @@ import java.util.List;
  */
 
 public class YaaraClientManager implements MessageCode {
+
+    private static final String TAG = "YaaraClientManager";
+
     private YaaraClient mClient;
     private Messenger mMessenger;
     private ServerProfileManager mServerProfileManager;
@@ -79,7 +83,8 @@ public class YaaraClientManager implements MessageCode {
             }
             mMessenger.send(messageToSend);
         } catch (Exception e) {
-
+            Log.i(TAG, "handleMessage: ");
+            e.printStackTrace();
         }
     }
 
