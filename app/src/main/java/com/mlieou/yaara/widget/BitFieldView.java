@@ -2,7 +2,6 @@ package com.mlieou.yaara.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
@@ -20,11 +19,20 @@ public class BitFieldView extends View {
     private String bitField;
     private int pieces;
     private int BLOCKS_PER_LINE = 20;
-    private char lastBlock;
-    private Drawable square = getResources().getDrawable(R.drawable.download_block);
+    private int lastBlockGradient;
+    private Drawable square;
+    private int[] colorGradient;
 
     public BitFieldView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        square = getResources().getDrawable(R.drawable.download_block);
+        colorGradient = new int[]{
+                getResources().getColor(R.color.md_grey_300),
+                getResources().getColor(R.color.green_100),
+                getResources().getColor(R.color.green_200),
+                getResources().getColor(R.color.green_300),
+                getResources().getColor(R.color.green_400)
+        };
     }
 
     @Override
@@ -48,12 +56,10 @@ public class BitFieldView extends View {
                     i / BLOCKS_PER_LINE * blockSize,
                     (i % BLOCKS_PER_LINE + 1) * blockSize + offset,
                     (i / BLOCKS_PER_LINE + 1) * blockSize);
-            if (bitField.charAt(i) == 'f' || (i + 1 == blocks && bitField.charAt(i) == lastBlock)) {
-                square.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
-            }
-            else {
-                square.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
-            }
+            int colorIndex = Integer.bitCount(Character.digit(bitField.charAt(i), 16));
+            if (i + 1 == blocks)
+                colorIndex += 4 - lastBlockGradient;
+            square.setColorFilter(colorGradient[colorIndex], PorterDuff.Mode.SRC_ATOP);
             square.draw(canvas);
             i++;
         }
@@ -75,30 +81,16 @@ public class BitFieldView extends View {
     private int calculateNumOfBlocks(int pieces) {
         int blocks = pieces / 8 * 2;
         if (pieces % 8 > 0) {
-            int n;
             if ((pieces - blocks * 4) > 4) {
-                n = (pieces - blocks * 4) - 4;
+                lastBlockGradient = (pieces - blocks * 4) - 4;
                 blocks += 2;
             } else {
-                n = pieces - blocks * 4;
+                lastBlockGradient = pieces - blocks * 4;
                 blocks++;
-            }
-            switch (n) {
-                case 1:
-                    lastBlock = '8';
-                    break;
-                case 2:
-                    lastBlock = 'c';
-                    break;
-                case 3:
-                    lastBlock = 'e';
-                    break;
-                case 4:
-                    lastBlock = 'f';
             }
         }
         else {
-            lastBlock = 'f';
+            lastBlockGradient = 4;
         }
         return blocks;
     }
