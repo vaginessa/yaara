@@ -25,6 +25,7 @@ public interface MessageCode {
     int GET_STOPPED_TASKS = 2;
     int GET_GLOBAL_STATUS = 3;
     int GET_TASK_STATUS = 4;
+    int GET_TASK_PEERS = 5;
 
     int ADD_HTTP_TASK = 16;
 
@@ -36,6 +37,7 @@ public interface MessageCode {
     int UPDATE_GLOBAL_STATUS = 129;
     int HTTP_TASK_ADDED = 130;
     int UPDATE_TASK_STATUS = 131;
+    int UPDATE_TASK_PEERS = 132;
 
     int RELOAD_SERVER_PROFILE = 192;
 }

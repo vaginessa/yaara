@@ -19,18 +19,21 @@ import com.mlieou.yaara.adapter.TaskDetailPagerAdapter;
 import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.core.HandlerCallback;
 import com.mlieou.yaara.core.WeakHandler;
+import com.mlieou.yaara.fragment.TaskDetailPeerFragment;
 import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.service.YaaraService;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TaskDetailActivity extends AppCompatActivity implements HandlerCallback {
+public class TaskDetailActivity extends AppCompatActivity implements HandlerCallback, TaskDetailPeerFragment.PeerListUpdater {
 
     private static final String TAG = "TaskDetailActivity";
 
     public static final String INTENT_EXTRA_GID = "gid";
     public static final String INTENT_EXTRA_TASK_NAME = "task_name";
+
+
 
     private String mGid;
     private TaskStatus mTaskStatus;
@@ -142,5 +145,15 @@ public class TaskDetailActivity extends AppCompatActivity implements HandlerCall
             case MessageCode.UPDATE_TASK_STATUS:
                 mPagerAdapter.updateFragments(msg.obj);
         }
+    }
+
+    @Override
+    public void startUpdate() {
+
+    }
+
+    @Override
+    public void stopUpdate() {
+
     }
 }

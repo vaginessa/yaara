@@ -3,6 +3,8 @@ package com.mlieou.yaara.core;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mlieou.yaara.model.GlobalStatus;
+import com.mlieou.yaara.model.Peer;
+import com.mlieou.yaara.model.PeerListObj;
 import com.mlieou.yaara.model.ServerProfile;
 import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.model.TaskType;
@@ -123,12 +125,19 @@ public class YaaraClient {
         return mGson.fromJson(jsonStr, GlobalStatus.class);
     }
 
-    public String addHttpTask(String url) throws IOException, JSONException {
-        List<String> urlList = new ArrayList<>();
-        urlList.add(url);
+    public String addUri(String uri) throws IOException, JSONException {
+        List<String> uriList = new ArrayList<>();
+        uriList.add(uri);
         String gid;
-        gid = mClient.addUri(urlList, new HashMap<>(), 0);
+        gid = mClient.addUri(uriList, new HashMap<>(), 0);
         return gid;
+    }
+
+    public PeerListObj getPeers(String gid) throws IOException, JSONException {
+        String str = mClient.getPeers(gid);
+        Type collectionType = new TypeToken<List<Peer>>(){}.getType();
+        List<Peer> peerList = mGson.fromJson(str, collectionType);
+        return new PeerListObj(peerList);
     }
 
     public String unpause(String gid) {
