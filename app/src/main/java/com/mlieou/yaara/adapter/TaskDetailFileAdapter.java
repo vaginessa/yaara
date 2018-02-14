@@ -12,6 +12,7 @@ import com.mlieou.yaara.model.File;
 import com.mlieou.yaara.model.TaskStatus;
 
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +24,7 @@ import butterknife.ButterKnife;
 public class TaskDetailFileAdapter extends RecyclerView.Adapter<TaskDetailFileAdapter.TaskDetailFileViewHolder> {
 
     private List<File> mFileList;
+    private int pathOffset;
 
     @Override
     public TaskDetailFileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,10 +35,9 @@ public class TaskDetailFileAdapter extends RecyclerView.Adapter<TaskDetailFileAd
     @Override
     public void onBindViewHolder(TaskDetailFileViewHolder holder, int position) {
         File file = mFileList.get(position);
-        holder.filename.setText(file.getPath());
+        holder.filename.setText(file.getPath().substring(pathOffset));
         holder.isSelected.setChecked(file.isSelected());
-        holder.progress.setText("" + file.getCompletedLength());
-        // TODO
+        holder.progress.setText(String.format(Locale.getDefault() ,"%.2f%%", file.getCompletedLength() * 100.0 / file.getLength()));
     }
 
     @Override
@@ -48,6 +49,7 @@ public class TaskDetailFileAdapter extends RecyclerView.Adapter<TaskDetailFileAd
 
     public void swapData(TaskStatus status) {
         mFileList = status.getFiles();
+        pathOffset = status.getDir().length() + 1;
         notifyDataSetChanged();
     }
 
