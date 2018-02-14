@@ -13,7 +13,7 @@ import com.mlieou.yaara.R;
 import com.mlieou.yaara.activity.TaskDetailActivity;
 import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.rpc.aria2.constant.Aria2TaskStatus;
-import com.mlieou.yaara.util.NetworkSpeedParser;
+import com.mlieou.yaara.util.ParserUtil;
 import com.mlieou.yaara.util.UIUtil;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
 
         switch (status.getStatus()) {
             case ACTIVE:
-                holder.taskDownloadSpeed.setText(NetworkSpeedParser.parse(status.getDownloadSpeed()));
+                holder.taskDownloadSpeed.setText(ParserUtil.parseSpeed(status.getDownloadSpeed()));
                 // set remain time
                 if (status.getDownloadSpeed() == 0)
                     holder.taskRemainTime.setText("--:--:--");

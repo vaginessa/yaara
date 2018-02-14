@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.activity.TaskDetailActivity;
 import com.mlieou.yaara.model.TaskStatus;
+import com.mlieou.yaara.util.ParserUtil;
+import com.mlieou.yaara.util.UIUtil;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -69,11 +71,14 @@ public class TaskDetailOverviewFragment extends Fragment implements Observer {
     private void fillUI(TaskStatus status) {
         mPath.setText(status.getDir());
         mStatus.setText(status.getStatus());
-        mTotalLength.setText("" + status.getTotalLength());
-        mCompletedLength.setText("" + status.getCompletedLength());
-        mUploadLength.setText("" + status.getUploadLength());
-        mDownloadSpeed.setText("" + status.getDownloadSpeed());
-        mUploadSpeed.setText("" + status.getUploadSpeed());
+        mRemainingTime.setText(
+                UIUtil.secondsToTime(
+                        (status.getTotalLength() - status.getCompletedLength()) / status.getDownloadSpeed()));
+        mTotalLength.setText(ParserUtil.parseSize(status.getTotalLength()));
+        mCompletedLength.setText(ParserUtil.parseSize(status.getCompletedLength()));
+        mUploadLength.setText(ParserUtil.parseSize(status.getUploadLength()));
+        mDownloadSpeed.setText(ParserUtil.parseSpeed(status.getDownloadSpeed()));
+        mUploadSpeed.setText(ParserUtil.parseSpeed(status.getUploadSpeed()));
         mInfoHash.setText(status.getInfoHash());
         mConnection.setText("" + status.getConnections());
         mSeeder.setText("" + status.getNumSeeders());
