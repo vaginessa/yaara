@@ -4,7 +4,13 @@
     <!-- Hint -->
     <string name="new_task_hint">Add HTTP/FTP/Metalink</string>
     <string name="simple_new_task_title">New task</string>
+    
+    <string name="empty_list_place_holder">No Task</string>
+    <string name="empty_server_placeholder">No Server</string>
+    
+    <!-- Activity titles -->
     <string name="activity_title_add_new_server">Add new server</string>
+    <string name="activity_title_edit_server">Edit server</string>
 
     <!-- Verb -->
     <string name="add">Add</string>
@@ -35,14 +41,6 @@
     <string name="fragment_overview_total_length">Total length:</string>
 
     <string name="label_yaara_service">Yaara Background Operation Service</string>
-
-    <string name="simple_new_task_title">New task</string>
-    <string name="empty_list_place_holder">No Task</string>
-    <string name="empty_server_placeholder">No Server</string>
-
-    <!-- Activity titles -->
-    <string name="activity_title_add_new_server">Add new server</string>
-    <string name="activity_title_edit_server">Edit server</string>
 
     <!-- Preference -->
     <string name="preference_category_aria2_settings_title">Aria2 Settings</string>
