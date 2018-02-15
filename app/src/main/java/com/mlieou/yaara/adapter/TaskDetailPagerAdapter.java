@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.mlieou.yaara.fragment.TaskDetailBlockFragment;
 import com.mlieou.yaara.fragment.TaskDetailFileFragment;
 import com.mlieou.yaara.fragment.TaskDetailOverviewFragment;
-import com.mlieou.yaara.fragment.TaskDetailPeerFragment;
 import com.mlieou.yaara.fragment.TaskDetailTrackerFragment;
 
 import java.util.Observable;
@@ -25,16 +24,14 @@ public class TaskDetailPagerAdapter extends FragmentPagerAdapter {
             TaskDetailOverviewFragment.class,
             TaskDetailFileFragment.class,
             TaskDetailBlockFragment.class,
-            TaskDetailTrackerFragment.class,
-            TaskDetailPeerFragment.class
+            TaskDetailTrackerFragment.class
     };
 
     private static final String[] mTitle = {
             "Overview",
             "Files",
             "Blocks",
-            "Trackers",
-            "Peers"
+            "Trackers"
     };
 
     private Context mContext;
