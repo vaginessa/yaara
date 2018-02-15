@@ -1,6 +1,8 @@
 package com.mlieou.yaara.activity;
 
 import android.app.LoaderManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -8,6 +10,9 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -18,7 +23,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -43,6 +50,7 @@ import com.mlieou.yaara.model.GlobalStatus;
 import com.mlieou.yaara.model.RefreshBundle;
 import com.mlieou.yaara.model.TaskType;
 import com.mlieou.yaara.service.YaaraService;
+import com.mlieou.yaara.util.ClipboardUtil;
 import com.mlieou.yaara.util.UIUtil;
 import com.mlieou.yaara.widget.ServerDrawerItem;
 
@@ -62,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     private TabLayout mTab;
     private ViewPager mPager;
 
+    private Context mContext;
     private TaskPagerAdapter mTaskPagerAdapter;
     private Messenger mMessenger;
     private Messenger mServiceMessenger;
@@ -84,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mContext = this;
 
         mFab = findViewById(R.id.fab_new_task);
         mTab = findViewById(R.id.tab);
@@ -120,17 +131,45 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                 .withActivity(this)
                 .withToolbar(mToolbar)
                 .withAccountHeader(mHeader)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        long id = drawerItem.getIdentifier();
-                        if (id > 0) {
-                            mServerProfileManager.setActiveServerId(id);
-                            displayMainContent();
-                            reloadServerProfile();
-                        }
-                        return false;
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    long id = drawerItem.getIdentifier();
+                    if (id > 0) {
+                        mServerProfileManager.setActiveServerId(id);
+                        displayMainContent();
+                        reloadServerProfile();
                     }
+                    return false;
+                })
+                .withOnDrawerItemLongClickListener((view, position, drawerItem) -> {
+                    long id = drawerItem.getIdentifier();
+                    if (id > 0) {
+                        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                        Uri serverUri = Uri.withAppendedPath(YaaraDataStore.Servers.CONTENT_URI, Long.toString(id));
+                        PopupMenu popupMenu = new PopupMenu(mContext, view);
+                        popupMenu.inflate(R.menu.menu_server_popup);
+                        popupMenu.setOnMenuItemClickListener(item -> {
+                            switch (item.getItemId()) {
+                                case R.id.action_edit:
+                                    Intent intent = new Intent(mContext, ServerEditorActivity.class);
+                                    intent.setData(serverUri);
+                                    startActivity(intent);
+                                    return true;
+                                case R.id.action_delete:
+                                    if (mServerProfileManager.getActiveServerId() == id) {
+                                        mServerProfileManager.setActiveServerId(-1L);
+                                        reloadServerProfile();
+                                    }
+                                    getContentResolver().delete(
+                                            serverUri,
+                                            null,
+                                            null);
+                                    return true;
+                            }
+                            return false;
+                        });
+                        popupMenu.show();
+                    }
+                    return false;
                 })
 
                 // settings item
@@ -207,6 +246,18 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
 
     public void showNewTaskDialog(View view) {
         SimpleNewTaskFragment fragment = new SimpleNewTaskFragment();
+
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        if (clipboardManager != null && clipboardManager.hasPrimaryClip()) {
+            ClipData clipData = clipboardManager.getPrimaryClip();
+            ClipData.Item item = clipData.getItemAt(0);
+            CharSequence charSequence = item.getText();
+            if (ClipboardUtil.isValidDownloadLink(charSequence)) {
+                Bundle bundle = new Bundle();
+                bundle.putString(SimpleNewTaskFragment.BUNDLE_DOWNLOAD_LINK, charSequence.toString());
+                fragment.setArguments(bundle);
+            }
+        }
         fragment.show(getFragmentManager(), NEW_TASK_DIALOG);
     }
 
@@ -321,9 +372,11 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
         }
 
         // add new server action
+        Drawable icon = getDrawable(R.drawable.ic_add);
+        icon.setColorFilter(getResources().getColor(R.color.color_drawer_icon), PorterDuff.Mode.SRC_ATOP);
         mDrawer.addItem(new PrimaryDrawerItem()
                 .withName(R.string.drawer_item_title_new_server)
-                .withIcon(R.drawable.ic_add)
+                .withIcon(icon)
                 .withSelectable(false)
         .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override

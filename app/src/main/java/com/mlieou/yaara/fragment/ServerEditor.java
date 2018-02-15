@@ -1,6 +1,8 @@
 package com.mlieou.yaara.fragment;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -20,7 +22,7 @@ import com.mlieou.yaara.widget.NumberPickerPreference;
  */
 
 public class ServerEditor extends PreferenceFragment
-        implements Preference.OnPreferenceChangeListener{
+        implements Preference.OnPreferenceChangeListener {
 
     private static final String[] sProjection = {
             YaaraDataStore.Servers._ID,
@@ -54,11 +56,15 @@ public class ServerEditor extends PreferenceFragment
 
     private static String sNotSet;
 
+    private Uri mServerProfileUri;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.server_editor);
         setHasOptionsMenu(true);
+
+        mServerProfileUri = getActivity().getIntent().getData();
 
         sNotSet = getResources().getString(R.string.preference_not_set);
         mAliasName = (EditTextPreference) findPreference(KEY_SERVER_NAME);
@@ -68,6 +74,14 @@ public class ServerEditor extends PreferenceFragment
         mProtocol = (ListPreference) findPreference(KEY_SERVER_PROTOCOL);
         mRequestMethod = (ListPreference) findPreference(KEY_SERVER_REQUEST_METHOD);
         mSecretToken = (EditTextPreference) findPreference(KEY_SERVER_SECRET_TOKEN);
+
+        for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
+            getPreferenceScreen().getPreference(i).setOnPreferenceChangeListener(this);
+        }
+
+        if (mServerProfileUri != null)
+            retrieveData();
+        fillUi();
     }
 
     @Override
@@ -88,17 +102,71 @@ public class ServerEditor extends PreferenceFragment
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        return false;
-    }
-
     private void persistData() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(YaaraDataStore.Servers.NAME, mAliasName.getText());
         contentValues.put(YaaraDataStore.Servers.HOSTNAME, mHostname.getText());
         contentValues.put(YaaraDataStore.Servers.PORT, mPort.getValue());
         contentValues.put(YaaraDataStore.Servers.SECRET_TOKEN, mSecretToken.getText());
-        getActivity().getContentResolver().insert(YaaraDataStore.Servers.CONTENT_URI, contentValues);
+
+        if (mServerProfileUri == null) {
+            getActivity().getContentResolver().insert(YaaraDataStore.Servers.CONTENT_URI, contentValues);
+        } else {
+            getActivity().getContentResolver().update(mServerProfileUri, contentValues, null, null);
+        }
+    }
+
+    private void retrieveData() {
+        try (Cursor cursor = getActivity().getContentResolver().query(
+                mServerProfileUri,
+                sProjection,
+                null,
+                null,
+                null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                String aliasName = cursor.getString(NAME_INDEX);
+                String hostname = cursor.getString(HOSTNAME_INDEX);
+                int port = cursor.getInt(PORT_INDEX);
+                String token = cursor.getString(SECRET_TOKEN_INDEX);
+                mAliasName.setText(aliasName);
+                mHostname.setText(hostname);
+                mPort.setValue(port);
+                mSecretToken.setText(token);
+            }
+        }
+    }
+
+    private String checkNull(String value) {
+        if (value == null || value.length() == 0) {
+            return sNotSet;
+        } else {
+            return value;
+        }
+    }
+
+    private void fillUi() {
+        mAliasName.setSummary(checkNull(mAliasName.getText()));
+        mHostname.setSummary(checkNull(mHostname.getText()));
+        mPort.setSummary(checkNull(Integer.toString(mPort.getValue())));
+        mSecretToken.setSummary(checkNull(mSecretToken.getText()));
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        String key = preference.getKey();
+        switch (key) {
+            case KEY_SERVER_NAME:
+            case KEY_SERVER_HOSTNAME:
+            case KEY_SERVER_SECRET_TOKEN:
+                String summary = (String) newValue;
+                preference.setSummary(checkNull(summary));
+                return true;
+            case KEY_SERVER_PORT:
+                String port = Integer.toString((int) newValue);
+                preference.setSummary(checkNull(port));
+                return true;
+            default:
+                return true;
+        }
     }
 }
