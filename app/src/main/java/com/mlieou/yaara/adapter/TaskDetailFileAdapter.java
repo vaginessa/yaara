@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.model.File;
 import com.mlieou.yaara.model.TaskStatus;
+import com.mlieou.yaara.util.ParserUtil;
 
 import java.util.List;
 import java.util.Locale;
@@ -38,6 +39,7 @@ public class TaskDetailFileAdapter extends RecyclerView.Adapter<TaskDetailFileAd
         holder.filename.setText(file.getPath().substring(pathOffset));
         holder.isSelected.setChecked(file.isSelected());
         holder.progress.setText(String.format(Locale.getDefault() ,"%.2f%%", file.getCompletedLength() * 100.0 / file.getLength()));
+        holder.fileSize.setText(ParserUtil.parseSize(file.getLength()));
     }
 
     @Override
@@ -61,6 +63,8 @@ public class TaskDetailFileAdapter extends RecyclerView.Adapter<TaskDetailFileAd
         TextView filename;
         @BindView(R.id.tv_progress)
         TextView progress;
+        @BindView(R.id.tv_file_size)
+        TextView fileSize;
 
         public TaskDetailFileViewHolder(View itemView) {
             super(itemView);
