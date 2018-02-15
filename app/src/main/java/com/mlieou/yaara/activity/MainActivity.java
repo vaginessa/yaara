@@ -373,7 +373,10 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
 
         // add new server action
         Drawable icon = getDrawable(R.drawable.ic_add);
-        icon.setColorFilter(getResources().getColor(R.color.color_drawer_icon), PorterDuff.Mode.SRC_ATOP);
+        if (icon != null) {
+            icon = icon.mutate();
+            icon.setColorFilter(getResources().getColor(R.color.color_drawer_icon), PorterDuff.Mode.SRC_ATOP);
+        }
         mDrawer.addItem(new PrimaryDrawerItem()
                 .withName(R.string.drawer_item_title_new_server)
                 .withIcon(icon)
