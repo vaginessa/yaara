@@ -14,12 +14,12 @@ public class WeakHandler extends Handler {
     private WeakReference<HandlerCallback> mWeakRef;
 
     public WeakHandler(HandlerCallback handlerCallback) {
-        this.mWeakRef = new WeakReference<HandlerCallback>(handlerCallback);
+        this.mWeakRef = new WeakReference<>(handlerCallback);
     }
 
     public WeakHandler(Looper looper, HandlerCallback handlerCallback) {
         super(looper);
-        this.mWeakRef = new WeakReference<HandlerCallback>(handlerCallback);
+        this.mWeakRef = new WeakReference<>(handlerCallback);
     }
 
     @Override

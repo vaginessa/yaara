@@ -1,6 +1,7 @@
 package com.mlieou.yaara.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mlieou.yaara.R;
+import com.mlieou.yaara.activity.TaskDetailActivity;
 import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.rpc.aria2.constant.Aria2TaskStatus;
-import com.mlieou.yaara.util.NetworkSpeedParser;
+import com.mlieou.yaara.util.ParserUtil;
 import com.mlieou.yaara.util.UIUtil;
 
 import java.util.List;
@@ -51,7 +53,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
 
         switch (status.getStatus()) {
             case ACTIVE:
-                holder.taskDownloadSpeed.setText(NetworkSpeedParser.parse(status.getDownloadSpeed()));
+                holder.taskDownloadSpeed.setText(ParserUtil.parseSpeed(status.getDownloadSpeed()));
                 // set remain time
                 if (status.getDownloadSpeed() == 0)
                     holder.taskRemainTime.setText("--:--:--");
@@ -83,7 +85,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
         notifyDataSetChanged();
     }
 
-    public class TaskAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class TaskAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView taskTitle;
         ProgressBar taskProgress;
@@ -96,6 +98,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
             taskProgress = itemView.findViewById(R.id.pb_task_progress);
             taskDownloadSpeed = itemView.findViewById(R.id.tv_task_download_speed);
             taskRemainTime = itemView.findViewById(R.id.tv_task_time_remain);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int pos = getAdapterPosition();
+            TaskStatus status = mTaskList.get(pos);
+            String gid = status.getGid();
+            String taskName = status.getTaskName();
+            Intent intent = new Intent(mContext, TaskDetailActivity.class);
+            intent.putExtra(TaskDetailActivity.INTENT_EXTRA_TASK_NAME, taskName);
+            intent.putExtra(TaskDetailActivity.INTENT_EXTRA_GID, gid);
+            mContext.startActivity(intent);
         }
     }
 }

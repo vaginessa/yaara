@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.model.GlobalStatus;
@@ -22,6 +23,9 @@ import java.util.List;
  */
 
 public class YaaraClientManager implements MessageCode {
+
+    private static final String TAG = "YaaraClientManager";
+
     private YaaraClient mClient;
     private Messenger mMessenger;
     private ServerProfileManager mServerProfileManager;
@@ -65,8 +69,15 @@ public class YaaraClientManager implements MessageCode {
                     break;
                 case ADD_HTTP_TASK:
                     messageToSend.what = HTTP_TASK_ADDED;
-                    messageToSend.obj = mClient.addHttpTask((String) msg.obj);
+                    messageToSend.obj = mClient.addUri((String) msg.obj);
                     break;
+                case GET_TASK_STATUS:
+                    messageToSend.what = UPDATE_TASK_STATUS;
+                    messageToSend.obj = mClient.getTaskStatus((String) msg.obj);
+                    break;
+                case GET_TASK_PEERS:
+                    messageToSend.what = UPDATE_TASK_PEERS;
+                    messageToSend.obj = mClient.getPeers((String) msg.obj);
                 case START_TASK:
                     break;
                 case PAUSE_TASK:
@@ -76,7 +87,8 @@ public class YaaraClientManager implements MessageCode {
             }
             mMessenger.send(messageToSend);
         } catch (Exception e) {
-
+            Log.i(TAG, "handleMessage: ");
+            e.printStackTrace();
         }
     }
 

@@ -97,9 +97,8 @@ public class TaskPagerFragment extends Fragment implements TaskFragmentCallback 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && isResumed()) {
+        if (isVisibleToUser && isResumed())
             onResume();
-        }
     }
 
     @Override

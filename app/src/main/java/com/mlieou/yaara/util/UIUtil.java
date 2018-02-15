@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class UIUtil {
     public static String buildSubtitle(GlobalStatus status) {
-        return "Download: " + NetworkSpeedParser.parse(status.getDownloadSpeed()) + " Upload: " + NetworkSpeedParser.parse(status.getUploadSpeed());
+        return "Download: " + ParserUtil.parseSpeed(status.getDownloadSpeed()) + " Upload: " + ParserUtil.parseSpeed(status.getUploadSpeed());
     }
 
     public static String secondsToTime(long totalSeconds) {

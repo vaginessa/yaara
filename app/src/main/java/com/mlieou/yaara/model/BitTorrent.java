@@ -8,8 +8,7 @@ import java.util.List;
 
 public class BitTorrent {
 
-    //    Fixme
-//    private List<AnnounceURIList> announceList;
+    private List<List<String>> announceList;
     private String comment;
     private long creationDate;
     private String mode;
@@ -23,9 +22,9 @@ public class BitTorrent {
         return creationDate;
     }
 
-//    public List<AnnounceURIList> getAnnounceList() {
-//        return announceList;
-//    }
+    public List<List<String>> getAnnounceList() {
+        return announceList;
+    }
 
     public String getMode() {
         return mode;
@@ -39,7 +38,4 @@ public class BitTorrent {
         public String name;
     }
 
-    public class AnnounceURIList {
-        public List<String> list;
-    }
 }

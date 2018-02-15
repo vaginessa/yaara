@@ -31,5 +31,29 @@
         <item>#e65100</item>
         <item>#bf360c</item>
     </string-array>
+    
+    <color name="green_50">#E8F5E9</color>
+    <color name="green_100">#C8E6C9</color>
+    <color name="green_200">#A5D6A7</color>
+    <color name="green_300">#81C784</color>
+    <color name="green_400">#66BB6A</color>
+    <color name="green_500">#4CAF50</color>
+    <color name="green_600">#43A047</color>
+    <color name="green_700">#388E3C</color>
+    <color name="green_800">#2E7D32</color>
+    <color name="green_900">#1B5E20</color>
+
+    <string-array name="color_green_array">
+        <item>@color/green_50</item>
+        <item>@color/green_100</item>
+        <item>@color/green_200</item>
+        <item>@color/green_300</item>
+        <item>@color/green_400</item>
+        <item>@color/green_500</item>
+        <item>@color/green_600</item>
+        <item>@color/green_700</item>
+        <item>@color/green_800</item>
+        <item>@color/green_900</item>
+    </string-array>
 
 </resources>

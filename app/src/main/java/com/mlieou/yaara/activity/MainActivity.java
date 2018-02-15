@@ -19,7 +19,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.preference.Preference;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -58,7 +57,7 @@ import com.mlieou.yaara.widget.ServerDrawerItem;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements HandlerCallback, LoaderManager.LoaderCallbacks<Cursor>, Preference.OnPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements HandlerCallback, LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String NEW_TASK_DIALOG = "new_task_dialog";
     private static final int ID_SERVER_LOADER = 1000;
@@ -71,17 +70,13 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     private TabLayout mTab;
     private ViewPager mPager;
 
-    private int mActiveServerId = -1;
-
     private Context mContext;
     private TaskPagerAdapter mTaskPagerAdapter;
-    private Handler mUpdateHandler;
     private Messenger mMessenger;
     private Messenger mServiceMessenger;
     private boolean mIsServiceBound;
     private ServerProfileManager mServerProfileManager;
     private Timer mRefreshTimer;
-    private int mUpdateInterval;
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -108,8 +103,8 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
 
         mServerProfileManager = new ServerProfileManager(this);
 
-        mUpdateHandler = new WeakHandler(this);
-        mMessenger = new Messenger(mUpdateHandler);
+        Handler updateHandler = new WeakHandler(this);
+        mMessenger = new Messenger(updateHandler);
 
         mHeader = buildHeader();
         mDrawer = buildDrawer();
@@ -294,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
         // requesting new task type, stop old ui update
         stopUIUpdate();
 
-        mUpdateInterval = mServerProfileManager.getUpdateInterval() * 1000;
+        int updateInterval = mServerProfileManager.getUpdateInterval() * 1000;
 
         mRefreshTimer = new Timer();
         mRefreshTimer.scheduleAtFixedRate(new TimerTask() {
@@ -321,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                 } catch (RemoteException e) {
                 }
             }
-        }, 0, mUpdateInterval);
+        }, 0, updateInterval);
     }
 
     public void stopUIUpdate() {
@@ -398,10 +393,5 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mDrawer.removeAllItems();
-    }
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        return false;
     }
 }
