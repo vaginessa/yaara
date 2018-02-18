@@ -34,7 +34,6 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mlieou.yaara.R;
 import com.mlieou.yaara.adapter.ServerAdapter;
 import com.mlieou.yaara.adapter.TaskPagerAdapter;
@@ -62,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
     public static final String NEW_TASK_DIALOG = "new_task_dialog";
     private static final int ID_SERVER_LOADER = 1000;
     private static final String TAG = "MainActivity";
+
+    private static final String SAVE_CURRENT_FRAGMENT = "current_fragment";
+    private static final String SAVE_SCROLL_POSITION = "scroll_position";
 
     private Toolbar mToolbar;
     private AccountHeader mHeader;
@@ -114,14 +116,24 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
         mTab.setupWithViewPager(mPager);
 
         getLoaderManager().restartLoader(ID_SERVER_LOADER, null, this);
+
+        if (savedInstanceState != null) {
+            mPager.setCurrentItem(savedInstanceState.getInt(SAVE_CURRENT_FRAGMENT, 0));
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SAVE_CURRENT_FRAGMENT, mPager.getCurrentItem());
     }
 
     private AccountHeader buildHeader() {
         AccountHeaderBuilder builder = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.drawer_header)
-                .withSelectionFirstLine("YAARA")
-                .withSelectionSecondLine("Aria2 Remote for Android");
+                .withSelectionFirstLine(getString(R.string.app_name))
+                .withSelectionSecondLine(getString(R.string.app_subtitle));
         return builder.build();
     }
 
@@ -381,12 +393,9 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                 .withName(R.string.drawer_item_title_new_server)
                 .withIcon(icon)
                 .withSelectable(false)
-        .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                startActivity(new Intent(getBaseContext(), ServerEditorActivity.class));
-                return true;
-            }
+        .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+            startActivity(new Intent(getBaseContext(), ServerEditorActivity.class));
+            return true;
         }));
 
         // select active server

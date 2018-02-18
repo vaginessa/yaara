@@ -21,7 +21,6 @@
             android:maxLines="2"
             app:layout_constraintBottom_toTopOf="@+id/pb_task_progress"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
@@ -36,7 +35,6 @@
             android:layout_marginStart="4dp"
             app:layout_constraintBottom_toTopOf="@+id/tv_task_time_remain"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_task_title"
             tools:progress="25" />
