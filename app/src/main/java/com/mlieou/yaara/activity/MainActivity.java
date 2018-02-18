@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                                 startSettings())
                         .withSelectable(false))
 
-                // about item
+                // fragment_about item
                 .addStickyDrawerItems(new PrimaryDrawerItem()
                         .withName(R.string.about)
                         .withIcon(R.drawable.ic_info_outline)

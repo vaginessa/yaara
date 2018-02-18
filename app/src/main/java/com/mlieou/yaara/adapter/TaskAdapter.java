@@ -35,7 +35,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskAdapterVie
 
     @Override
     public TaskAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.card_task, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.task_list_item, parent, false);
         view.setFocusable(true);
         return new TaskAdapterViewHolder(view);
     }

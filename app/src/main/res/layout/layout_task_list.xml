@@ -15,7 +15,7 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <include layout="@layout/task_list_empty_placeholder" />
+    <include layout="@layout/placeholder_task_list" />
 
 </FrameLayout>
 
