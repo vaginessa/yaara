@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
 
         mTaskPagerAdapter = new TaskPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mTaskPagerAdapter);
+        mPager.setOffscreenPageLimit(3);
         mTab.setupWithViewPager(mPager);
 
         getLoaderManager().restartLoader(ID_SERVER_LOADER, null, this);
