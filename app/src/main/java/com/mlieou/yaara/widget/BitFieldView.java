@@ -57,8 +57,8 @@ public class BitFieldView extends View {
                     (i % BLOCKS_PER_LINE + 1) * blockSize + offset,
                     (i / BLOCKS_PER_LINE + 1) * blockSize);
             int colorIndex = Integer.bitCount(Character.digit(bitField.charAt(i), 16));
-            if (i + 1 == blocks)
-                colorIndex += 4 - lastBlockGradient;
+            if (i + 1 == blocks && colorIndex == lastBlockGradient)  // special case for last block
+                colorIndex = 4;
             square.setColorFilter(colorGradient[colorIndex], PorterDuff.Mode.SRC_ATOP);
             square.draw(canvas);
             i++;
