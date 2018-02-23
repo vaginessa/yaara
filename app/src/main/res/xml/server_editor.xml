@@ -49,7 +49,6 @@
         android:persistent="false"/>
 
     <EditTextPreference
-        android:enabled="false"
         android:inputType="textNoSuggestions"
         android:key="pref_aria2_secret_token"
         android:summary="@string/preference_not_set"

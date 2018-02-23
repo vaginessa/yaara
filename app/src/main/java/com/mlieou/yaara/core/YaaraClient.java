@@ -37,7 +37,7 @@ public class YaaraClient {
     public YaaraClient(ServerProfile profile) {
         mProfile = profile;
         mGson = new Gson();
-        mClient = new Aria2RpcClient(mProfile.getHost(), mProfile.getPort(), mProfile.getRequestPath());
+        mClient = new Aria2RpcClient(mProfile.getHost(), mProfile.getPort(), mProfile.getRequestPath(), mProfile.getSecret());
         mTaskNameMap = new HashMap<>();
         mFullUpdatePerformed = new HashSet<>();
     }
