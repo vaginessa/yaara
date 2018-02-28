@@ -5,10 +5,10 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
+import android.util.Pair;
 
 import com.mlieou.yaara.constant.MessageCode;
 import com.mlieou.yaara.model.GlobalStatus;
-import com.mlieou.yaara.model.RefreshBundle;
 import com.mlieou.yaara.model.ServerProfile;
 import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.model.TaskType;
@@ -92,11 +92,11 @@ public class YaaraClientManager implements MessageCode {
         }
     }
 
-    private RefreshBundle handleTaskRequest(TaskType type) throws RemoteException, IOException, JSONException {
-        RefreshBundle bundle;
+    private Pair<List<TaskStatus>, GlobalStatus> handleTaskRequest(TaskType type) throws RemoteException, IOException, JSONException {
+        Pair<List<TaskStatus>, GlobalStatus> pair;
         List<TaskStatus> list = mClient.getTaskStatusLiteList(type);
         GlobalStatus status = mClient.getGlobalStatus();
-        bundle = new RefreshBundle(list, status);
-        return bundle;
+        pair = new Pair<>(list, status);
+        return pair;
     }
 }

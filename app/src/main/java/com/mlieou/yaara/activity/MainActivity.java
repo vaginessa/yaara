@@ -25,6 +25,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 
@@ -46,13 +47,14 @@ import com.mlieou.yaara.fragment.AboutDialogFragment;
 import com.mlieou.yaara.fragment.SimpleNewTaskFragment;
 import com.mlieou.yaara.fragment.TaskFragmentCallback;
 import com.mlieou.yaara.model.GlobalStatus;
-import com.mlieou.yaara.model.RefreshBundle;
+import com.mlieou.yaara.model.TaskStatus;
 import com.mlieou.yaara.model.TaskType;
 import com.mlieou.yaara.service.YaaraService;
 import com.mlieou.yaara.util.ClipboardUtil;
 import com.mlieou.yaara.util.UIUtil;
 import com.mlieou.yaara.widget.ServerDrawerItem;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -344,11 +346,11 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
         switch (msg.what) {
             case MessageCode.UPDATE_TASK_LIST_AND_GLOBAL_STATUS:
                 // list received and global status received, update subtitle and list
-                RefreshBundle bundle = (RefreshBundle) msg.obj;
-                GlobalStatus globalStatus = bundle.getGlobalStatus();
+                Pair<List<TaskStatus>, GlobalStatus> pair = (Pair<List<TaskStatus>, GlobalStatus>) msg.obj;
+                GlobalStatus globalStatus = pair.second;
                 mToolbar.setSubtitle(UIUtil.buildSubtitle(globalStatus));
                 TaskFragmentCallback callback = (TaskFragmentCallback) mTaskPagerAdapter.getCurrentFragment();
-                callback.swapData(bundle.getTaskList());
+                callback.swapData(pair.first);
         }
     }
 
