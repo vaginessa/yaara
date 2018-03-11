@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
 
     private boolean displayAboutDialog() {
         AboutDialogFragment fragment = new AboutDialogFragment();
-        fragment.show(getFragmentManager(), "ABOUT");
+        fragment.show(getSupportFragmentManager(), "ABOUT");
         return true;
     }
 
@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements HandlerCallback, 
                 fragment.setArguments(bundle);
             }
         }
-        fragment.show(getFragmentManager(), NEW_TASK_DIALOG);
+        fragment.show(getSupportFragmentManager(), NEW_TASK_DIALOG);
     }
 
     public void submitTask(String url) {
