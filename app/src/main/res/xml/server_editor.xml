@@ -49,9 +49,8 @@
         android:persistent="false"/>
 
     <EditTextPreference
-        android:inputType="textNoSuggestions"
+        android:inputType="textPassword"
         android:key="pref_aria2_secret_token"
-        android:summary="@string/preference_not_set"
         android:title="@string/preference_aria2_secret_token"
         android:persistent="false"/>
 

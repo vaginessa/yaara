@@ -148,7 +148,6 @@ public class ServerEditor extends PreferenceFragment
         mAliasName.setSummary(checkNull(mAliasName.getText()));
         mHostname.setSummary(checkNull(mHostname.getText()));
         mPort.setSummary(checkNull(Integer.toString(mPort.getValue())));
-        mSecretToken.setSummary(checkNull(mSecretToken.getText()));
     }
 
     @Override
@@ -157,7 +156,7 @@ public class ServerEditor extends PreferenceFragment
         switch (key) {
             case KEY_SERVER_NAME:
             case KEY_SERVER_HOSTNAME:
-            case KEY_SERVER_SECRET_TOKEN:
+            //case KEY_SERVER_SECRET_TOKEN:
                 String summary = (String) newValue;
                 preference.setSummary(checkNull(summary));
                 return true;
