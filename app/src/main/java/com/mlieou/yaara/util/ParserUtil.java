@@ -6,11 +6,10 @@ package com.mlieou.yaara.util;
 
 public class ParserUtil {
 
-    private static String[] UNITS = {"B", "KB", "MB", "GB"};
-    private static String PER_SECOND = "/s";
+    private static String[] QUANTIFIERS = {"B", "KB", "MB", "GB"};
 
     public static String parseSpeed(long speed) {
-        return parseSize(speed) + PER_SECOND;
+        return parseSize(speed) + "/s";
     }
 
     private static String formatNumber(long speed, long div) {
@@ -20,12 +19,12 @@ public class ParserUtil {
 
     public static String parseSize(long size) {
         if (size < (1 << 10))
-            return size + " " + UNITS[0];
+            return size + " " + QUANTIFIERS[0];
         else if (size < (1 << 20))
-            return formatNumber(size, 1 << 10) + UNITS[1];
+            return formatNumber(size, 1 << 10) + QUANTIFIERS[1];
         else if (size < (1 << 30))
-            return formatNumber(size, 1 << 20) + UNITS[2];
+            return formatNumber(size, 1 << 20) + QUANTIFIERS[2];
         else
-            return formatNumber(size, 1 << 30) + UNITS[3];
+            return formatNumber(size, 1 << 30) + QUANTIFIERS[3];
     }
 }
